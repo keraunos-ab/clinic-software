@@ -1,0 +1,58 @@
+﻿<Window x:Class="clinicApp.QuickActionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="QuickActions"
+        Height="500" Width="600"
+        WindowStartupLocation="CenterOwner"
+        Background="#1E1E1E"
+        WindowStyle="None"
+        AllowsTransparency="True">
+
+    <Border CornerRadius="12" Background="#2C2C2C" Padding="10">
+        <DockPanel>
+            <!-- Header -->
+            <DockPanel DockPanel.Dock="Top" Margin="0,0,0,10">
+                <TextBlock Text="Nouvelle addition"
+                           FontFamily="Constantia" 
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"/>
+                <Button Content="✖"
+                        Width="30" Height="30"
+                        Background="Transparent"
+                        Foreground="Gray"
+                        BorderThickness="0"
+                        FontSize="16"
+                        HorizontalAlignment="Right"
+                        Click="Close_Click"/>
+            </DockPanel>
+
+            <!-- Tabs -->
+            <TabControl x:Name="QuickActionTabs"
+                        Background="#1E1E1E"
+                        Foreground="White"
+                        BorderBrush="#0077FF"
+                        BorderThickness="1"
+                        FontSize="14"
+                        Padding="10"
+                        Margin="0,10,0,0">
+                <!-- Patient Tab -->
+                <TabItem Header="👥 Patient" FontFamily="Constantia" >
+                    <Frame x:Name="PatientFrame" NavigationUIVisibility="Hidden"/>
+                </TabItem>
+
+                <!-- Appointment Tab -->
+                <TabItem Header="📅 Appointment" FontFamily="Constantia" >
+                    <Frame x:Name="AppointmentFrame" NavigationUIVisibility="Hidden"/>
+                </TabItem>
+
+                <!-- Session Tab -->
+                <TabItem Header="🩺 Session" FontFamily="Constantia" >
+                    <Frame x:Name="SessionFrame" NavigationUIVisibility="Hidden"/>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+    </Border>
+</Window>

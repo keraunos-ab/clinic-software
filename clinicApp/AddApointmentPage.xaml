@@ -1,0 +1,123 @@
+﻿<Page x:Class="clinicApp.AddApointmentPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="AddAppointmentPage"
+      Background="Transparent">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Title -->
+        <TextBlock Text="Ajoutez un rendez vous"
+                   Grid.Row="0" Grid.ColumnSpan="2"
+                   Foreground="White"
+                   FontFamily="Constantia"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   Margin="0,0,0,20"/>
+
+        <!-- Patient Selection ComboBox -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,10">
+            <TextBlock Text="Nom"
+                       Foreground="White"
+                       FontFamily="Constantia"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,4"/>
+            <ComboBox x:Name="PatientComboBox"
+                      FontFamily="Constantia"
+                      IsEditable="True"
+                      StaysOpenOnEdit="True"
+                      Height="30"
+                      BorderBrush="#0077FF"
+                      BorderThickness="2"
+                      ToolTip="Type to search patients"
+                      Loaded="PatientComboBox_Loaded"
+                      SelectionChanged="PatientComboBox_SelectionChanged"/>
+        </StackPanel>
+
+        <!-- Patient Last Name -->
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,10">
+            <TextBlock Text="Prenom"
+                       Foreground="White"
+                       FontFamily="Constantia"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,4"/>
+            <TextBox x:Name="PatientLastName"
+                     Height="30"
+                     FontFamily="Constantia"
+                     BorderBrush="#0077FF"
+                     BorderThickness="2"
+                     ToolTip="Patient last name will auto-fill"
+                     IsReadOnly="True"/>
+        </StackPanel>
+
+        <!-- Date -->
+        <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,10,10">
+            <TextBlock Text="La Date"
+                       Foreground="White"
+                       FontFamily="Constantia"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,4"/>
+            <DatePicker x:Name="AppointmentDate"
+                        BorderBrush="#0077FF"
+                        FontFamily="Constantia"
+                        BorderThickness="2"
+                        ToolTip="Select appointment date"/>
+        </StackPanel>
+
+        <!-- Time -->
+        <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,0,0,10">
+            <TextBlock Text="L'heure"
+                       Foreground="White"
+                       FontFamily="Constantia"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,4"/>
+            <TextBox x:Name="AppointmentTime"
+                     FontFamily="Constantia"
+                     Height="30"
+                     BorderBrush="#0077FF"
+                     BorderThickness="2"
+                     ToolTip="Enter time (e.g. 14:30)"/>
+        </StackPanel>
+
+        <!-- Note / Description -->
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,0,0,10">
+            <TextBlock Text="Note"
+                       Foreground="White"
+                       FontFamily="Constantia"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,4"/>
+            <TextBox x:Name="Description"
+                     AcceptsReturn="True"
+                     FontFamily="Constantia"
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto"
+                     Height="100"
+                     BorderBrush="#0077FF"
+                     BorderThickness="2"
+                     ToolTip="Optional note about the appointment"/>
+        </StackPanel>
+
+        <!-- Save Button -->
+        <Button Grid.Row="5" Grid.ColumnSpan="2"
+                Content="💾 Save"
+                Background="#0077FF"
+                Foreground="White"
+                FontFamily="Constantia"
+                FontWeight="Bold"
+                Height="40"
+                Click="SaveApointment_Click"/>
+    </Grid>
+</Page>

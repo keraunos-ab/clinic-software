@@ -1,0 +1,222 @@
+﻿<Page x:Class="clinicApp.PrescriptionPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="PrescriptionPage">
+
+    <!-- This centers and scales everything as a single unit -->
+    <Viewbox Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <!-- Fixed-size root container that matches your prescription image resolution -->
+        <Grid x:Name="PrintableArea" Width="800" Height="1100">
+            <!-- example portrait size -->
+            <Image Source="pack://application:,,,/Pictures/ordonnance.png"
+                   Stretch="Fill"
+                   Panel.ZIndex="0"/>
+
+            <!-- Overlay elements go here -->
+            <Canvas>
+                <TextBlock Text="Nom :"
+                           FontFamily="Constantia" 
+               FontSize="18"
+               FontWeight="SemiBold"
+               Foreground="Black"
+               Background="White"
+               Canvas.Left="551"
+               Canvas.Top="130"
+               Width="90"
+               VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                <TextBox x:Name="FirstNameInput"
+                         FontFamily="Constantia" 
+                         BorderThickness="2"
+             Background="Transparent"
+             FontSize="18"
+             FontWeight="SemiBold"
+             Foreground="Black"
+             Canvas.Left="641"
+             Canvas.Top="130"
+             Width="150"
+             HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+                <!-- Last Name -->
+                <TextBlock Text="Prenom :"
+                           FontFamily="Constantia" 
+               FontSize="18"
+               FontWeight="SemiBold"
+               Foreground="Black"
+               Background="White"
+               Canvas.Left="551"
+               Canvas.Top="163"
+               Width="90"
+               VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                <TextBox x:Name="LastNameInput"
+                         FontFamily="Constantia" 
+             Background="Transparent"
+            BorderThickness="2"
+             FontSize="18"
+             FontWeight="SemiBold"
+             Foreground="Black"
+             Canvas.Left="641"
+             Canvas.Top="163"
+             Width="150"
+             HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+                <!-- Age -->
+                <TextBlock Text="Age :"
+                           FontFamily="Constantia" 
+               FontSize="18"
+               FontWeight="SemiBold"
+               Foreground="Black"
+               Background="White"
+               Canvas.Left="551"
+               Canvas.Top="196"
+               Width="90"
+               VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                <TextBox x:Name="AgeInput"
+                         FontFamily="Constantia" 
+                         BorderThickness="2"
+             Background="White"
+             FontSize="18"
+             FontWeight="SemiBold"
+             Foreground="Black"
+             Canvas.Left="641"
+             Canvas.Top="229"
+             Width="150" HorizontalAlignment="Center" VerticalAlignment="Top"
+             />
+
+                <!-- Sex -->
+                <TextBlock Text="Sexe :"
+                           FontFamily="Constantia" 
+               FontSize="18"
+               FontWeight="SemiBold"
+               Foreground="Black"
+               Background="White"
+               Canvas.Left="551"
+               Canvas.Top="231"
+               Width="90"
+               VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                <TextBox x:Name="SexInput"
+                         FontFamily="Constantia" 
+                         BorderThickness="2"
+             Background="White"
+             FontSize="18"
+             FontWeight="SemiBold"
+             Foreground="Black"
+             Canvas.Left="641"
+             Canvas.Top="262"
+             Width="150" HorizontalAlignment="Center" VerticalAlignment="Top"
+             />
+
+                <!-- Date -->
+                <TextBlock Text="Oran le :"
+                           FontFamily="Constantia" 
+               FontSize="18"
+               FontWeight="SemiBold"
+               Foreground="Black"
+               Background="White"
+               Canvas.Left="551"
+               Canvas.Top="264"
+               Width="90"
+               VerticalAlignment="Top" HorizontalAlignment="Center"/>
+
+                <TextBox x:Name="DateInput"
+                         FontFamily="Constantia" 
+             Background="Transparent"
+             FontSize="18"
+             FontWeight="SemiBold"
+             Foreground="Black"
+             Canvas.Left="641"
+             Canvas.Top="196"
+             Width="150"
+             BorderThickness="2"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Top"/>
+
+                <!-- Medicine list + buttons section -->
+                <StackPanel Canvas.Left="80" Canvas.Top="350" Width="640" HorizontalAlignment="Center" Height="685" VerticalAlignment="Top">
+
+                    <ScrollViewer x:Name="MedicineScroll"
+                                  FontFamily="Constantia" 
+              Height="590"
+              Background="#40FFFFFF"
+              VerticalScrollBarVisibility="Auto">
+
+                        <StackPanel>
+                            <!-- Header row -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <TextBlock Text="Medicament" 
+                                           FontFamily="Constantia" 
+                       Width="217"
+                       FontSize="16"
+                       FontWeight="Bold"
+                       TextAlignment="Center"/>
+                                <TextBlock Text="Dosage" 
+                                           FontFamily="Constantia" 
+                       Width="102"
+                       FontSize="16"
+                       FontWeight="Bold"
+                       TextAlignment="Center"/>
+                                <TextBlock 
+                                    FontFamily="Constantia" 
+                       Width="104"
+                       FontSize="16"
+                       FontWeight="Bold"
+                       TextAlignment="Center" Height="50" Text="N° boites"/>
+                                <TextBlock 
+                                    FontFamily="Constantia" 
+                       Width="136"
+                       FontSize="16"
+                       FontWeight="Bold"
+                       TextAlignment="Center" Text="Poscologie"/>
+                            </StackPanel>
+
+                            <!-- Medicine entries will be added here -->
+                            <StackPanel x:Name="MedicineList"/>
+                        </StackPanel>
+                    </ScrollViewer>
+
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                        <Button x:Name="AddMedicineButton"
+                                FontFamily="Constantia" 
+                                Content="+"
+                                Width="80"
+                                Height="50"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Click="AddMedicineButton_Click"
+                                Margin="10,0"/>
+                        <Button x:Name="FinishButton"
+                                FontFamily="Constantia" 
+                                Content="Finish / Print"
+                                Width="140"
+                                Height="50"
+                                FontSize="18"
+                                FontWeight="Bold"
+                                Click="FinishButton_Click"
+                                Margin="10,0"/>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock Text="Adresse :"
+                           FontFamily="Constantia" 
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Foreground="Black"
+                    Background="White"
+                    Canvas.Left="551"
+                    Canvas.Top="295"
+                    Width="90"
+               HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBox x:Name="Adresse"
+                         FontFamily="Constantia" 
+                    BorderThickness="2"
+                    Background="White"
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Foreground="Black"
+                    Canvas.Left="641"
+                    Canvas.Top="295"
+                    Width="150" HorizontalAlignment="Center" VerticalAlignment="Top"
+             />
+            </Canvas>
+        </Grid>
+    </Viewbox>
+</Page>

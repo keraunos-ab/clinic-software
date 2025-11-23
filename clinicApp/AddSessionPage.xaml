@@ -1,0 +1,123 @@
+﻿<Page x:Class="clinicApp.AddSessionPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="AddSessionPage"
+      Background="Transparent">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Title -->
+        <TextBlock Text="Ajoutes une nouvelle session"
+                   Grid.Row="0" Grid.ColumnSpan="2"
+                   Foreground="White"
+                   FontFamily="Constantia"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   Margin="0,0,0,20"/>
+
+        <!-- Patient Selection ComboBox -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,10">
+            <TextBlock Text="Nom"
+                       Foreground="White"
+                       FontFamily="Constantia"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,4"/>
+            <ComboBox x:Name="PatientComboBox"
+                     FontFamily="Constantia"
+                      IsEditable="True"
+                      StaysOpenOnEdit="True"
+                      Height="30"
+                      BorderBrush="#0077FF"
+                      BorderThickness="2"
+                      ToolTip="Type to search patients"
+                      Loaded="PatientComboBox_Loaded"
+                      SelectionChanged="PatientComboBox_SelectionChanged"/>
+        </StackPanel>
+
+        <!-- Patient Last Name -->
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,10">
+            <TextBlock Text="Prenom"
+                       Foreground="White"
+                       FontFamily="Constantia"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,4"/>
+            <TextBox x:Name="PatientLastName"
+                     FontFamily="Constantia"
+                     Height="30"
+                     BorderBrush="#0077FF"
+                     BorderThickness="2"
+                     ToolTip="Patient last name will auto-fill"
+                     IsReadOnly="True"/>
+        </StackPanel>
+
+        <!-- Session Date -->
+        <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,10,10">
+            <TextBlock Text="La Date"
+                       Foreground="White"
+                       FontFamily="Constantia"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,4"/>
+            <DatePicker x:Name="SessionDate"
+                        BorderBrush="#0077FF"
+                        FontFamily="Constantia"
+                        BorderThickness="2"
+                        ToolTip="Select session date"/>
+        </StackPanel>
+
+        <!-- Session Time -->
+        <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,0,0,10">
+            <TextBlock Text="L'heure"
+                       Foreground="White"
+                       FontFamily="Constantia"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,4"/>
+            <TextBox x:Name="SessionTime"
+                     FontFamily="Constantia"
+                     Height="30"
+                     BorderBrush="#0077FF"
+                     BorderThickness="2"
+                     ToolTip="Enter time (e.g. 14:30)"/>
+        </StackPanel>
+
+        <!-- Description -->
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,0,0,10">
+            <TextBlock Text="Description"
+                       Foreground="White"
+                       FontFamily="Constantia"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,4"/>
+            <TextBox x:Name="Description"
+                     FontFamily="Constantia"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto"
+                     Height="100"
+                     BorderBrush="#0077FF"
+                     BorderThickness="2"
+                     ToolTip="Optional note about the session"/>
+        </StackPanel>
+
+        <!-- Save Button -->
+        <Button Grid.Row="5" Grid.ColumnSpan="2"
+                Content="💾 Save"
+                Background="#0077FF"
+                Foreground="White"
+                FontFamily="Constantia"
+                FontWeight="Bold"
+                Height="40"
+                Click="SaveSession_Click"/>
+    </Grid>
+</Page>
