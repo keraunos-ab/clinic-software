@@ -101,7 +101,7 @@
                         <Button Content="🏠 L'accueil" FontFamily="Constantia" Click="HomeButton_Click"
                                 Margin="10,5" Height="40" BorderBrush="#0077ff" BorderThickness="2"/>
                         <Button Content="👥 Patients" FontFamily="Constantia" Click="PatientsButton_Click"
-                                Height="43" BorderBrush="#0077ff" BorderThickness="2"/>
+                                Margin="10,5" Height="40" BorderBrush="#0077ff" BorderThickness="2"/>
                         <Button Content="📅 Rendez vous " FontFamily="Constantia" Click="AppointmentsButton_Click"
                                 Margin="10,5" Height="40" BorderBrush="#0077ff" BorderThickness="2"/>
                         <Button Content="💊 Ordonnances " FontFamily="Constantia" Click="PrescriptionButton_Click"
