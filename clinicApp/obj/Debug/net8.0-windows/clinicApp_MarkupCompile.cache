@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\User\source\repos\clinicApp\clinicApp\App.xaml
-11-2118423743
-
-18-2025826128
-203-1680282380
-AddApointmentPage.xaml;AddPatientPage.xaml;AddSessionPage.xaml;AppointmentsPage.xaml;HomePage.xaml;MainWindow.xaml;PatientCard.xaml;PatientHistoryWindow.xaml;PatientsPage.xaml;PrescriptionPage.xaml;QuickActionWindow.xaml;
+12517495604
+1-790912184
+21634295797
+2031910634008
+Pages\AddApointmentPage.xaml;Pages\AddPatientPage.xaml;Pages\AddSessionPage.xaml;Pages\AppointmentsPage.xaml;Pages\HomePage.xaml;Pages\Introduction.xaml;Pages\MainWindow.xaml;Pages\PatientCard.xaml;Pages\PatientHistoryWindow.xaml;Pages\PatientsPage.xaml;Pages\PrescriptionPage.xaml;Pages\QuickActionWindow.xaml;
 
 False
 
