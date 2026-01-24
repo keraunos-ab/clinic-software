@@ -3,27 +3,37 @@ using System.Collections.Generic;
 using System;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 using System.Windows;
 
 namespace clinicApp.data
 {
     internal class DataBaseManager
     {
-        private readonly string _connectionString;
+        private readonly string _clinicConnectionString;
+        private readonly string _medicinesConnectionString;
 
-        public DataBaseManager(string dbPath = "ClinicDB.sqlite")
+        public DataBaseManager(
+            string clinicDbPath = "ClinicDB.sqlite",
+            string medicinesDbPath = @"C:\Users\User\source\repos\clinic-software\clinicApp\data\medicines.db")
         {
-            _connectionString = $"Data Source={dbPath};Version=3;";
+            // Clinic DB can remain relative (goes to bin unless you pass an absolute path)
+            _clinicConnectionString = $"Data Source={clinicDbPath};Version=3;";
+
+            // Medicines DB should be deterministic (absolute or computed path)
+            if (!Path.IsPathRooted(medicinesDbPath))
+                medicinesDbPath = Path.GetFullPath(medicinesDbPath);
+
+            _medicinesConnectionString = $"Data Source={medicinesDbPath};Version=3;";
         }
 
         public void InitializeDatabase()
         {
-            using var conn = new SQLiteConnection(_connectionString);
+            using var conn = new SQLiteConnection(_clinicConnectionString);
             conn.Open();
 
             using var cmd = new SQLiteCommand(conn);
 
-            // Patients table
             cmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS Patients (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,7 +46,6 @@ namespace clinicApp.data
                 );";
             cmd.ExecuteNonQuery();
 
-            // Appointments table
             cmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS Appointments (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,7 +56,6 @@ namespace clinicApp.data
                 );";
             cmd.ExecuteNonQuery();
 
-            // Visits table
             cmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS Visits (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -63,7 +71,7 @@ namespace clinicApp.data
         {
             var patients = new List<Patient>();
 
-            using var conn = new SQLiteConnection(_connectionString);
+            using var conn = new SQLiteConnection(_clinicConnectionString);
             conn.Open();
 
             using var cmd = new SQLiteCommand("SELECT * FROM Patients", conn);
@@ -90,7 +98,7 @@ namespace clinicApp.data
         public int GetPatientIdByName(string firstName, string lastName)
         {
             string query = "SELECT * FROM Patients WHERE first_name = @FirstName AND last_name = @LastName";
-            using var conn = new SQLiteConnection(_connectionString);
+            using var conn = new SQLiteConnection(_clinicConnectionString);
             using var cmd = new SQLiteCommand(query, conn);
             cmd.Parameters.AddWithValue("@FirstName", firstName);
             cmd.Parameters.AddWithValue("@LastName", lastName);
@@ -114,7 +122,7 @@ namespace clinicApp.data
         {
             // Check for existing patient with same first + last name
             string checkQuery = "SELECT COUNT(*) FROM Patients WHERE first_name = @FirstName AND last_name = @LastName";
-            using (var conn = new SQLiteConnection(_connectionString))
+            using (var conn = new SQLiteConnection(_clinicConnectionString))
             using (var checkCmd = new SQLiteCommand(checkQuery, conn))
             {
                 checkCmd.Parameters.AddWithValue("@FirstName", firstName);
@@ -132,7 +140,7 @@ namespace clinicApp.data
             string insertQuery = @"
         INSERT INTO Patients (first_name, last_name, phone, email, note)
         VALUES (@FirstName, @LastName, @Phone, @Email, @Note)";
-            using (var conn = new SQLiteConnection(_connectionString))
+            using (var conn = new SQLiteConnection(_clinicConnectionString))
             using (var cmd = new SQLiteCommand(insertQuery, conn))
             {
                 cmd.Parameters.AddWithValue("@FirstName", firstName);
@@ -149,7 +157,7 @@ namespace clinicApp.data
         public void RemovePatient(int patientId)
         {
             string query = "DELETE FROM Patients WHERE id = @PatientId";
-            using var conn = new SQLiteConnection(_connectionString);
+            using var conn = new SQLiteConnection(_clinicConnectionString);
             using var cmd = new SQLiteCommand(query, conn);
             cmd.Parameters.AddWithValue("@PatientId", patientId);
             conn.Open();
@@ -166,7 +174,7 @@ namespace clinicApp.data
                     email = @Email,
                     note = @Note
                 WHERE id = @PatientId";
-            using var conn = new SQLiteConnection(_connectionString);
+            using var conn = new SQLiteConnection(_clinicConnectionString);
             using var cmd = new SQLiteCommand(query, conn);
             cmd.Parameters.AddWithValue("@PatientId", patientId);
             cmd.Parameters.AddWithValue("@FirstName", firstName);
@@ -183,7 +191,7 @@ namespace clinicApp.data
             List<Session> sessions = new();
             string query = "SELECT * FROM Visits WHERE patient_id = @PatientId ORDER BY date DESC, time DESC";
 
-            using var conn = new SQLiteConnection(_connectionString);
+            using var conn = new SQLiteConnection(_clinicConnectionString);
             using var cmd = new SQLiteCommand(query, conn);
             cmd.Parameters.AddWithValue("@PatientId", patientId);
             conn.Open();
@@ -208,7 +216,7 @@ namespace clinicApp.data
         {
             List<Apointment> appointments = new();
             string query = "SELECT * FROM Appointments ORDER BY date DESC, time DESC";
-            using var conn = new SQLiteConnection(_connectionString);
+            using var conn = new SQLiteConnection(_clinicConnectionString);
             using var cmd = new SQLiteCommand(query, conn);
             conn.Open();
             using var reader = cmd.ExecuteReader();
@@ -232,7 +240,7 @@ namespace clinicApp.data
 
             string query = "SELECT * FROM appointments WHERE date = @Today";
 
-            using var conn = new SQLiteConnection(_connectionString);
+            using var conn = new SQLiteConnection(_clinicConnectionString);
             using var cmd = new SQLiteCommand(query, conn);
 
             string today = DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd");
@@ -258,7 +266,7 @@ namespace clinicApp.data
         public DataTable GetAppointmentsByPatient(int PatientId)
         {
             string query = "SELECT * FROM Appointments WHERE Patient_i d = @PatientId";
-            using var conn = new SQLiteConnection(_connectionString);
+            using var conn = new SQLiteConnection(_clinicConnectionString);
             using var cmd = new SQLiteCommand(query, conn);
             cmd.Parameters.AddWithValue("@PatientId", PatientId);
             using var adapter = new SQLiteDataAdapter(cmd);
@@ -272,7 +280,7 @@ namespace clinicApp.data
             string query = @"
                 INSERT INTO Appointments (patient_id, date, time, note)
                 VALUES (@PatientId, @Date, @Time, @Note)";
-            using var conn = new SQLiteConnection(_connectionString);
+            using var conn = new SQLiteConnection(_clinicConnectionString);
             using var cmd = new SQLiteCommand(query, conn);
             cmd.Parameters.AddWithValue("@PatientId", patientId);
             cmd.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
@@ -285,7 +293,7 @@ namespace clinicApp.data
         public void DeleteAppointment(int appointmentId)
         {
             string query = "DELETE FROM Appointments WHERE id = @AppointmentId";
-            using var conn = new SQLiteConnection(_connectionString);
+            using var conn = new SQLiteConnection(_clinicConnectionString);
             using var cmd = new SQLiteCommand(query, conn);
             cmd.Parameters.AddWithValue("@AppointmentId", appointmentId);
             conn.Open();
@@ -295,7 +303,7 @@ namespace clinicApp.data
         public void GetPatientByID(int patientId)
         {
             string query = "SELECT * FROM Patients WHERE id = @PatientId";
-            using var conn = new SQLiteConnection(_connectionString);
+            using var conn = new SQLiteConnection(_clinicConnectionString);
             using var cmd = new SQLiteCommand(query, conn);
             cmd.Parameters.AddWithValue("@PatientId", patientId);
             conn.Open();
@@ -314,7 +322,7 @@ namespace clinicApp.data
             string query = @"
                 INSERT INTO Visits (patient_id, date, time, description)
                 VALUES (@PatientId, @Date, @Time, @Description)";
-            using var conn = new SQLiteConnection(_connectionString);
+            using var conn = new SQLiteConnection(_clinicConnectionString);
             using var cmd = new SQLiteCommand(query, conn);
             cmd.Parameters.AddWithValue("@PatientId", patientId);
             cmd.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
@@ -327,29 +335,32 @@ namespace clinicApp.data
         public List<MedicineInfo> GetAllMedicines()
         {
             var list = new List<MedicineInfo>();
-            using (var conn = new SQLiteConnection(_connectionString))
+
+            using var conn = new SQLiteConnection(_medicinesConnectionString);
+            conn.Open();
+
+            // Keep your medicines DB schema naming as-is
+            const string query = @"
+                SELECT NOM_DE_MARQUE AS name,
+                       DOSAGE       AS dosage
+                FROM products
+                LIMIT 100;";
+
+            using var cmd = new SQLiteCommand(query, conn);
+            using var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
             {
-                conn.Open();
-                string query = @"SELECT denomination, dosage 
-                         FROM products 
-                         LIMIT 100;";
-                using (var cmd = new SQLiteCommand(query, conn))
+                var name = reader["name"]?.ToString() ?? string.Empty;
+                var dosage = reader["dosage"]?.ToString() ?? string.Empty;
+
+                list.Add(new MedicineInfo(name, dosage)
                 {
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var name = reader["denomination"].ToString() ?? string.Empty;
-                            var dosage = reader["dosage"].ToString() ?? string.Empty;
-                            list.Add(new MedicineInfo(name, dosage)
-                            {
-                                Name = name,
-                                Dosage = dosage
-                            });
-                        }
-                    }
-                }
+                    Name = name,
+                    Dosage = dosage
+                });
             }
+
             return list;
         }
 
@@ -357,36 +368,116 @@ namespace clinicApp.data
         {
             var list = new List<MedicineInfo>();
 
-            using (var conn = new SQLiteConnection(_connectionString))
+            if (string.IsNullOrWhiteSpace(prefix))
+                return list;
+
+            using var conn = new SQLiteConnection(_medicinesConnectionString);
+            conn.Open();
+
+            // 1) Get up to 25 brand matches first
+            const string brandQuery = @"
+        SELECT 
+            NOM_DE_MARQUE AS name,
+            DOSAGE AS dosage
+        FROM products
+        WHERE NOM_DE_MARQUE LIKE @p || '%'
+        LIMIT 25;";
+
+            using (var cmd = new SQLiteCommand(brandQuery, conn))
             {
-                conn.Open();
+                cmd.Parameters.AddWithValue("@p", prefix);
 
-                string query = @"SELECT denomination, dosage 
-                         FROM products 
-                         WHERE denomination LIKE @p || '%' 
-                         LIMIT 20;";
-
-                using (var cmd = new SQLiteCommand(query, conn))
+                using var reader = cmd.ExecuteReader();
+                while (reader.Read())
                 {
-                    cmd.Parameters.AddWithValue("@p", prefix);
+                    var name = reader["name"]?.ToString() ?? string.Empty;
+                    var dosage = reader["dosage"]?.ToString() ?? string.Empty;
 
-                    using (var reader = cmd.ExecuteReader())
+                    list.Add(new MedicineInfo(name, dosage)
                     {
-                        while (reader.Read())
-                        {
-                            var name = reader["denomination"].ToString() ?? string.Empty;
-                            var dosage = reader["dosage"].ToString() ?? string.Empty;
-                            list.Add(new MedicineInfo(name, dosage)
-                            {
-                                Name = name,
-                                Dosage = dosage
-                            });
-                        }
-                    }
+                        Name = name,
+                        Dosage = dosage
+                    });
                 }
             }
+
+            // 2) Fill remaining slots with denomination (DCI) matches, excluding already chosen names
+            int remaining = 25 - list.Count;
+            if (remaining <= 0)
+                return list;
+
+            const string dciQuery = @"
+        SELECT 
+            DENOMINATION_COMMUNE_INTERNATIONALE AS name,
+            DOSAGE AS dosage
+        FROM products
+        WHERE DENOMINATION_COMMUNE_INTERNATIONALE LIKE @p || '%'
+          AND DENOMINATION_COMMUNE_INTERNATIONALE NOT IN (
+              SELECT NOM_DE_MARQUE
+              FROM products
+              WHERE NOM_DE_MARQUE LIKE @p || '%'
+          )
+        LIMIT @limit;";
+
+            using (var cmd = new SQLiteCommand(dciQuery, conn))
+            {
+                cmd.Parameters.AddWithValue("@p", prefix);
+                cmd.Parameters.AddWithValue("@limit", remaining);
+
+                using var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    var name = reader["name"]?.ToString() ?? string.Empty;
+                    var dosage = reader["dosage"]?.ToString() ?? string.Empty;
+
+                    list.Add(new MedicineInfo(name, dosage)
+                    {
+                        Name = name,
+                        Dosage = dosage
+                    });
+                }
+            }
+
             return list;
         }
 
+        public List<Patient> GetPatientsByPrefix(string prefix, int limit = 25)
+        {
+            var patients = new List<Patient>();
+
+            if (string.IsNullOrWhiteSpace(prefix))
+                return patients;
+
+            const string query = @"
+        SELECT id, first_name, last_name, phone, email, note
+        FROM Patients
+        WHERE first_name LIKE @p || '%'
+           OR last_name  LIKE @p || '%'
+        ORDER BY last_name, first_name
+        LIMIT @limit;";
+
+            using var conn = new SQLiteConnection(_clinicConnectionString);
+            using var cmd = new SQLiteCommand(query, conn);
+            cmd.Parameters.AddWithValue("@p", prefix);
+            cmd.Parameters.AddWithValue("@limit", limit);
+
+            conn.Open();
+
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                patients.Add(new Patient
+                {
+                    Id = Convert.ToInt32(reader["id"]),
+                    FirstName = reader["first_name"]?.ToString() ?? "",
+                    LastName = reader["last_name"]?.ToString() ?? "",
+                    Phone = reader["phone"]?.ToString(),
+                    Email = reader["email"]?.ToString(),
+                    Note = reader["note"]?.ToString()
+                });
+            }
+
+            return patients;
+        }
     }
 }

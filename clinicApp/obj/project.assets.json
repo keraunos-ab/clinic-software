@@ -362,11 +362,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\source\\repos\\clinicApp\\clinicApp\\clinicApp.csproj",
+      "projectUniqueName": "C:\\Users\\User\\source\\repos\\clinic-software\\clinicApp\\clinicApp.csproj",
       "projectName": "clinicApp",
-      "projectPath": "C:\\Users\\User\\source\\repos\\clinicApp\\clinicApp\\clinicApp.csproj",
+      "projectPath": "C:\\Users\\User\\source\\repos\\clinic-software\\clinicApp\\clinicApp.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\source\\repos\\clinicApp\\clinicApp\\obj\\",
+      "outputPath": "C:\\Users\\User\\source\\repos\\clinic-software\\clinicApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

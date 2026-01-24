@@ -1,49 +1,104 @@
 ﻿using clinicApp.data;
+using clinicApp.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using static clinicApp.AddApointmentPage; // reuse PatientDisplay from appointment page
+using System.Windows.Input;
 
 namespace clinicApp
 {
     public partial class AddSessionPage : Page
     {
         private readonly DataBaseManager dbManager = new DataBaseManager();
+        private List<PatientDisplay> _allPatients = new();
 
         public AddSessionPage()
         {
             InitializeComponent();
+            Loaded += AddSessionPage_Loaded;
         }
 
-        private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void AddSessionPage_Loaded(object sender, RoutedEventArgs e)
         {
-            var patients = dbManager.GetAllPatients(); // List<(FirstName, LastName)>
-            PatientComboBox.ItemsSource = patients.Select(p => new PatientDisplay
-            {
-                FirstName = p.FirstName,
-                LastName = p.LastName
-            }).ToList();
-
-            PatientComboBox.DisplayMemberPath = "FullName";
+            var patients = dbManager.GetAllPatients();
+            _allPatients = patients
+                .Select(p => new PatientDisplay { FirstName = p.FirstName, LastName = p.LastName })
+                .OrderBy(p => p.FirstName)
+                .ThenBy(p => p.LastName)
+                .ToList();
         }
 
-        private void PatientComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void PatientSearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (PatientComboBox.SelectedItem is PatientDisplay selected)
-            {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    PatientComboBox.Text = selected.FirstName;
-                }));
+            string query = PatientSearchBox.Text.Trim();
 
-                PatientLastName.Text = selected.LastName;
+            if (string.IsNullOrEmpty(query))
+            {
+                PatientPopup.IsOpen = false;
+                PatientResultsList.ItemsSource = null;
+                PatientLastName.Clear();
+                return;
             }
+
+            var results = _allPatients
+                .Where(p =>
+                    p.FirstName.Contains(query, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.LastName.Contains(query, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.FullName.Contains(query, StringComparison.CurrentCultureIgnoreCase))
+                .ToList();
+
+            PatientResultsList.ItemsSource = results;
+            PatientPopup.IsOpen = results.Count > 0;
+        }
+
+        private void PatientResultsList_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            CommitSelectedPatient();
+        }
+
+        private void PatientSearchBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!PatientPopup.IsOpen)
+                return;
+
+            if (e.Key == Key.Down)
+            {
+                PatientResultsList.SelectedIndex =
+                    Math.Min(PatientResultsList.SelectedIndex + 1, PatientResultsList.Items.Count - 1);
+                PatientResultsList.ScrollIntoView(PatientResultsList.SelectedItem);
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Up)
+            {
+                PatientResultsList.SelectedIndex =
+                    Math.Max(PatientResultsList.SelectedIndex - 1, 0);
+                PatientResultsList.ScrollIntoView(PatientResultsList.SelectedItem);
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Enter)
+            {
+                CommitSelectedPatient();
+                e.Handled = true;
+            }
+        }
+
+        private void CommitSelectedPatient()
+        {
+            if (PatientResultsList.SelectedItem is not PatientDisplay selected)
+                return;
+
+            PatientSearchBox.Text = selected.FirstName;
+            PatientLastName.Text = selected.LastName;
+
+            PatientPopup.IsOpen = false;
+            PatientSearchBox.Select(PatientSearchBox.Text.Length, 0);
         }
 
         private void SaveSession_Click(object sender, RoutedEventArgs e)
         {
-            int patientId = dbManager.GetPatientIdByName(PatientComboBox.Text, PatientLastName.Text);
+            int patientId = dbManager.GetPatientIdByName(PatientSearchBox.Text, PatientLastName.Text);
             if (patientId == -1)
             {
                 MessageBox.Show("Patient not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -57,11 +112,14 @@ namespace clinicApp
 
             MessageBox.Show("Session added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            PatientComboBox.Text = "";
+            PatientSearchBox.Text = "";
             PatientLastName.Clear();
             SessionDate.SelectedDate = null;
             SessionTime.Clear();
             Description.Clear();
+
+            PatientPopup.IsOpen = false;
+            PatientResultsList.ItemsSource = null;
         }
     }
 }

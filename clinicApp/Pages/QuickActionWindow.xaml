@@ -2,57 +2,128 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="QuickActions"
-                       FontFamily="Constantia"
-        Height="500" Width="600"
+        FontFamily="Segoe UI"
         WindowStartupLocation="CenterOwner"
-        Background="#1E1E1E"
         WindowStyle="None"
-        AllowsTransparency="True">
+        AllowsTransparency="True"
+        Background="Transparent">
 
-    <Border CornerRadius="12" Background="#2C2C2C" Padding="10">
-        <DockPanel>
-            <!-- Header -->
-            <DockPanel DockPanel.Dock="Top" Margin="0,0,0,10">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/clinicApp;component/Styles/AppTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="QuickCardStyle" TargetType="Border" BasedOn="{StaticResource CardStyle}">
+                <Setter Property="Padding" Value="16"/>
+            </Style>
+
+            <Style x:Key="QuickTabControlStyle" TargetType="TabControl">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
+
+            <Style x:Key="QuickTabItemStyle" TargetType="TabItem">
+                <Setter Property="Foreground" Value="{StaticResource Text1Brush}"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabItem">
+                            <Grid SnapsToDevicePixels="True">
+                                <Border x:Name="Bd"
+                                        Padding="12,7"
+                                        Background="#0FFFFFFF"
+                                        BorderBrush="#1FFFFFFF"
+                                        BorderThickness="1"
+                                        CornerRadius="10">
+                                    <ContentPresenter
+                                        ContentSource="Header"
+                                        RecognizesAccessKey="True"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="2,0"/>
+                                </Border>
+                            </Grid>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="#141A4ED8"/>
+                                    <Setter TargetName="Bd" Property="BorderBrush" Value="#2A3D8BFF"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Text0Brush}"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="#16FFFFFF"/>
+                                    <Setter TargetName="Bd" Property="BorderBrush" Value="#2AFFFFFF"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.55"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border CornerRadius="18" BorderThickness="1" BorderBrush="#1AFFFFFF">
+        <Border.Background>
+            <RadialGradientBrush GradientOrigin="0.5,0.18" Center="0.5,0.18" RadiusX="1.1" RadiusY="0.95">
+                <GradientStop Color="#FF121826" Offset="0"/>
+                <GradientStop Color="#FF0B0F14" Offset="0.55"/>
+                <GradientStop Color="#FF070A0F" Offset="1"/>
+            </RadialGradientBrush>
+        </Border.Background>
+
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="35" ShadowDepth="0" Opacity="0.55" Color="#FF000000"/>
+        </Border.Effect>
+
+        <Grid Margin="14">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
                 <TextBlock Text="Quick Add"
+                           Foreground="{StaticResource Text0Brush}"
                            FontSize="20"
-                           FontWeight="Bold"
-                           Foreground="White"
-                           VerticalAlignment="Center"
-                           Margin="10,0,0,0"/>
-                <Button Content="✖"
-                        Width="30" Height="30"
-                        Background="Transparent"
-                        Foreground="Gray"
-                        BorderThickness="0"
-                        FontSize="16"
-                        HorizontalAlignment="Right"
-                        Click="Close_Click"/>
-            </DockPanel>
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
 
-            <!-- Tabs -->
-            <TabControl x:Name="QuickActionTabs"
-                        Background="#1E1E1E"
-                        Foreground="White"
-                        BorderBrush="#0077FF"
+                <Button Grid.Column="1"
+                        Content="✕"
+                        Width="34" Height="34"
+                        Background="#0FFFFFFF"
+                        Foreground="{StaticResource Text0Brush}"
+                        BorderBrush="#1FFFFFFF"
                         BorderThickness="1"
-                        FontSize="14"
-                        Padding="10"
-                        Margin="0,10,0,0">
-                <!-- Patient Tab -->
-                <TabItem Header="👥 Patient">
-                    <Frame x:Name="PatientFrame" NavigationUIVisibility="Hidden"/>
-                </TabItem>
+                        Click="Close_Click"/>
+            </Grid>
 
-                <!-- Appointment Tab -->
-                <TabItem Header="📅 Appointment">
-                    <Frame x:Name="AppointmentFrame" NavigationUIVisibility="Hidden"/>
-                </TabItem>
-
-                <!-- Session Tab -->
-                <TabItem Header="🩺 Session">
-                    <Frame x:Name="SessionFrame" NavigationUIVisibility="Hidden"/>
-                </TabItem>
-            </TabControl>
-        </DockPanel>
+            <Border Grid.Row="1" Style="{StaticResource QuickCardStyle}">
+                <TabControl x:Name="QuickActionTabs"
+                            Style="{StaticResource QuickTabControlStyle}"
+                            ItemContainerStyle="{StaticResource QuickTabItemStyle}">
+                    <TabItem Header="Patient">
+                        <Frame x:Name="PatientFrame" NavigationUIVisibility="Hidden" Background="Transparent"/>
+                    </TabItem>
+                    <TabItem Header="Appointment">
+                        <Frame x:Name="AppointmentFrame" NavigationUIVisibility="Hidden" Background="Transparent"/>
+                    </TabItem>
+                    <TabItem Header="Session">
+                        <Frame x:Name="SessionFrame" NavigationUIVisibility="Hidden" Background="Transparent"/>
+                    </TabItem>
+                </TabControl>
+            </Border>
+        </Grid>
     </Border>
 </Window>

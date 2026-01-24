@@ -4,99 +4,162 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             Background="#1E1E1E"
-                       FontFamily="Constantia"
+             Background="Transparent"
+             FontFamily="Segoe UI"
              Margin="10"
-             Padding="15" Height="253">
-    <Border BorderBrush="#0077FF"
-            BorderThickness="1"
-            CornerRadius="6"
-            Padding="10"
-            Background="#252526">
+             Width="380">
+
+    <UserControl.Resources>
+        <!-- Match MainWindow palette -->
+        <Color x:Key="Hint">#FF9AA4B2</Color>
+        <Color x:Key="Text0">#FFF2F4F8</Color>
+        <Color x:Key="Text1">#FFB8C0CC</Color>
+
+        <SolidColorBrush x:Key="Text0Brush" Color="{StaticResource Text0}" />
+        <SolidColorBrush x:Key="Text1Brush" Color="{StaticResource Text1}" />
+        <SolidColorBrush x:Key="HintBrush" Color="{StaticResource Hint}" />
+
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="18" />
+            <Setter Property="Background" Value="#0F111827" />
+            <Setter Property="BorderBrush" Value="#1AFFFFFF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="18" />
+        </Style>
+
+        <Style x:Key="ChipStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Background" Value="#0FFFFFFF" />
+            <Setter Property="BorderBrush" Value="#1AFFFFFF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="12,10" />
+        </Style>
+
+        <Style x:Key="InlineButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="34" />
+            <Setter Property="Width" Value="60" />
+            <Setter Property="Padding" Value="12,0" />
+            <Setter Property="Foreground" Value="{StaticResource Text0Brush}" />
+            <Setter Property="Background" Value="#0FFFFFFF" />
+            <Setter Property="BorderBrush" Value="#1AFFFFFF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#16FFFFFF" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#2AFFFFFF" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#22FFFFFF" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.6" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Border Style="{StaticResource CardStyle}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="12" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="12" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- Full name (combined nicely) -->
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="Name: "
-                           Foreground="#AAAAAA"
-                           FontWeight="SemiBold"
-                           Width="80"/>
-                <TextBox Text="{Binding FirstName, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                         IsReadOnly="True"
-                         BorderThickness="1"
-                         BorderBrush="#0077FF"
-                         Margin="0,0,5,0"
-                         Background="#2D2D30"
-                         Foreground="White"
-                         Width="120"/>
-                <TextBox Text="{Binding LastName, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                         IsReadOnly="True"
-                         BorderThickness="1"
-                         BorderBrush="#0077FF"
-                         Background="#2D2D30"
-                         Foreground="White"
-                         Width="120"/>
-            </StackPanel>
+            <!-- Header: name + history button -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <!-- Phone -->
-            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="Phone: "
-                           Foreground="#AAAAAA"
-                           FontWeight="SemiBold"
-                           Width="80"/>
-                <TextBox Text="{Binding Phone, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                         IsReadOnly="True"
-                         BorderThickness="1"
-                         BorderBrush="#0077FF"
-                         Background="#2D2D30"
-                         Foreground="White"
-                         Width="250"/>
-            </StackPanel>
+                <StackPanel>
+                    <TextBlock Foreground="{StaticResource Text0Brush}"
+                               FontSize="16"
+                               FontWeight="SemiBold">
+                        <Run Text="{Binding FirstName, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                        <Run Text=" " />
+                        <Run Text="{Binding LastName, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                    </TextBlock>
 
-            <!-- Email -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="Email: "
-                           Foreground="#AAAAAA"
-                           FontWeight="SemiBold"
-                           Width="80"/>
-                <TextBox Text="{Binding Email, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                         IsReadOnly="True"
-                         BorderThickness="1"
-                         BorderBrush="#0077FF"
-                         Background="#2D2D30"
-                         Foreground="White"
-                         Width="250"/>
-            </StackPanel>
+                </StackPanel>
 
-            <Button Content="History" 
-        Width="80" Height="25" 
-        Margin="240,12,10,-37"
-        Click="HistoryButton_Click" Grid.Row="4"/>
+                <Button Grid.Column="1"
+                        Content="History"
+                        Style="{StaticResource InlineButtonStyle}"
+                        Click="HistoryButton_Click" />
+            </Grid>
+
+            <!-- Contact chips -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource ChipStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Phone"
+                                   Foreground="{StaticResource HintBrush}"
+                                   FontSize="11" />
+                        <TextBlock Text="{Binding Phone, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                   Foreground="{StaticResource Text1Brush}"
+                                   FontSize="13"
+                                   Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource ChipStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Email"
+                                   Foreground="{StaticResource HintBrush}"
+                                   FontSize="11" />
+                        <TextBlock Text="{Binding Email, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                   Foreground="{StaticResource Text1Brush}"
+                                   FontSize="13"
+                                   Margin="0,4,0,0"
+                                   TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                </Border>
+            </Grid>
 
             <!-- Note -->
-            <StackPanel Grid.Row="3" Orientation="Vertical" Margin="0,0,0,0">
-                <TextBlock Text="Note:"
-                           Foreground="#AAAAAA"
-                           FontWeight="SemiBold"
-                           Margin="0,0,0,4"/>
-                <TextBox Text="{Binding Note, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                         IsReadOnly="True"
-                         AcceptsReturn="True"
-                         TextWrapping="Wrap"
-                         VerticalScrollBarVisibility="Auto"
-                         BorderThickness="1"
-                         BorderBrush="#0077FF"
-                         Background="#2D2D30"
-                         Foreground="White"
-                         Height="60"/>
-            </StackPanel>
+            <Border Grid.Row="4"
+                    CornerRadius="14"
+                    Background="#0FFFFFFF"
+                    BorderBrush="#1AFFFFFF"
+                    BorderThickness="1"
+                    Padding="12">
+                <StackPanel>
+                    <TextBlock Text="Note"
+                               Foreground="{StaticResource HintBrush}"
+                               FontSize="11" />
+                    <TextBlock Text="{Binding Note, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                               Foreground="{StaticResource Text1Brush}"
+                               FontSize="13"
+                               Margin="0,6,0,0"
+                               TextWrapping="Wrap"
+                               MaxHeight="84"
+                               TextTrimming="WordEllipsis" />
+                </StackPanel>
+            </Border>
         </Grid>
     </Border>
 </UserControl>

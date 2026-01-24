@@ -1,0 +1,13 @@
+<Window x:Class="clinicApp.Pages.IntroductionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:clinicApp.Pages"
+        Title="Clinic Software"
+        WindowState="Maximized"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+    <Frame x:Name="RootFrame"
+           NavigationUIVisibility="Hidden"
+           Background="Transparent" />
+</Window>

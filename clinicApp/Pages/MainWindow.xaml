@@ -5,35 +5,65 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:clinicApp"
         mc:Ignorable="d"
-        Title="Dr Belhadj F's clinic software"
-        FontFamily="Constantia"
+        Title="Clinic Software"
+        FontFamily="Segoe UI"
         Icon="pack://application:,,,/Pictures/icon.png"
-        Height="450" Width="800"
+        d:DesignHeight="1080" d:DesignWidth="1920"
         WindowState="Maximized"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent">
 
     <Window.Resources>
+        <!-- Palette (aligned with Introduction page) -->
+        <Color x:Key="Bg0">#FF0B0F14</Color>
+        <Color x:Key="Bg1">#FF121826</Color>
+        <Color x:Key="CardBg">#FF131A24</Color>
+        <Color x:Key="CardStroke">#22FFFFFF</Color>
+        <Color x:Key="Hint">#FF9AA4B2</Color>
+        <Color x:Key="Text0">#FFF2F4F8</Color>
+        <Color x:Key="Text1">#FFB8C0CC</Color>
+        <Color x:Key="Blue0">#FF2F6FED</Color>
+        <Color x:Key="Blue1">#FF295FDD</Color>
+
+        <SolidColorBrush x:Key="Text0Brush" Color="{StaticResource Text0}" />
+        <SolidColorBrush x:Key="Text1Brush" Color="{StaticResource Text1}" />
+        <SolidColorBrush x:Key="HintBrush" Color="{StaticResource Hint}" />
+        <SolidColorBrush x:Key="CardBgBrush" Color="{StaticResource CardBg}" />
+        <SolidColorBrush x:Key="CardStrokeBrush" Color="{StaticResource CardStroke}" />
+
+        <!-- Title bar buttons -->
         <Style x:Key="TitleBarButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Width" Value="40"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Width" Value="42" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Margin" Value="6,0,0,0" />
+            <Setter Property="Background" Value="#0FFFFFFF" />
+            <Setter Property="Foreground" Value="{StaticResource Text0Brush}" />
+            <Setter Property="BorderBrush" Value="#1FFFFFFF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#555555"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#16FFFFFF" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#2AFFFFFF" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#777777"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#22FFFFFF" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.6" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -42,103 +72,298 @@
         </Style>
 
         <Style x:Key="CloseTitleBarButton" TargetType="Button" BasedOn="{StaticResource TitleBarButton}">
+            <Setter Property="Background" Value="#18E81123" />
+            <Setter Property="BorderBrush" Value="#33E81123" />
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#E81123"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#F1707A"/>
+                    <Setter Property="Background" Value="#E81123" />
+                    <Setter Property="BorderBrush" Value="#E81123" />
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <!-- Nav button -->
+        <Style x:Key="NavButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="44" />
+            <Setter Property="Margin" Value="0,6,0,0" />
+            <Setter Property="Padding" Value="14,0,14,0" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource Text0Brush}" />
+            <Setter Property="BorderBrush" Value="#00FFFFFF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="26" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Simple accent bar (active indicator) -->
+                                <Border x:Name="Accent"
+                                        Grid.Column="0"
+                                        Width="4"
+                                        HorizontalAlignment="Left"
+                                        CornerRadius="2"
+                                        Background="Transparent" />
+
+                                <TextBlock Grid.Column="0"
+                                           Margin="10,0,0,0"
+                                           VerticalAlignment="Center"
+                                           Foreground="{StaticResource HintBrush}"
+                                           Text="{TemplateBinding Tag}" />
+
+                                <ContentPresenter Grid.Column="2"
+                                                  VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#0FFFFFFF" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#22FFFFFF" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#16FFFFFF" />
+                            </Trigger>
+
+                            <!-- Active state via the built-in IsDefault flag -->
+                            <Trigger Property="IsDefault" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#141A4ED8" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#2A3D8BFF" />
+                                <Setter TargetName="Accent" Property="Background" Value="#FF3D8BFF" />
+                                <Setter Property="Foreground" Value="{StaticResource Text0Brush}" />
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.6" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Floating action button -->
+        <Style x:Key="FabStyle" TargetType="Button">
+            <Setter Property="Width" Value="58" />
+            <Setter Property="Height" Value="58" />
+            <Setter Property="FontSize" Value="26" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border x:Name="Bd" CornerRadius="29">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="{StaticResource Blue0}" Offset="0" />
+                                        <GradientStop Color="{StaticResource Blue1}" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.40" Color="#FF1A4ED8" />
+                                </Border.Effect>
+                            </Border>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.95" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.85" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
-    <Border CornerRadius="8" BorderThickness="1" BorderBrush="#333333" Background="#1E1E1E">
-        <DockPanel>
+    <!-- Main shell -->
+    <Border CornerRadius="18" BorderThickness="1" BorderBrush="#1AFFFFFF" Background="Transparent">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="35" ShadowDepth="0" Opacity="0.55" Color="#FF000000" />
+        </Border.Effect>
 
-            <Grid DockPanel.Dock="Top" 
-                  Height="45" 
-                  Background="#333333" 
-                  MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+        <Grid>
+            <!-- Background -->
+            <Grid.Background>
+                <RadialGradientBrush GradientOrigin="0.5,0.18" Center="0.5,0.18" RadiusX="1.1" RadiusY="0.95">
+                    <GradientStop Color="{StaticResource Bg1}" Offset="0" />
+                    <GradientStop Color="{StaticResource Bg0}" Offset="0.55" />
+                    <GradientStop Color="#FF070A0F" Offset="1" />
+                </RadialGradientBrush>
+            </Grid.Background>
 
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Top bar -->
+            <Grid Grid.Row="0" Margin="14,12,14,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
-                    <Image Source="{Binding Icon, RelativeSource={RelativeSource AncestorType=Window}}" Margin="5,0" Width="18"/>
-                    <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}" 
-                               Foreground="White" 
-                               VerticalAlignment="Center" 
-                               Margin="5,0"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal" Grid.Column="1">
-                    <Button Content="—" Style="{StaticResource TitleBarButton}" Click="MinimizeButton_Click"/>
-                    <Button Content="☐" Style="{StaticResource TitleBarButton}" Click="MaximizeRestoreButton_Click"/>
-                    <Button Content="✕" Style="{StaticResource CloseTitleBarButton}" Click="CloseButton_Click"/>
-                </StackPanel>
-            </Grid>
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <Border Background="#2C2C2C" Grid.Column="0" Grid.ColumnSpan="2">
-                    <StackPanel>
-                        <TextBlock Foreground="White"
-                                FontFamily="Constantia"
-                                FontSize="20"
-                                FontWeight="Bold"
-                                Margin="20,30,0,40">
-                            <Run Text="Dr Belhadj F's"/><LineBreak/><Run Text="Clinic"/>
-                        </TextBlock>
-
-                        <Button Content="🏠 L'accueil" FontFamily="Constantia" Click="HomeButton_Click"
-                                Margin="10,5" Height="40" BorderBrush="#0077ff" BorderThickness="2"/>
-                        <Button Content="👥 Patients" FontFamily="Constantia" Click="PatientsButton_Click"
-                                Margin="10,5" Height="40" BorderBrush="#0077ff" BorderThickness="2"/>
-                        <Button Content="📅 Rendez vous " FontFamily="Constantia" Click="AppointmentsButton_Click"
-                                Margin="10,5" Height="40" BorderBrush="#0077ff" BorderThickness="2"/>
-                        <Button Content="💊 Ordonnances " FontFamily="Constantia" Click="PrescriptionButton_Click"
-                                Margin="10,5" Height="40" BorderBrush="#0077ff" BorderThickness="2"/>
+                <Border Grid.Column="0"
+                        Padding="10,0"
+                        CornerRadius="14"
+                        Background="#0FFFFFFF"
+                        BorderBrush="#1AFFFFFF"
+                        BorderThickness="1">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="{Binding Icon, RelativeSource={RelativeSource AncestorType=Window}}" Width="18" Height="18" />
+                        <TextBlock Margin="10,0,0,0"
+                                   Foreground="{StaticResource Text0Brush}"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}" />
                     </StackPanel>
                 </Border>
 
-                <Grid Grid.Column="2" Background="Black">
-                    <Frame x:Name="MainFrame"
-                           NavigationUIVisibility="Hidden"
-                           Background="#1E1E1E" />
-                    <Button Width="60" Height="60"
-                            FontSize="28"
-                            FontWeight="Bold"
-                            Content="+"
-                            Background="#0077ff"
-                            Foreground="White"
-                            BorderThickness="0"
-                            Cursor="Hand"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Margin="0,0,30,30"
-                            Click="QuickAction_Click">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Grid>
-                                    <Ellipse Fill="{TemplateBinding Background}" />
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Grid>
-                            </ControlTemplate>
-                        </Button.Template>
-                        <Button.Effect>
-                            <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
-                        </Button.Effect>
-                    </Button>
-                </Grid>
+                <TextBlock Grid.Column="1"
+                           x:Name="TopBarDateTimeText"
+                           VerticalAlignment="Top"
+                           HorizontalAlignment="Right"
+                           Margin="0,10,185,0"
+                           Foreground="{StaticResource HintBrush}"
+                           FontSize="13"
+                           FontWeight="SemiBold"
+                           Text="—" />
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="—" Style="{StaticResource TitleBarButton}" Click="MinimizeButton_Click" />
+                    <Button Content="☐" Style="{StaticResource TitleBarButton}" Click="MaximizeRestoreButton_Click" />
+                    <Button Content="✕" Style="{StaticResource CloseTitleBarButton}" Click="CloseButton_Click" />
+                </StackPanel>
             </Grid>
-        </DockPanel>
+
+            <!-- Body -->
+            <Grid Grid.Row="1" Margin="14,12,14,14">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="280" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Left nav card -->
+                <Border Grid.Column="0"
+                        Padding="18"
+                        CornerRadius="18"
+                        Background="#0F111827"
+                        BorderBrush="#1AFFFFFF"
+                        BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="18" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0">
+                            <TextBlock Text="Clinic"
+                                       Foreground="{StaticResource Text0Brush}"
+                                       FontSize="22"
+                                       FontWeight="SemiBold" />
+                            <TextBlock Text="Main menu"
+                                       Foreground="{StaticResource HintBrush}"
+                                       FontSize="13"
+                                       Margin="0,6,0,0" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Margin="0,10,0,0">
+                            <Button x:Name="NavHomeButton"
+                                    Content="Home"
+                                    Tag="⌂"
+                                    IsDefault="True"
+                                    Style="{StaticResource NavButtonStyle}"
+                                    Click="HomeButton_Click" />
+
+                            <Button x:Name="NavPatientsButton"
+                                    Content="Patients"
+                                    Tag="👥"
+                                    Style="{StaticResource NavButtonStyle}"
+                                    Click="PatientsButton_Click" />
+
+                            <Button x:Name="NavAppointmentsButton"
+                                    Content="Appointments"
+                                    Tag="🗓"
+                                    Style="{StaticResource NavButtonStyle}"
+                                    Click="AppointmentsButton_Click" />
+
+                            <Button x:Name="NavPrescriptionButton"
+                                    Content="Prescriptions"
+                                    Tag="💊"
+                                    Style="{StaticResource NavButtonStyle}"
+                                    Click="PrescriptionButton_Click" />
+
+                            <Button x:Name="NavSettingsButton"
+                                    Content="Settings"
+                                    Tag="⚙"
+                                    Style="{StaticResource NavButtonStyle}"
+                                    Click="SettingsButton_Click" />
+                        </StackPanel>
+
+                        <Border Grid.Row="3"
+                                Margin="0,16,0,0"
+                                Padding="14"
+                                CornerRadius="14"
+                                Background="#0FFFFFFF"
+                                BorderBrush="#1AFFFFFF"
+                                BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="Tip"
+                                           Foreground="{StaticResource Text0Brush}"
+                                           FontSize="13"
+                                           FontWeight="SemiBold" />
+                                <TextBlock Text="Use the + button for quick actions."
+                                           Foreground="{StaticResource HintBrush}"
+                                           FontSize="12"
+                                           Margin="0,6,0,0" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Content card -->
+                <Border Grid.Column="2"
+                        CornerRadius="18"
+                        Background="#0F111827"
+                        BorderBrush="#1AFFFFFF"
+                        BorderThickness="1">
+                    <Grid>
+                        <Frame x:Name="MainFrame"
+                               NavigationUIVisibility="Hidden"
+                               Background="Transparent" />
+
+                        <Button Content="+"
+                                Style="{StaticResource FabStyle}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Margin="0,0,22,22"
+                                Click="QuickAction_Click" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
     </Border>
 </Window>
