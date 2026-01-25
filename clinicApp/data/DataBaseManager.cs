@@ -16,15 +16,18 @@ namespace clinicApp.data
 
         public DataBaseManager(
             string clinicDbPath = "ClinicDB.sqlite",
-            string medicinesDbPath = @"C:\Users\User\source\repos\clinic-software\clinicApp\data\medicines.db",
+            string medicinesDbPath = "data\\medicines.db",
             string userCredentialsPath = "UserCredentials.db")
         {
             // Clinic DB can remain relative (goes to bin unless you pass an absolute path)
             _clinicConnectionString = $"Data Source={clinicDbPath};Version=3;";
 
-            // Medicines DB should be deterministic (absolute or computed path)
+            // Medicines DB should be deterministic in deployed builds: resolve relative to app base directory
+            if (string.IsNullOrWhiteSpace(medicinesDbPath))
+                medicinesDbPath = "data\\medicines.db";
+
             if (!Path.IsPathRooted(medicinesDbPath))
-                medicinesDbPath = Path.GetFullPath(medicinesDbPath);
+                medicinesDbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, medicinesDbPath);
 
             _medicinesConnectionString = $"Data Source={medicinesDbPath};Version=3;";
 
