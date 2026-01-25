@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:clinicApp.Pages"
       mc:Ignorable="d"
-        FontFamily="Segoe UI"
+      FontFamily="Segoe UI"
       d:DesignHeight="1080" d:DesignWidth="1920"
       Title="Introduction"
       Background="Transparent">
@@ -183,138 +183,224 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- Minor variant for window buttons -->
+        <Style x:Key="WindowButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="44" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Foreground" Value="{StaticResource Text0Brush}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" CornerRadius="6" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#22FFFFFF" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#33FFFFFF" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CloseWindowButtonStyle" TargetType="Button" BasedOn="{StaticResource WindowButtonStyle}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" CornerRadius="6" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#44FF4D4D" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#66FF4D4D" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
-    <Grid>
-        <!-- Dark background + subtle spotlight -->
-        <Grid.Background>
-            <RadialGradientBrush GradientOrigin="0.5,0.25" Center="0.5,0.25" RadiusX="1.0" RadiusY="0.9">
-                <GradientStop Color="#FF121826" Offset="0" />
-                <GradientStop Color="{StaticResource Bg0}" Offset="0.55" />
-                <GradientStop Color="#FF070A0F" Offset="1" />
-            </RadialGradientBrush>
-        </Grid.Background>
+    <!-- Scrollable root -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled"
+                  Background="Transparent">
+        <Grid MinHeight="720">
+            <!-- Dark background + subtle spotlight -->
+            <Grid.Background>
+                <RadialGradientBrush GradientOrigin="0.5,0.25" Center="0.5,0.25" RadiusX="1.0" RadiusY="0.9">
+                    <GradientStop Color="#FF121826" Offset="0" />
+                    <GradientStop Color="{StaticResource Bg0}" Offset="0.55" />
+                    <GradientStop Color="#FF070A0F" Offset="1" />
+                </RadialGradientBrush>
+            </Grid.Background>
 
-        <!-- Centered card -->
-        <Border Width="860"
-                MaxWidth="900"
-                Padding="40"
-                CornerRadius="18"
-                Background="#0F111827"
-                BorderBrush="#1AFFFFFF"
-                BorderThickness="1"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="35" ShadowDepth="0" Opacity="0.45" Color="#FF000000" />
-            </Border.Effect>
+            <!-- Top window buttons row (because the host Window is WindowStyle=None) -->
+            <Grid Margin="10,10,10,0" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="28" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="26" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+                <!-- Drag area -->
+                <Border Grid.Column="0"
+                        Background="Transparent"
+                        Height="40"
+                        MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" />
 
-                <!-- Header -->
-                <StackPanel Grid.Row="0" HorizontalAlignment="Center">
-                    <TextBlock Text="Welcome! Please introduce yourself."
-                               Foreground="{StaticResource Text0Brush}"
-                               FontSize="30"
-                               FontWeight="SemiBold"
-                               TextAlignment="Center" />
-                    <TextBlock Text="Enter your information below to personalize your clinic software."
-                               Foreground="{StaticResource HintBrush}"
-                               FontSize="14"
-                               Margin="0,10,0,0"
-                               TextAlignment="Center" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Content="—" Style="{StaticResource WindowButtonStyle}" Click="Minimize_Click" />
+                    <Button Content="□" Style="{StaticResource WindowButtonStyle}" Click="MaximizeRestore_Click" />
+                    <Button Content="X" Style="{StaticResource CloseWindowButtonStyle}" Click="Close_Click" />
                 </StackPanel>
+            </Grid>
 
-                <!-- Form -->
-                <Grid Grid.Row="3">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="30" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
+            <!-- Centered card -->
+            <Border Width="860"
+                    MaxWidth="900"
+                    Padding="40"
+                    Margin="0,60,0,40"
+                    CornerRadius="18"
+                    Background="#0F111827"
+                    BorderBrush="#1AFFFFFF"
+                    BorderThickness="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="35" ShadowDepth="0" Opacity="0.45" Color="#FF000000" />
+                </Border.Effect>
 
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="18" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="18" />
+                        <RowDefinition Height="28" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="18" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="18" />
+                        <RowDefinition Height="26" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <!-- Row 1 -->
-                    <StackPanel Grid.Row="0" Grid.Column="0">
-                        <TextBlock Text="First Name" Style="{StaticResource LabelStyle}" />
-                        <TextBox x:Name="FirstNameTextBox" Style="{StaticResource InputBoxStyle}" />
+                    <!-- Header -->
+                    <StackPanel Grid.Row="0" HorizontalAlignment="Center">
+                        <TextBlock Text="Welcome! Please introduce yourself."
+                                   Foreground="{StaticResource Text0Brush}"
+                                   FontSize="30"
+                                   FontWeight="SemiBold"
+                                   TextAlignment="Center" />
+                        <TextBlock Text="Enter your information below to personalize your clinic software."
+                                   Foreground="{StaticResource HintBrush}"
+                                   FontSize="14"
+                                   Margin="0,10,0,0"
+                                   TextAlignment="Center" />
                     </StackPanel>
 
-                    <StackPanel Grid.Row="0" Grid.Column="2">
-                        <TextBlock Text="Last Name" Style="{StaticResource LabelStyle}" />
-                        <TextBox x:Name="LastNameTextBox" Style="{StaticResource InputBoxStyle}" />
-                    </StackPanel>
-
-                    <!-- Row 2 -->
-                    <StackPanel Grid.Row="2" Grid.Column="0">
-                        <TextBlock Text="Phone Number" Style="{StaticResource LabelStyle}" />
-                        <TextBox x:Name="PhoneTextBox" Style="{StaticResource InputBoxStyle}" />
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="2" Grid.Column="2">
-                        <TextBlock Text="Email" Style="{StaticResource LabelStyle}" />
-                        <TextBox x:Name="EmailTextBox" Style="{StaticResource InputBoxStyle}" />
-                    </StackPanel>
-
-                    <!-- Row 3 -->
-                    <StackPanel Grid.Row="4" Grid.Column="0">
-                        <TextBlock Text="N° ordre" Style="{StaticResource LabelStyle}" />
-                        <TextBox x:Name="OrdreTextBox" Style="{StaticResource InputBoxStyle}" />
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="4" Grid.Column="2">
-                        <TextBlock Text="Doctor Specialty" Style="{StaticResource LabelStyle}" />
-                        <TextBox x:Name="SpecialtyTextBox" Style="{StaticResource InputBoxStyle}">
-                        </TextBox>
-                    </StackPanel>
-
-                    <!-- Row 4 (full width) -->
-                    <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3">
+                    <!-- Form -->
+                    <Grid Grid.Row="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <StackPanel>
-                            <TextBlock Text="Clinic Name" Style="{StaticResource LabelStyle}" />
-                            <TextBox x:Name="ClinicNameTextBox" Style="{StaticResource InputBoxStyle}" />
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="18" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="18" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="18" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="18" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="18" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Row 1 -->
+                        <StackPanel Grid.Row="0" Grid.Column="0">
+                            <TextBlock Text="First Name" Style="{StaticResource LabelStyle}" />
+                            <TextBox x:Name="FirstNameTextBox" Style="{StaticResource InputBoxStyle}" />
                         </StackPanel>
+
+                        <StackPanel Grid.Row="0" Grid.Column="2">
+                            <TextBlock Text="Last Name" Style="{StaticResource LabelStyle}" />
+                            <TextBox x:Name="LastNameTextBox" Style="{StaticResource InputBoxStyle}" />
+                        </StackPanel>
+
+                        <!-- Row 2 -->
+                        <StackPanel Grid.Row="2" Grid.Column="0">
+                            <TextBlock Text="Phone Number" Style="{StaticResource LabelStyle}" />
+                            <TextBox x:Name="PhoneTextBox" Style="{StaticResource InputBoxStyle}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="2">
+                            <TextBlock Text="Email (optional)" Style="{StaticResource LabelStyle}" />
+                            <TextBox x:Name="EmailTextBox" Style="{StaticResource InputBoxStyle}" />
+                        </StackPanel>
+
+                        <!-- Row 3 -->
+                        <StackPanel Grid.Row="4" Grid.Column="0">
+                            <TextBlock Text="N° ordre (optional)" Style="{StaticResource LabelStyle}" />
+                            <TextBox x:Name="OrdreTextBox" Style="{StaticResource InputBoxStyle}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="4" Grid.Column="2">
+                            <TextBlock Text="Doctor Specialty" Style="{StaticResource LabelStyle}" />
+                            <TextBox x:Name="SpecialtyTextBox" Style="{StaticResource InputBoxStyle}" />
+                        </StackPanel>
+
+                        <!-- Row 4 (full width) -->
+                        <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3">
+                            <StackPanel>
+                                <TextBlock Text="Clinic Name" Style="{StaticResource LabelStyle}" />
+                                <TextBox x:Name="ClinicNameTextBox" Style="{StaticResource InputBoxStyle}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Row 5 (full width) -->
+                        <Grid Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3">
+                            <StackPanel>
+                                <TextBlock Text="Clinic Address" Style="{StaticResource LabelStyle}" />
+                                <TextBox x:Name="ClinicAddressTextBox" Style="{StaticResource InputBoxStyle}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Row 6 (full width): Optional Logo/Image (button only) -->
+                        <Grid Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3">
+                            <StackPanel>
+                                <TextBlock Text="Logo / Image (optional)" Style="{StaticResource LabelStyle}" />
+                                <Button x:Name="LogoBrowseButton"
+                                        Content="Browse..."
+                                        Style="{StaticResource PrimaryButtonStyle}"
+                                        Height="44"
+                                        HorizontalAlignment="Left"
+                                        Width="420"
+                                        Click="BrowseLogoButton_Click" />
+                            </StackPanel>
+                        </Grid>
                     </Grid>
 
-                    <!-- Row 5 (full width) -->
-                    <Grid Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3">
-                        <StackPanel>
-                            <TextBlock Text="Clinic Address" Style="{StaticResource LabelStyle}" />
-                            <TextBox x:Name="ClinicAddressTextBox" Style="{StaticResource InputBoxStyle}" />
-                        </StackPanel>
-                    </Grid>
+                    <!-- Continue -->
+                    <Button Grid.Row="5"
+                            Content="Continue"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Width="420"
+                            HorizontalAlignment="Center"
+                            Click="ContinueButton_Click" />
                 </Grid>
-
-                <!-- Button -->
-                <Button Grid.Row="5"
-                        Content="Continue"
-                        Style="{StaticResource PrimaryButtonStyle}"
-                        Width="420"
-                        HorizontalAlignment="Center"
-                        Click="ContinueButton_Click" />
-            </Grid>
-        </Border>
-    </Grid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
 </Page>

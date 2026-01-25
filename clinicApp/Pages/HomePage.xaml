@@ -42,7 +42,7 @@
 
     <Grid Background="Transparent" Margin="28">
         <Border Style="{StaticResource CardStyle}"
-                Width="940"
+                Width="910"
                 Height="540"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">

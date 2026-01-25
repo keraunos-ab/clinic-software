@@ -12,10 +12,12 @@ namespace clinicApp.data
     {
         private readonly string _clinicConnectionString;
         private readonly string _medicinesConnectionString;
+        private readonly string _userCredentialsConnectionString;
 
         public DataBaseManager(
             string clinicDbPath = "ClinicDB.sqlite",
-            string medicinesDbPath = @"C:\Users\User\source\repos\clinic-software\clinicApp\data\medicines.db")
+            string medicinesDbPath = @"C:\Users\User\source\repos\clinic-software\clinicApp\data\medicines.db",
+            string userCredentialsPath = "UserCredentials.db")
         {
             // Clinic DB can remain relative (goes to bin unless you pass an absolute path)
             _clinicConnectionString = $"Data Source={clinicDbPath};Version=3;";
@@ -25,6 +27,15 @@ namespace clinicApp.data
                 medicinesDbPath = Path.GetFullPath(medicinesDbPath);
 
             _medicinesConnectionString = $"Data Source={medicinesDbPath};Version=3;";
+
+            // User credentials DB stored next to the exe by default (same as Introduction/App first-run checks)
+            if (string.IsNullOrWhiteSpace(userCredentialsPath))
+                userCredentialsPath = "UserCredentials.db";
+
+            if (!Path.IsPathRooted(userCredentialsPath))
+                userCredentialsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, userCredentialsPath);
+
+            _userCredentialsConnectionString = $"Data Source={userCredentialsPath};Version=3;";
         }
 
         public void InitializeDatabase()
@@ -439,6 +450,54 @@ namespace clinicApp.data
             }
 
             return list;
+        }
+
+        public Doctor GetDoctorCredentials()
+        {
+            const string query = @"
+        SELECT
+            first_name,
+            last_name,
+            specialty,
+            email,
+            phone,
+            clinic_address,
+            clinic_name,
+            ordre,
+            logo_path
+        FROM UserCredentials
+        WHERE id = 1
+        LIMIT 1;";
+
+            using var conn = new SQLiteConnection(_userCredentialsConnectionString);
+            conn.Open();
+
+            using var cmd = new SQLiteCommand(query, conn);
+            using var reader = cmd.ExecuteReader();
+
+            if (!reader.Read())
+                throw new InvalidOperationException("Doctor information not found in the user credentials database. Please configure doctor credentials first.");
+
+            var firstName = reader["first_name"]?.ToString() ?? string.Empty;
+            var lastName = reader["last_name"]?.ToString() ?? string.Empty;
+            var specialty = reader["specialty"]?.ToString() ?? string.Empty;
+            var email = reader["email"]?.ToString() ?? string.Empty;
+            var phoneNumber = reader["phone"]?.ToString() ?? string.Empty;
+            var clinicAddress = reader["clinic_address"]?.ToString() ?? string.Empty;
+            var clinicName = reader["clinic_name"]?.ToString() ?? string.Empty;
+            var nDordre = reader["ordre"]?.ToString() ?? string.Empty;
+            var logoPath = reader["logo_path"]?.ToString();
+
+            return new Doctor(
+                firstName,
+                lastName,
+                specialty,
+                email,
+                phoneNumber,
+                clinicAddress,
+                clinicName,
+                nDordre,
+                logoPath);
         }
 
         public List<Patient> GetPatientsByPrefix(string prefix, int limit = 25)

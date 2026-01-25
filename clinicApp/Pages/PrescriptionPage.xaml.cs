@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using clinicApp.data;
 using clinicApp.Models;
 
@@ -12,6 +14,11 @@ namespace clinicApp
 {
     public partial class PrescriptionPage : Page
     {
+        private sealed class PrescriptionPageViewModel
+        {
+            public ImageSource? UserLogoImage { get; init; }
+        }
+
         private readonly DataBaseManager db = new DataBaseManager();
 
         private StackPanel? _medicineList;
@@ -20,31 +27,67 @@ namespace clinicApp
         {
             InitializeComponent();
 
-            // Resolve the named element at runtime
             _medicineList = FindName("MedicineList") as StackPanel;
 
             DateInput.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            Doctor dr = db.GetDoctorCredentials();
+            DoctorNameText.Text = "Dr " + dr.getFirstName() + " " + dr.getLastName();
+            Specialty.Text = dr.getSpecialty();
+            N_order.Text = "N° " + dr.getN_dordre();
+            phone.Text = dr.getPhoneNumber();
+            mail.Text = dr.getEmail();
+            adress.Text = dr.getClinicAddress();
+
+            ImageSource? logo = null;
+            var logoPath = dr.getLogoPath();
+            if (!string.IsNullOrWhiteSpace(logoPath) && File.Exists(logoPath))
+            {
+                var bmp = new BitmapImage();
+                bmp.BeginInit();
+                bmp.CacheOption = BitmapCacheOption.OnLoad;
+                bmp.UriSource = new Uri(logoPath, UriKind.Absolute);
+                bmp.EndInit();
+                bmp.Freeze();
+                logo = bmp;
+            }
+            DataContext = new PrescriptionPageViewModel { UserLogoImage = logo };
         }
 
         private void AddMedicineButton_Click(object sender, RoutedEventArgs e)
         {
             if (_medicineList is null) return;
 
-            var container = new StackPanel
+            const int MaxMedicineSlots = 10;
+            if (_medicineList.Children.Count >= MaxMedicineSlots)
             {
-                Orientation = Orientation.Horizontal,
-                Margin = new Thickness(0, 10, 0, 10)
-            };
+                MessageBox.Show(
+                    $"You can only add up to {MaxMedicineSlots} medicines.",
+                    "Limit reached",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
 
-            // Create search textbox
+                return;
+            }
+
+            var container = new Grid
+            {
+                Margin = new Thickness(0, 10, 0, 10),
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
+            container.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) });   // Medicament
+            container.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1.3, GridUnitType.Star) }); // Dosage (wider)
+            container.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.9, GridUnitType.Star) }); // N° boites (tighter)
+            container.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1.2, GridUnitType.Star) }); // Poscologie
+            container.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });                        // Remove
+
             var searchBox = new TextBox
             {
-                Width = 200,
                 Height = 38,
-                FontSize = 16
+                FontSize = 16,
+                Padding = new Thickness(6, 4, 6, 4)
             };
+            Grid.SetColumn(searchBox, 0);
 
-            // Create popup for results
             var popup = new Popup
             {
                 PlacementTarget = searchBox,
@@ -53,10 +96,8 @@ namespace clinicApp
                 AllowsTransparency = true
             };
 
-            // Create results listbox
             var resultsBox = new ListBox
             {
-                Width = 400,
                 MaxHeight = 200,
                 FontSize = 10,
                 DisplayMemberPath = "FullDisplay"
@@ -74,29 +115,27 @@ namespace clinicApp
 
             var amountBox = new TextBox
             {
-                Width = 80,
                 Height = 38,
                 FontSize = 16,
-                Margin = new Thickness(8, 0, 8, 0),
-                IsReadOnly = true,
-                Background = Brushes.WhiteSmoke
+                Padding = new Thickness(6, 4, 6, 4)
             };
+            Grid.SetColumn(amountBox, 1);
 
             var perDayBox = new TextBox
             {
-                Width = 80,
                 Height = 38,
                 FontSize = 16,
-                Margin = new Thickness(8, 0, 8, 0)
+                Padding = new Thickness(6, 4, 6, 4)
             };
+            Grid.SetColumn(perDayBox, 2);
 
             var durationBox = new TextBox
             {
-                Width = 100,
                 Height = 38,
                 FontSize = 16,
-                Margin = new Thickness(8, 0, 8, 0)
+                Padding = new Thickness(6, 4, 6, 4)
             };
+            Grid.SetColumn(durationBox, 3);
 
             var removeButton = new Button
             {
@@ -109,13 +148,14 @@ namespace clinicApp
                 Background = Brushes.LightCoral,
                 Foreground = Brushes.White
             };
+            Grid.SetColumn(removeButton, 4);
+
             removeButton.Click += (s, args) =>
             {
                 if (_medicineList is not null)
                     _medicineList.Children.Remove(container);
             };
 
-            // TextChanged event for search
             searchBox.TextChanged += (s, args) =>
             {
                 string query = searchBox.Text.Trim();
@@ -191,12 +231,15 @@ namespace clinicApp
             AddMedicineButton.Visibility = Visibility.Collapsed;
             FinishButton.Visibility = Visibility.Collapsed;
 
-            foreach (StackPanel sp in _medicineList.Children)
+            foreach (var child in _medicineList.Children)
             {
-                foreach (var child in sp.Children)
+                if (child is Panel panel)
                 {
-                    if (child is Button btn)
-                        btn.Visibility = Visibility.Collapsed;
+                    foreach (var item in panel.Children)
+                    {
+                        if (item is Button btn)
+                            btn.Visibility = Visibility.Collapsed;
+                    }
                 }
             }
 
@@ -212,12 +255,15 @@ namespace clinicApp
             AddMedicineButton.Visibility = Visibility.Visible;
             FinishButton.Visibility = Visibility.Visible;
 
-            foreach (StackPanel sp in _medicineList.Children)
+            foreach (var child in _medicineList.Children)
             {
-                foreach (var child in sp.Children)
+                if (child is Panel panel)
                 {
-                    if (child is Button btn)
-                        btn.Visibility = Visibility.Visible;
+                    foreach (var item in panel.Children)
+                    {
+                        if (item is Button btn)
+                            btn.Visibility = Visibility.Visible;
+                    }
                 }
             }
         }

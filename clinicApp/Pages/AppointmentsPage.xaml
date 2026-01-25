@@ -186,11 +186,6 @@
                            Foreground="{StaticResource HintBrush}"
                            Margin="0,6,0,0" />
             </StackPanel>
-
-            <TextBox Grid.Column="1"
-                     x:Name="SearchTextBox"
-                     Style="{StaticResource SearchBoxStyle}"
-                     TextChanged="SearchTextBox_TextChanged" />
         </Grid>
 
         <Border Grid.Row="2" Style="{StaticResource CardStyle}">
@@ -199,17 +194,6 @@
                       ItemContainerStyle="{StaticResource ModernListViewItemStyle}">
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource ModernGridViewHeaderStyle}">
-                        <!-- Done button column (fixed width, non-resizable) -->
-                        <GridViewColumn Width="110">
-                            <GridViewColumnHeader Content=""/>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="Done"
-                                            Style="{StaticResource DoneButtonStyle}"
-                                            Click="DoneButton_Click" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
 
                         <GridViewColumn Header="Patient" Width="180">
                             <GridViewColumn.CellTemplate>
@@ -239,6 +223,16 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Note}" Style="{StaticResource CellTextStyle}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="" Width="90">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Done"
+                                            Style="{StaticResource DoneButtonStyle}"
+                                            Click="DoneButton_Click" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
