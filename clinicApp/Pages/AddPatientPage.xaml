@@ -25,7 +25,7 @@
         </Style>
 
         <Style x:Key="InputBoxStyle" TargetType="TextBox">
-            <Setter Property="Height" Value="30" />
+            <Setter Property="Height" Value="40" />
             <Setter Property="Padding" Value="14,0,14,0" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="Foreground" Value="{StaticResource Text0Brush}" />
@@ -63,74 +63,76 @@
         </Style>
     </Page.Resources>
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <ScrollViewer>
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- Title -->
-        <TextBlock Text="Add New Patient"
-                   Grid.Row="0" Grid.ColumnSpan="2"
-                   Foreground="{StaticResource Text0Brush}"
-                   FontSize="18"
-                   FontWeight="Bold"
-                   Margin="0"/>
+            <!-- Title -->
+            <TextBlock Text="Add New Patient"
+                       Grid.Row="0" Grid.ColumnSpan="2"
+                       Foreground="{StaticResource Text0Brush}"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Margin="0"/>
 
-        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,10">
-            <TextBlock Text="First Name" Style="{StaticResource LabelStyle}" />
-            <TextBox x:Name="PatientFirstName"
-                     Style="{StaticResource InputBoxStyle}"
-                     ToolTip="Enter patient's first name"/>
-        </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,10">
+                <TextBlock Text="First Name" Style="{StaticResource LabelStyle}" />
+                <TextBox x:Name="PatientFirstName"
+                         Style="{StaticResource InputBoxStyle}"
+                         ToolTip="Enter patient's first name"/>
+            </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,10">
-            <TextBlock Text="Last Name" Style="{StaticResource LabelStyle}" />
-            <TextBox x:Name="PatientLastName"
-                     Style="{StaticResource InputBoxStyle}"
-                     ToolTip="Enter patient's last name"/>
-        </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,10">
+                <TextBlock Text="Last Name" Style="{StaticResource LabelStyle}" />
+                <TextBox x:Name="PatientLastName"
+                         Style="{StaticResource InputBoxStyle}"
+                         ToolTip="Enter patient's last name"/>
+            </StackPanel>
 
-        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,10">
-            <TextBlock Text="Phone" Style="{StaticResource LabelStyle}" />
-            <TextBox x:Name="Phone"
-                     Style="{StaticResource InputBoxStyle}"
-                     ToolTip="Enter patient's phone number"/>
-        </StackPanel>
+            <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,10">
+                <TextBlock Text="Phone" Style="{StaticResource LabelStyle}" />
+                <TextBox x:Name="Phone"
+                         Style="{StaticResource InputBoxStyle}"
+                         ToolTip="Enter patient's phone number"/>
+            </StackPanel>
 
-        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,0,0,10">
-            <TextBlock Text="Email" Style="{StaticResource LabelStyle}" />
-            <TextBox x:Name="Email"
-                     Style="{StaticResource InputBoxStyle}"
-                     ToolTip="Enter patient's email"/>
-        </StackPanel>
+            <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,0,0,10">
+                <TextBlock Text="Email" Style="{StaticResource LabelStyle}" />
+                <TextBox x:Name="Email"
+                         Style="{StaticResource InputBoxStyle}"
+                         ToolTip="Enter patient's email"/>
+            </StackPanel>
 
-        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Margin="0,0,0,10">
-            <TextBlock Text="Note" Style="{StaticResource LabelStyle}" />
-            <TextBox x:Name="Note"
-                     Style="{StaticResource InputBoxStyle}"
-                     AcceptsReturn="True"
-                     TextWrapping="Wrap"
-                     VerticalScrollBarVisibility="Auto"
-                     Height="50"
-                     ToolTip="Optional notes about the patient"/>
-        </StackPanel>
+            <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Margin="0,0,0,10">
+                <TextBlock Text="Note" Style="{StaticResource LabelStyle}" />
+                <TextBox x:Name="Note"
+                         Style="{StaticResource InputBoxStyle}"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto"
+                         Height="50"
+                         ToolTip="Optional notes about the patient"/>
+            </StackPanel>
 
-        <Button Grid.Row="5" Grid.ColumnSpan="2"
-                Content="Save"
-                Background="#0077FF"
-                Foreground="White"
-                FontWeight="Bold"
-                Height="40"
-                Click="SavePatient_Click"/>
-    </Grid>
+            <Button Grid.Row="5" Grid.ColumnSpan="2"
+                    Content="Save"
+                    Background="#0077FF"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    Height="40"
+                    Click="SavePatient_Click"/>
+        </Grid>
+    </ScrollViewer>
 </Page>

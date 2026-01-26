@@ -48,17 +48,6 @@
                            Canvas.Left="220"
                            Canvas.Top="970" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-                <Image x:Name="UserLogoWatermark"
-       Source="{Binding UserLogoImage}"
-       Width="580"
-       Height="604"
-       Opacity="0.6"
-       Stretch="Uniform"
-       RenderOptions.BitmapScalingMode="HighQuality"
-       Canvas.Left="110"
-       Canvas.Top="240"
-       Panel.ZIndex="-1"/>
-
                 <TextBlock x:Name="mail"
                         Text="waynebruce@wayneenterprise.com"
                         FontSize="22"
@@ -126,7 +115,7 @@
                     <ComboBoxItem Content="Female" Background="Transparent"/>
                 </ComboBox>
 
-                <TextBlock Text="{Binding CityLabel, FallbackValue=Oran le :}"
+                <TextBlock Text="Oran le :"
                            Style="{StaticResource LabelText}"
                            Width="120"
                            Background="Transparent"
@@ -244,6 +233,16 @@
                         Height="29"
                         TextAlignment="Left"
                         Canvas.Top="150" Canvas.Left="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Image x:Name="UserLogoWatermark"
+                       Source="{Binding UserLogoImage, TargetNullValue='pack://application:,,,/Pictures/placeHolderLogo.png'}"
+                       Width="580"
+                       Height="604"
+                       Opacity="0.6"
+                       Stretch="Uniform"
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       Canvas.Left="110"
+                       Canvas.Top="240"
+                       Panel.ZIndex="-1"/>
             </Canvas>
         </Grid>
     </Viewbox>

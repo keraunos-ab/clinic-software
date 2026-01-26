@@ -19,10 +19,8 @@ namespace clinicApp.data
             string medicinesDbPath = "data\\medicines.db",
             string userCredentialsPath = "UserCredentials.db")
         {
-            // Clinic DB can remain relative (goes to bin unless you pass an absolute path)
             _clinicConnectionString = $"Data Source={clinicDbPath};Version=3;";
 
-            // Medicines DB should be deterministic in deployed builds: resolve relative to app base directory
             if (string.IsNullOrWhiteSpace(medicinesDbPath))
                 medicinesDbPath = "data\\medicines.db";
 
@@ -31,7 +29,6 @@ namespace clinicApp.data
 
             _medicinesConnectionString = $"Data Source={medicinesDbPath};Version=3;";
 
-            // User credentials DB stored next to the exe by default (same as Introduction/App first-run checks)
             if (string.IsNullOrWhiteSpace(userCredentialsPath))
                 userCredentialsPath = "UserCredentials.db";
 
@@ -128,13 +125,12 @@ namespace clinicApp.data
                 "Patient Not Found",
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
-                return -1; // Indicates no patient found
+                return -1;
             }
         }
 
         public void AddPatient(string firstName, string lastName, string phone, string email, string? note = null)
         {
-            // Check for existing patient with same first + last name
             string checkQuery = "SELECT COUNT(*) FROM Patients WHERE first_name = @FirstName AND last_name = @LastName";
             using (var conn = new SQLiteConnection(_clinicConnectionString))
             using (var checkCmd = new SQLiteCommand(checkQuery, conn))
@@ -150,7 +146,6 @@ namespace clinicApp.data
                 conn.Close();
             }
 
-            // Insert new patient
             string insertQuery = @"
         INSERT INTO Patients (first_name, last_name, phone, email, note)
         VALUES (@FirstName, @LastName, @Phone, @Email, @Note)";
@@ -415,7 +410,6 @@ namespace clinicApp.data
                 }
             }
 
-            // 2) Fill remaining slots with denomination (DCI) matches, excluding already chosen names
             int remaining = 25 - list.Count;
             if (remaining <= 0)
                 return list;

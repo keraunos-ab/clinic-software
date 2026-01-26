@@ -27,7 +27,7 @@
         </Style>
 
         <Style x:Key="InputBoxStyle" TargetType="TextBox">
-            <Setter Property="Height" Value="44" />
+            <Setter Property="Height" Value="40" />
             <Setter Property="Padding" Value="0" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="Foreground" Value="{StaticResource Text0Brush}" />
@@ -134,104 +134,106 @@
         </Style>
     </Page.Resources>
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <ScrollViewer>
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Add New Appointment"
-                   Grid.Row="0" Grid.ColumnSpan="2"
-                   Foreground="{StaticResource Text0Brush}"
-                   FontSize="18"
-                   FontWeight="Bold"
-                   Margin="0"/>
+            <TextBlock Text="Add New Appointment"
+                       Grid.Row="0" Grid.ColumnSpan="2"
+                       Foreground="{StaticResource Text0Brush}"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Margin="0"/>
 
-        <!-- Patient Search (Prescription-like: TextBox + Popup) -->
-        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,10">
-            <TextBlock Text="Select Patient" Style="{StaticResource LabelStyle}" />
+            <!-- Patient Search (Prescription-like: TextBox + Popup) -->
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,10">
+                <TextBlock Text="Select Patient" Style="{StaticResource LabelStyle}" />
 
-            <Grid>
-                <TextBox x:Name="PatientSearchBox"
+                <Grid>
+                    <TextBox x:Name="PatientSearchBox"
+                             Style="{StaticResource InputBoxStyle}"
+                             ToolTip="Type to search patients"
+                             TextChanged="PatientSearchBox_TextChanged"
+                             PreviewKeyDown="PatientSearchBox_PreviewKeyDown"/>
+
+                    <Popup x:Name="PatientPopup"
+                           PlacementTarget="{Binding ElementName=PatientSearchBox}"
+                           Placement="Bottom"
+                           StaysOpen="False"
+                           AllowsTransparency="True">
+                        <Border Margin="0,8,0,0"
+                                Background="#FF141B25"
+                                BorderBrush="#22FFFFFF"
+                                BorderThickness="1"
+                                CornerRadius="10"
+                                Padding="6">
+                            <ListBox x:Name="PatientResultsList"
+                                     Width="380"
+                                     MaxHeight="220"
+                                     FontSize="12"
+                                     DisplayMemberPath="FullName"
+                                     MouseLeftButtonUp="PatientResultsList_MouseLeftButtonUp"/>
+                        </Border>
+                    </Popup>
+                </Grid>
+            </StackPanel>
+
+            <!-- Patient Last Name -->
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,10">
+                <TextBlock Text="Patient Last Name" Style="{StaticResource LabelStyle}" />
+                <TextBox x:Name="PatientLastName"
                          Style="{StaticResource InputBoxStyle}"
-                         ToolTip="Type to search patients"
-                         TextChanged="PatientSearchBox_TextChanged"
-                         PreviewKeyDown="PatientSearchBox_PreviewKeyDown"/>
+                         ToolTip="Patient last name will auto-fill"
+                         IsReadOnly="True"/>
+            </StackPanel>
 
-                <Popup x:Name="PatientPopup"
-                       PlacementTarget="{Binding ElementName=PatientSearchBox}"
-                       Placement="Bottom"
-                       StaysOpen="False"
-                       AllowsTransparency="True">
-                    <Border Margin="0,8,0,0"
-                            Background="#FF141B25"
-                            BorderBrush="#22FFFFFF"
-                            BorderThickness="1"
-                            CornerRadius="10"
-                            Padding="6">
-                        <ListBox x:Name="PatientResultsList"
-                                 Width="380"
-                                 MaxHeight="220"
-                                 FontSize="12"
-                                 DisplayMemberPath="FullName"
-                                 MouseLeftButtonUp="PatientResultsList_MouseLeftButtonUp"/>
-                    </Border>
-                </Popup>
-            </Grid>
-        </StackPanel>
+            <!-- Date -->
+            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,10,10">
+                <TextBlock Text="Date" Style="{StaticResource LabelStyle}" />
+                <DatePicker x:Name="AppointmentDate"
+                            Height="44"
+                            ToolTip="Select appointment date"/>
+            </StackPanel>
 
-        <!-- Patient Last Name -->
-        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,10">
-            <TextBlock Text="Patient Last Name" Style="{StaticResource LabelStyle}" />
-            <TextBox x:Name="PatientLastName"
-                     Style="{StaticResource InputBoxStyle}"
-                     ToolTip="Patient last name will auto-fill"
-                     IsReadOnly="True"/>
-        </StackPanel>
+            <!-- Time -->
+            <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,0,0,10">
+                <TextBlock Text="Time" Style="{StaticResource LabelStyle}" />
+                <TextBox x:Name="AppointmentTime"
+                         Style="{StaticResource InputBoxStyle}"
+                         ToolTip="Enter time (e.g. 14:30)"/>
+            </StackPanel>
 
-        <!-- Date -->
-        <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,10,10">
-            <TextBlock Text="Date" Style="{StaticResource LabelStyle}" />
-            <DatePicker x:Name="AppointmentDate"
-                        Height="44"
-                        ToolTip="Select appointment date"/>
-        </StackPanel>
+            <!-- Note / Description -->
+            <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,0,0,10">
+                <TextBlock Text="Note" Style="{StaticResource LabelStyle}" />
+                <TextBox x:Name="Description"
+                         Style="{StaticResource InputBoxStyle}"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto"
+                         Height="50"
+                         ToolTip="Optional note about the appointment"/>
+            </StackPanel>
 
-        <!-- Time -->
-        <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,0,0,10">
-            <TextBlock Text="Time" Style="{StaticResource LabelStyle}" />
-            <TextBox x:Name="AppointmentTime"
-                     Style="{StaticResource InputBoxStyle}"
-                     ToolTip="Enter time (e.g. 14:30)"/>
-        </StackPanel>
-
-        <!-- Note / Description -->
-        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,0,0,10">
-            <TextBlock Text="Note" Style="{StaticResource LabelStyle}" />
-            <TextBox x:Name="Description"
-                     Style="{StaticResource InputBoxStyle}"
-                     AcceptsReturn="True"
-                     TextWrapping="Wrap"
-                     VerticalScrollBarVisibility="Auto"
-                     Height="50"
-                     ToolTip="Optional note about the appointment"/>
-        </StackPanel>
-
-        <Button Grid.Row="5" Grid.ColumnSpan="2"
-                Content="Save"
-                Background="#0077FF"
-                Foreground="White"
-                FontWeight="Bold"
-                Height="40"
-                Click="SaveApointment_Click"/>
-    </Grid>
+            <Button Grid.Row="5" Grid.ColumnSpan="2"
+                    Content="Save"
+                    Background="#0077FF"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    Height="40"
+                    Click="SaveApointment_Click"/>
+        </Grid>
+    </ScrollViewer>
 </Page>

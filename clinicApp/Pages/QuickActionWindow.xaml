@@ -68,7 +68,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Border CornerRadius="18" BorderThickness="1" BorderBrush="#1AFFFFFF">
+    <Border CornerRadius="18" BorderThickness="1" BorderBrush="#1AFFFFFF" >
         <Border.Background>
             <RadialGradientBrush GradientOrigin="0.5,0.18" Center="0.5,0.18" RadiusX="1.1" RadiusY="0.95">
                 <GradientStop Color="#FF121826" Offset="0"/>

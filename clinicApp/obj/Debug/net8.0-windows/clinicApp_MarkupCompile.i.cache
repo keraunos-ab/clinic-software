@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\m\Source\Repos\clinic-software\clinicApp\obj\Debug\net8.0-windows\
+C:\Users\User\source\repos\clinic-software\clinicApp\obj\Debug\net8.0-windows\
 clinicApp
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-C:\Users\m\Source\Repos\clinic-software\clinicApp\App.xaml
+C:\Users\User\source\repos\clinic-software\clinicApp\App.xaml
 15-1678706552
 1-790912184
 271768135855
-203-1252264480
+2031910634008
 Pages\AddApointmentPage.xaml;Pages\AddPatientPage.xaml;Pages\AddSessionPage.xaml;Pages\AppointmentsPage.xaml;Pages\HomePage.xaml;Pages\Introduction.xaml;Pages\IntroductionWindow.xaml;Pages\MainWindow.xaml;Pages\PatientCard.xaml;Pages\PatientHistoryWindow.xaml;Pages\PatientsPage.xaml;Pages\PrescriptionPage.xaml;Pages\QuickActionWindow.xaml;Pages\Settings.xaml;Styles\AppTheme.xaml;
 
-True
+False
 

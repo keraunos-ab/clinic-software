@@ -7,11 +7,12 @@ namespace clinicApp
         public QuickActionWindow()
         {
             InitializeComponent();
-
-            // Load each tab’s content (separate pages for clarity)
             PatientFrame.Navigate(new AddPatientPage());
             AppointmentFrame.Navigate(new AddApointmentPage());
             SessionFrame.Navigate(new AddSessionPage());
+
+            this.Width = SystemParameters.PrimaryScreenWidth * 0.5;
+            this.Height = SystemParameters.PrimaryScreenHeight * 0.8;
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
