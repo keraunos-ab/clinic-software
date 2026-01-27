@@ -6,34 +6,24 @@
       Background="Transparent">
 
     <Page.Resources>
-        <!-- Colors (from Introduction.xaml) -->
-        <Color x:Key="CardBg">#FF131A24</Color>
-        <Color x:Key="CardStroke">#22FFFFFF</Color>
-        <Color x:Key="Hint">#FF9AA4B2</Color>
-        <Color x:Key="Text0">#FFF2F4F8</Color>
-        <Color x:Key="Text1">#FFB8C0CC</Color>
+        <!-- Brushes for colors not defined as brushes in global theme -->
+        <SolidColorBrush x:Key="Blue0Brush" Color="{DynamicResource Blue0}" />
 
-        <SolidColorBrush x:Key="Text0Brush" Color="{StaticResource Text0}" />
-        <SolidColorBrush x:Key="Text1Brush" Color="{StaticResource Text1}" />
-        <SolidColorBrush x:Key="HintBrush" Color="{StaticResource Hint}" />
-        <SolidColorBrush x:Key="CardBgBrush" Color="{StaticResource CardBg}" />
-        <SolidColorBrush x:Key="CardStrokeBrush" Color="{StaticResource CardStroke}" />
-
-        <!-- Common styles (from Introduction.xaml) -->
+        <!-- Common styles -->
         <Style x:Key="LabelStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource Text1Brush}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text1Brush}" />
             <Setter Property="FontSize" Value="13" />
             <Setter Property="Margin" Value="0,0,0,6" />
         </Style>
 
         <Style x:Key="InputBoxStyle" TargetType="TextBox">
             <Setter Property="Height" Value="40" />
-            <Setter Property="Padding" Value="0" />
+            <Setter Property="Padding" Value="10,0" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="{StaticResource Text0Brush}" />
-            <Setter Property="CaretBrush" Value="{StaticResource Text0Brush}" />
-            <Setter Property="Background" Value="{StaticResource CardBgBrush}" />
-            <Setter Property="BorderBrush" Value="{StaticResource CardStrokeBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="CaretBrush" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="Background" Value="{DynamicResource CardContainerBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Template">
@@ -50,10 +40,10 @@
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#553D8BFF" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Blue0Brush}" />
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#33FFFFFF" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource CardStrokeBrush}" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Opacity" Value="0.6" />
@@ -68,9 +58,9 @@
             <Setter Property="Height" Value="44" />
             <Setter Property="Padding" Value="12,0,12,0" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="{StaticResource Text0Brush}" />
-            <Setter Property="Background" Value="{StaticResource CardBgBrush}" />
-            <Setter Property="BorderBrush" Value="{StaticResource CardStrokeBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="Background" Value="{DynamicResource CardContainerBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Template">
@@ -96,7 +86,7 @@
                                 <Path Grid.Column="1"
                                       VerticalAlignment="Center"
                                       HorizontalAlignment="Center"
-                                      Fill="{StaticResource HintBrush}"
+                                      Fill="{DynamicResource HintBrush}"
                                       Data="M 0 0 L 4 4 L 8 0 Z" />
 
                                 <Popup x:Name="PART_Popup"
@@ -106,8 +96,8 @@
                                        Focusable="False"
                                        PopupAnimation="Fade">
                                     <Border Margin="0,8,0,0"
-                                            Background="#FF141B25"
-                                            BorderBrush="#22FFFFFF"
+                                            Background="{DynamicResource CardBgBrush}"
+                                            BorderBrush="{DynamicResource ChromeBorderBrush}"
                                             BorderThickness="1"
                                             CornerRadius="10">
                                         <ScrollViewer Margin="6" CanContentScroll="True">
@@ -119,13 +109,57 @@
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#553D8BFF" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Blue0Brush}" />
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#33FFFFFF" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource CardStrokeBrush}" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Opacity" Value="0.6" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border x:Name="Bd" CornerRadius="10">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="{DynamicResource Blue0}" Offset="0" />
+                                        <GradientStop Color="{DynamicResource Blue1}" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="18"
+                                                      ShadowDepth="0"
+                                                      Opacity="0.35"
+                                                      Color="#FF1A4ED8" />
+                                </Border.Effect>
+                            </Border>
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.95" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.85" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.55" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -152,7 +186,7 @@
 
             <TextBlock Text="Add New Appointment"
                        Grid.Row="0" Grid.ColumnSpan="2"
-                       Foreground="{StaticResource Text0Brush}"
+                       Foreground="{DynamicResource Text0Brush}"
                        FontSize="18"
                        FontWeight="Bold"
                        Margin="0"/>
@@ -174,8 +208,8 @@
                            StaysOpen="False"
                            AllowsTransparency="True">
                         <Border Margin="0,8,0,0"
-                                Background="#FF141B25"
-                                BorderBrush="#22FFFFFF"
+                                Background="{DynamicResource CardBgBrush}"
+                                BorderBrush="{DynamicResource ChromeBorderBrush}"
                                 BorderThickness="1"
                                 CornerRadius="10"
                                 Padding="6">
@@ -183,6 +217,9 @@
                                      Width="380"
                                      MaxHeight="220"
                                      FontSize="12"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Foreground="{DynamicResource Text0Brush}"
                                      DisplayMemberPath="FullName"
                                      MouseLeftButtonUp="PatientResultsList_MouseLeftButtonUp"/>
                         </Border>
@@ -203,7 +240,7 @@
             <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,10,10">
                 <TextBlock Text="Date" Style="{StaticResource LabelStyle}" />
                 <DatePicker x:Name="AppointmentDate"
-                            Height="44"
+                            Height="40"
                             ToolTip="Select appointment date"/>
             </StackPanel>
 
@@ -223,16 +260,13 @@
                          AcceptsReturn="True"
                          TextWrapping="Wrap"
                          VerticalScrollBarVisibility="Auto"
-                         Height="50"
+                         Height="130"
                          ToolTip="Optional note about the appointment"/>
             </StackPanel>
 
             <Button Grid.Row="5" Grid.ColumnSpan="2"
                     Content="Save"
-                    Background="#0077FF"
-                    Foreground="White"
-                    FontWeight="Bold"
-                    Height="40"
+                    Style="{StaticResource PrimaryButtonStyle}"
                     Click="SaveApointment_Click"/>
         </Grid>
     </ScrollViewer>

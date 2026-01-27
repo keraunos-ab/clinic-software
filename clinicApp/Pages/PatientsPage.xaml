@@ -7,22 +7,14 @@
       FontFamily="Segoe UI">
 
     <Page.Resources>
-        <Color x:Key="Hint">#FF9AA4B2</Color>
-        <Color x:Key="Text0">#FFF2F4F8</Color>
-        <Color x:Key="Text1">#FFB8C0CC</Color>
-
-        <SolidColorBrush x:Key="Text0Brush" Color="{StaticResource Text0}" />
-        <SolidColorBrush x:Key="Text1Brush" Color="{StaticResource Text1}" />
-        <SolidColorBrush x:Key="HintBrush" Color="{StaticResource Hint}" />
-
         <Style x:Key="SearchBoxStyle" TargetType="TextBox">
             <Setter Property="Height" Value="44" />
             <Setter Property="Padding" Value="14,0,14,0" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="{StaticResource Text0Brush}" />
-            <Setter Property="CaretBrush" Value="{StaticResource Text0Brush}" />
-            <Setter Property="Background" Value="#0F111827" />
-            <Setter Property="BorderBrush" Value="#1AFFFFFF" />
+            <Setter Property="Foreground" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="CaretBrush" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="Background" Value="{DynamicResource CardContainerBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Template">
@@ -39,10 +31,10 @@
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#553D8BFF" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource NavActiveBorderBrush}" />
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#2AFFFFFF" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Text0Brush}" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Opacity" Value="0.6" />
@@ -73,7 +65,7 @@
             <TextBlock Text="Patients"
                        FontSize="22"
                        FontWeight="SemiBold"
-                       Foreground="{StaticResource Text0Brush}"
+                       Foreground="{DynamicResource Text0Brush}"
                        VerticalAlignment="Center" />
 
             <TextBox Grid.Column="1"
@@ -83,7 +75,7 @@
         </Grid>
 
         <TextBlock Grid.Row="2"
-                   Foreground="{StaticResource HintBrush}"
+                   Foreground="{DynamicResource HintBrush}"
                    FontSize="12"
                    Text="Search by first or last name." />
 

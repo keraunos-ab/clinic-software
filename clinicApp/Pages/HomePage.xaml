@@ -3,49 +3,26 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        FontFamily="Segoe UI"
+      FontFamily="Segoe UI"
       xmlns:local="clr-namespace:clinicApp"
       mc:Ignorable="d"
       d:DesignHeight="1080" d:DesignWidth="1920"
       Title="Home">
 
-    <Page.Resources>
-        <!-- Match MainWindow palette -->
-        <Color x:Key="Hint">#FF9AA4B2</Color>
-        <Color x:Key="Text0">#FFF2F4F8</Color>
-        <Color x:Key="Text1">#FFB8C0CC</Color>
-
-        <SolidColorBrush x:Key="Text0Brush" Color="{StaticResource Text0}" />
-        <SolidColorBrush x:Key="Text1Brush" Color="{StaticResource Text1}" />
-        <SolidColorBrush x:Key="HintBrush" Color="{StaticResource Hint}" />
-
-        <Style x:Key="CardStyle" TargetType="Border">
-            <Setter Property="CornerRadius" Value="18" />
-            <Setter Property="BorderBrush" Value="#1FFFFFFF" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="34" />
-            <Setter Property="Background">
-                <Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#10141C26" Offset="0" />
-                        <GradientStop Color="#0B0F1622" Offset="1" />
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect BlurRadius="30" ShadowDepth="0" Opacity="0.45" Color="#FF000000" />
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Page.Resources>
-
     <Grid Background="Transparent" Margin="28">
-        <Border Style="{StaticResource CardStyle}"
-                Width="910"
+        <Border Width="910"
                 Height="540"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center">
+                VerticalAlignment="Center"
+                CornerRadius="18"
+                BorderThickness="1"
+                Padding="34"
+                Background="{DynamicResource HomePageCardBackgroundBrush}"
+                BorderBrush="{DynamicResource HomePageCardBorderBrush}">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30" ShadowDepth="0" Opacity="0.45" Color="#FF000000" />
+            </Border.Effect>
+            
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -57,7 +34,7 @@
                 <TextBlock Grid.Row="0"
                            x:Name="DateTimeText"
                            HorizontalAlignment="Right"
-                           Foreground="{StaticResource HintBrush}"
+                           Foreground="{DynamicResource HintBrush}"
                            FontSize="18"
                            FontWeight="SemiBold"
                            Text="—" />
@@ -67,13 +44,13 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
                     <TextBlock Text="Welcome back"
-                               Foreground="{StaticResource Text0Brush}"
+                               Foreground="{DynamicResource Text0Brush}"
                                FontSize="44"
                                FontWeight="SemiBold"
                                TextAlignment="Center" />
                     <TextBlock x:Name="DoctorNameText"
                                Text="Dr —"
-                               Foreground="{StaticResource Text0Brush}"
+                               Foreground="{DynamicResource Text0Brush}"
                                FontSize="44"
                                FontWeight="SemiBold"
                                TextAlignment="Center"
@@ -83,10 +60,10 @@
                 <!-- Bottom-left appointments -->
                 <TextBlock Grid.Row="2"
                            HorizontalAlignment="Left"
-                           Foreground="{StaticResource Text1Brush}"
+                           Foreground="{DynamicResource Text1Brush}"
                            FontSize="22">
                     <Run Text="You have " />
-                    <Run x:Name="TodaysCountText" Text="0" FontWeight="SemiBold" Foreground="{StaticResource Text0Brush}" />
+                    <Run x:Name="TodaysCountText" Text="0" FontWeight="SemiBold" Foreground="{DynamicResource Text0Brush}" />
                     <Run Text=" appointment(s) today." />
                 </TextBlock>
             </Grid>

@@ -11,36 +11,9 @@
       Loaded="Page_Loaded">
 
     <Page.Resources>
-        <!-- Dark palette (default) -->
-        <Color x:Key="DarkBg0">#FF0B0F14</Color>
-        <Color x:Key="DarkCardBg">#FF131A24</Color>
-        <Color x:Key="DarkCardStroke">#22FFFFFF</Color>
-        <Color x:Key="DarkHint">#FF9AA4B2</Color>
-        <Color x:Key="DarkText0">#FFF2F4F8</Color>
-        <Color x:Key="DarkText1">#FFB8C0CC</Color>
-
-        <!-- Active brushes -->
-        <SolidColorBrush x:Key="Text0Brush" Color="{StaticResource DarkText0}" />
-        <SolidColorBrush x:Key="Text1Brush" Color="{StaticResource DarkText1}" />
-        <SolidColorBrush x:Key="HintBrush" Color="{StaticResource DarkHint}" />
-        <SolidColorBrush x:Key="CardBgBrush" Color="{StaticResource DarkCardBg}" />
-        <SolidColorBrush x:Key="CardStrokeBrush" Color="{StaticResource DarkCardStroke}" />
-
-        <!-- Background brushes -->
-        <RadialGradientBrush x:Key="DarkBackgroundBrush" GradientOrigin="0.5,0.25" Center="0.5,0.25" RadiusX="1.0" RadiusY="0.9">
-            <GradientStop Color="#FF121826" Offset="0" />
-            <GradientStop Color="{StaticResource DarkBg0}" Offset="0.55" />
-            <GradientStop Color="#FF070A0F" Offset="1" />
-        </RadialGradientBrush>
-
-        <LinearGradientBrush x:Key="LightBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#FFFFFFFF" Offset="0" />
-            <GradientStop Color="#FFE5E9EF" Offset="1" />
-        </LinearGradientBrush>
-
         <!-- Common styles -->
         <Style x:Key="LabelStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource Text1Brush}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text1Brush}" />
             <Setter Property="FontSize" Value="13" />
             <Setter Property="Margin" Value="0,0,0,6" />
         </Style>
@@ -49,10 +22,10 @@
             <Setter Property="Height" Value="44" />
             <Setter Property="Padding" Value="14,0,14,0" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="{StaticResource Text0Brush}" />
-            <Setter Property="CaretBrush" Value="{StaticResource Text0Brush}" />
-            <Setter Property="Background" Value="{StaticResource CardBgBrush}" />
-            <Setter Property="BorderBrush" Value="{StaticResource CardStrokeBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="CaretBrush" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="Background" Value="{DynamicResource CardContainerBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Template">
@@ -69,10 +42,14 @@
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#553D8BFF" />
+                                <Setter TargetName="Bd" Property="BorderBrush">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="{DynamicResource Blue0}" />
+                                    </Setter.Value>
+                                </Setter>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#33FFFFFF" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource CardStrokeBrush}" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Opacity" Value="0.6" />
@@ -96,8 +73,8 @@
                             <Border x:Name="Bd" CornerRadius="12">
                                 <Border.Background>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#FF2F6FED" Offset="0" />
-                                        <GradientStop Color="#FF295FDD" Offset="1" />
+                                        <GradientStop Color="{DynamicResource Blue0}" Offset="0" />
+                                        <GradientStop Color="{DynamicResource Blue1}" Offset="1" />
                                     </LinearGradientBrush>
                                 </Border.Background>
                                 <Border.Effect>
@@ -127,13 +104,13 @@
         </Style>
     </Page.Resources>
 
-    <Grid x:Name="RootGrid" Background="{StaticResource DarkBackgroundBrush}" Margin="28">
+    <Grid x:Name="RootGrid" Background="{DynamicResource WindowBackgroundBrush}" Margin="28">
         <Border Width="900"
                 MaxWidth="900"
                 Padding="40"
                 CornerRadius="18"
-                Background="{StaticResource CardBgBrush}"
-                BorderBrush="{StaticResource CardStrokeBrush}"
+                Background="Transparent"
+                BorderBrush="{DynamicResource CardStrokeBrush}"
                 BorderThickness="1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
@@ -146,12 +123,12 @@
                     <!-- Header -->
                     <StackPanel Orientation="Vertical" Margin="0,0,0,18">
                         <TextBlock Text="Settings"
-                                   Foreground="{StaticResource Text0Brush}"
-                                   FontSize="30"
+                                   Foreground="{DynamicResource Text0Brush}"
+                                   FontSize="32"
                                    FontWeight="SemiBold" />
-                        <TextBlock Text="Update your credentials and choose between light or dark mode."
-                                   Foreground="{StaticResource HintBrush}"
-                                   FontSize="14"
+                        <TextBlock Text="Update your credentials"
+                                   Foreground="{DynamicResource HintBrush}"
+                                   FontSize="16"
                                    Margin="0,8,0,0" />
                     </StackPanel>
 
@@ -159,24 +136,24 @@
                     <Border Margin="0,0,0,18"
                             Padding="22"
                             CornerRadius="14"
-                            Background="{StaticResource CardBgBrush}"
-                            BorderBrush="{StaticResource CardStrokeBrush}"
-                            BorderThickness="1">
+                            Background="Transparent"
+                            BorderBrush="{DynamicResource CardStrokeBrush}"
+                            BorderThickness="0">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <Border Background="{StaticResource CardBgBrush}"
+                            <Border Background="{DynamicResource CardBgBrush}"
                                     Padding="6,0"
                                     HorizontalAlignment="Left"
                                     CornerRadius="6"
-                                    BorderBrush="{StaticResource CardStrokeBrush}"
+                                    BorderBrush="{DynamicResource CardStrokeBrush}"
                                     BorderThickness="1"
                                     Margin="6,-18,0,8">
                                 <TextBlock Text="User credentials"
-                                           Foreground="{StaticResource Text0Brush}"
+                                           Foreground="{DynamicResource Text0Brush}"
                                            FontSize="12"
                                            FontWeight="SemiBold" />
                             </Border>
@@ -218,14 +195,14 @@
                                 <Button Content="Save changes"
                                         Style="{StaticResource PrimaryButtonStyle}"
                                         Width="200"
-                                        Margin="0,6,0,0"
+                                        Margin="30"
                                         Click="SaveCredentialsButton_Click" />
                             </StackPanel>
                         </Grid>
                     </Border>
 
                     <TextBlock Text="Changes here override the information provided during introduction."
-                               Foreground="{StaticResource HintBrush}"
+                               Foreground="{DynamicResource HintBrush}"
                                FontSize="12"
                                Margin="0,12,0,0" />
                 </StackPanel>

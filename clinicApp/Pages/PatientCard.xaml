@@ -10,27 +10,18 @@
              Width="380">
 
     <UserControl.Resources>
-        <!-- Match MainWindow palette -->
-        <Color x:Key="Hint">#FF9AA4B2</Color>
-        <Color x:Key="Text0">#FFF2F4F8</Color>
-        <Color x:Key="Text1">#FFB8C0CC</Color>
-
-        <SolidColorBrush x:Key="Text0Brush" Color="{StaticResource Text0}" />
-        <SolidColorBrush x:Key="Text1Brush" Color="{StaticResource Text1}" />
-        <SolidColorBrush x:Key="HintBrush" Color="{StaticResource Hint}" />
-
         <Style x:Key="CardStyle" TargetType="Border">
             <Setter Property="CornerRadius" Value="18" />
-            <Setter Property="Background" Value="#0F111827" />
-            <Setter Property="BorderBrush" Value="#1AFFFFFF" />
+            <Setter Property="Background" Value="{DynamicResource CardContainerBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Padding" Value="18" />
         </Style>
 
         <Style x:Key="ChipStyle" TargetType="Border">
             <Setter Property="CornerRadius" Value="12" />
-            <Setter Property="Background" Value="#0FFFFFFF" />
-            <Setter Property="BorderBrush" Value="#1AFFFFFF" />
+            <Setter Property="Background" Value="{DynamicResource TopBarChipBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Padding" Value="12,10" />
         </Style>
@@ -39,9 +30,9 @@
             <Setter Property="Height" Value="34" />
             <Setter Property="Width" Value="60" />
             <Setter Property="Padding" Value="12,0" />
-            <Setter Property="Foreground" Value="{StaticResource Text0Brush}" />
-            <Setter Property="Background" Value="#0FFFFFFF" />
-            <Setter Property="BorderBrush" Value="#1AFFFFFF" />
+            <Setter Property="Foreground" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="Background" Value="{DynamicResource TopBarChipBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
@@ -56,11 +47,11 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#16FFFFFF" />
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#2AFFFFFF" />
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource HoverOverlayBrush}" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Text0Brush}" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#22FFFFFF" />
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource PressedOverlayBrush}" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="Bd" Property="Opacity" Value="0.6" />
@@ -90,7 +81,7 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel>
-                    <TextBlock Foreground="{StaticResource Text0Brush}"
+                    <TextBlock Foreground="{DynamicResource Text0Brush}"
                                FontSize="16"
                                FontWeight="SemiBold">
                         <Run Text="{Binding FirstName, RelativeSource={RelativeSource AncestorType=UserControl}}" />
@@ -117,10 +108,10 @@
                 <Border Grid.Column="0" Style="{StaticResource ChipStyle}">
                     <StackPanel>
                         <TextBlock Text="Phone"
-                                   Foreground="{StaticResource HintBrush}"
+                                   Foreground="{DynamicResource HintBrush}"
                                    FontSize="11" />
                         <TextBlock Text="{Binding Phone, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                   Foreground="{StaticResource Text1Brush}"
+                                   Foreground="{DynamicResource Text1Brush}"
                                    FontSize="13"
                                    Margin="0,4,0,0" />
                     </StackPanel>
@@ -129,10 +120,10 @@
                 <Border Grid.Column="2" Style="{StaticResource ChipStyle}">
                     <StackPanel>
                         <TextBlock Text="Email"
-                                   Foreground="{StaticResource HintBrush}"
+                                   Foreground="{DynamicResource HintBrush}"
                                    FontSize="11" />
                         <TextBlock Text="{Binding Email, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                   Foreground="{StaticResource Text1Brush}"
+                                   Foreground="{DynamicResource Text1Brush}"
                                    FontSize="13"
                                    Margin="0,4,0,0"
                                    TextTrimming="CharacterEllipsis" />
@@ -143,16 +134,16 @@
             <!-- Note -->
             <Border Grid.Row="4"
                     CornerRadius="14"
-                    Background="#0FFFFFFF"
-                    BorderBrush="#1AFFFFFF"
+                    Background="{DynamicResource TopBarChipBrush}"
+                    BorderBrush="{DynamicResource ChromeBorderBrush}"
                     BorderThickness="1"
                     Padding="12">
                 <StackPanel>
                     <TextBlock Text="Note"
-                               Foreground="{StaticResource HintBrush}"
+                               Foreground="{DynamicResource HintBrush}"
                                FontSize="11" />
                     <TextBlock Text="{Binding Note, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                               Foreground="{StaticResource Text1Brush}"
+                               Foreground="{DynamicResource Text1Brush}"
                                FontSize="13"
                                Margin="0,6,0,0"
                                TextWrapping="Wrap"

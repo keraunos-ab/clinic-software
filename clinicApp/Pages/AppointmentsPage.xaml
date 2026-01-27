@@ -11,18 +11,10 @@
       FontFamily="Segoe UI">
 
     <Page.Resources>
-        <Color x:Key="Hint">#FF9AA4B2</Color>
-        <Color x:Key="Text0">#FFF2F4F8</Color>
-        <Color x:Key="Text1">#FFB8C0CC</Color>
-
-        <SolidColorBrush x:Key="Text0Brush" Color="{StaticResource Text0}" />
-        <SolidColorBrush x:Key="Text1Brush" Color="{StaticResource Text1}" />
-        <SolidColorBrush x:Key="HintBrush" Color="{StaticResource Hint}" />
-
         <Style x:Key="CardStyle" TargetType="Border">
             <Setter Property="CornerRadius" Value="18" />
-            <Setter Property="Background" Value="#0F111827" />
-            <Setter Property="BorderBrush" Value="#1AFFFFFF" />
+            <Setter Property="Background" Value="{DynamicResource CardContainerBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Padding" Value="18" />
         </Style>
@@ -31,10 +23,10 @@
             <Setter Property="Height" Value="44" />
             <Setter Property="Padding" Value="14,0,14,0" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="{StaticResource Text0Brush}" />
-            <Setter Property="CaretBrush" Value="{StaticResource Text0Brush}" />
-            <Setter Property="Background" Value="#0F111827" />
-            <Setter Property="BorderBrush" Value="#1AFFFFFF" />
+            <Setter Property="Foreground" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="CaretBrush" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="Background" Value="{DynamicResource CardContainerBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Template">
@@ -51,10 +43,10 @@
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#553D8BFF" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Blue0}" />
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#2AFFFFFF" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource CardStrokeBrush}" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Opacity" Value="0.6" />
@@ -70,23 +62,23 @@
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-            <Setter Property="Foreground" Value="{StaticResource Text1Brush}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text1Brush}" />
         </Style>
 
         <Style x:Key="ModernGridViewHeaderStyle" TargetType="GridViewColumnHeader">
-            <Setter Property="Foreground" Value="{StaticResource HintBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource HintBrush}" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Padding" Value="10,10,10,10" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0,0,0,1" />
-            <Setter Property="BorderBrush" Value="#1AFFFFFF" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
         </Style>
 
         <Style x:Key="ModernListViewItemStyle" TargetType="ListViewItem">
             <Setter Property="Padding" Value="0" />
             <Setter Property="Margin" Value="0,0,0,8" />
-            <Setter Property="Background" Value="#0FFFFFFF" />
-            <Setter Property="BorderBrush" Value="#1AFFFFFF" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="Template">
@@ -104,12 +96,12 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#16FFFFFF" />
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#2AFFFFFF" />
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource HoverOverlayBrush}" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#141A4ED8" />
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#2A3D8BFF" />
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource NavActiveBgBrush}" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource NavActiveBorderBrush}" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="Bd" Property="Opacity" Value="0.6" />
@@ -121,7 +113,7 @@
         </Style>
 
         <Style x:Key="CellTextStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource Text1Brush}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text1Brush}" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
@@ -130,9 +122,9 @@
         <Style x:Key="DoneButtonStyle" TargetType="Button">
             <Setter Property="Height" Value="30" />
             <Setter Property="Padding" Value="12,0" />
-            <Setter Property="Foreground" Value="{StaticResource Text0Brush}" />
-            <Setter Property="Background" Value="#0FFFFFFF" />
-            <Setter Property="BorderBrush" Value="#1AFFFFFF" />
+            <Setter Property="Foreground" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="Background" Value="{DynamicResource TitleBarButtonBgBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TitleBarButtonBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
@@ -147,11 +139,11 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#16FFFFFF" />
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#2AFFFFFF" />
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource HoverOverlayBrush}" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#22FFFFFF" />
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource PressedOverlayBrush}" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="Bd" Property="Opacity" Value="0.6" />
@@ -180,10 +172,10 @@
                 <TextBlock Text="Appointments"
                            FontSize="22"
                            FontWeight="SemiBold"
-                           Foreground="{StaticResource Text0Brush}" />
+                           Foreground="{DynamicResource Text0Brush}" />
                 <TextBlock Text="Closest upcoming appointments appear first."
                            FontSize="12"
-                           Foreground="{StaticResource HintBrush}"
+                           Foreground="{DynamicResource HintBrush}"
                            Margin="0,6,0,0" />
             </StackPanel>
         </Grid>
@@ -227,7 +219,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="" Width="90">
+                        <GridViewColumn Header="" Width="100">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Content="Done"
@@ -246,7 +238,7 @@
                    VerticalAlignment="Center"
                    HorizontalAlignment="Right"
                    Margin="0,0,12,0"
-                   Foreground="{StaticResource HintBrush}"
+                   Foreground="{DynamicResource HintBrush}"
                    FontSize="13"
                    FontWeight="SemiBold"
                    Text="—" />

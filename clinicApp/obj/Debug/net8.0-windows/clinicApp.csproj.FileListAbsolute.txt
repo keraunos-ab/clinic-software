@@ -302,3 +302,5 @@ C:\Users\m\Source\Repos\clinic-software\clinicApp\obj\Debug\net8.0-windows\refin
 C:\Users\m\Source\Repos\clinic-software\clinicApp\obj\Debug\net8.0-windows\clinicApp.pdb
 C:\Users\m\Source\Repos\clinic-software\clinicApp\obj\Debug\net8.0-windows\clinicApp.genruntimeconfig.cache
 C:\Users\m\Source\Repos\clinic-software\clinicApp\obj\Debug\net8.0-windows\ref\clinicApp.dll
+C:\Users\User\source\repos\clinic-software\clinicApp\obj\Debug\net8.0-windows\Themes\Dark.baml
+C:\Users\User\source\repos\clinic-software\clinicApp\obj\Debug\net8.0-windows\Themes\Light.baml

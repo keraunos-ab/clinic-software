@@ -10,11 +10,7 @@
 
     <Window.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/clinicApp;component/Styles/AppTheme.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-
-            <Style x:Key="QuickCardStyle" TargetType="Border" BasedOn="{StaticResource CardStyle}">
+            <Style x:Key="QuickCardStyle" TargetType="Border">
                 <Setter Property="Padding" Value="16"/>
             </Style>
 
@@ -25,7 +21,7 @@
             </Style>
 
             <Style x:Key="QuickTabItemStyle" TargetType="TabItem">
-                <Setter Property="Foreground" Value="{StaticResource Text1Brush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Text1Brush}"/>
                 <Setter Property="FontWeight" Value="SemiBold"/>
                 <Setter Property="Margin" Value="0"/>
                 <Setter Property="Template">
@@ -34,8 +30,8 @@
                             <Grid SnapsToDevicePixels="True">
                                 <Border x:Name="Bd"
                                         Padding="12,7"
-                                        Background="#0FFFFFFF"
-                                        BorderBrush="#1FFFFFFF"
+                                        Background="{DynamicResource TopBarChipBrush}"
+                                        BorderBrush="{DynamicResource TitleBarButtonBorderBrush}"
                                         BorderThickness="1"
                                         CornerRadius="10">
                                     <ContentPresenter
@@ -49,13 +45,13 @@
 
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter TargetName="Bd" Property="Background" Value="#141A4ED8"/>
-                                    <Setter TargetName="Bd" Property="BorderBrush" Value="#2A3D8BFF"/>
-                                    <Setter Property="Foreground" Value="{StaticResource Text0Brush}"/>
+                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource NavActiveBgBrush}"/>
+                                    <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource NavActiveBorderBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource Text0Brush}"/>
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="Bd" Property="Background" Value="#16FFFFFF"/>
-                                    <Setter TargetName="Bd" Property="BorderBrush" Value="#2AFFFFFF"/>
+                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource HoverOverlayBrush}"/>
+                                    <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource CardStrokeBrush}"/>
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="Opacity" Value="0.55"/>
@@ -68,15 +64,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Border CornerRadius="18" BorderThickness="1" BorderBrush="#1AFFFFFF" >
-        <Border.Background>
-            <RadialGradientBrush GradientOrigin="0.5,0.18" Center="0.5,0.18" RadiusX="1.1" RadiusY="0.95">
-                <GradientStop Color="#FF121826" Offset="0"/>
-                <GradientStop Color="#FF0B0F14" Offset="0.55"/>
-                <GradientStop Color="#FF070A0F" Offset="1"/>
-            </RadialGradientBrush>
-        </Border.Background>
-
+    <Border CornerRadius="18" BorderThickness="1" BorderBrush="{DynamicResource ChromeBorderBrush}" Background="{DynamicResource WindowBackgroundBrush}">
         <Border.Effect>
             <DropShadowEffect BlurRadius="35" ShadowDepth="0" Opacity="0.55" Color="#FF000000"/>
         </Border.Effect>
@@ -94,7 +82,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Text="Quick Add"
-                           Foreground="{StaticResource Text0Brush}"
+                           Foreground="{DynamicResource Text0Brush}"
                            FontSize="20"
                            FontWeight="SemiBold"
                            VerticalAlignment="Center"/>
@@ -102,9 +90,9 @@
                 <Button Grid.Column="1"
                         Content="✕"
                         Width="34" Height="34"
-                        Background="#0FFFFFFF"
-                        Foreground="{StaticResource Text0Brush}"
-                        BorderBrush="#1FFFFFFF"
+                        Background="{DynamicResource TitleBarButtonBgBrush}"
+                        Foreground="{DynamicResource Text0Brush}"
+                        BorderBrush="{DynamicResource TitleBarButtonBorderBrush}"
                         BorderThickness="1"
                         Click="Close_Click"/>
             </Grid>

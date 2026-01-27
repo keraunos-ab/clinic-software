@@ -132,7 +132,9 @@
                     <ScrollViewer x:Name="MedicineScroll"
                                   Height="601"
                                   Background="#40FFFFFF"
-                                  VerticalScrollBarVisibility="Auto">
+                                  VerticalScrollBarVisibility="Disabled"
+                                  CanContentScroll="False">
+                        
                         <StackPanel>
                             <Grid Margin="0,0,0,10">
                                 <Grid.ColumnDefinitions>

@@ -18,6 +18,7 @@ namespace clinicApp
         private const string CredentialsTableName = "UserCredentials";
 
         private readonly DispatcherTimer _topBarClockTimer = new() { Interval = TimeSpan.FromSeconds(1) };
+        private bool _isDarkTheme = false;
 
         private readonly List<System.Type> _pageCycleOrder =
         [
@@ -175,6 +176,19 @@ namespace clinicApp
             => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
 
         private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
+
+        private void ThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            _isDarkTheme = !_isDarkTheme;
+            Application.Current.Resources.MergedDictionaries.Clear();
+            var themeUri = new Uri(_isDarkTheme ? "Themes/Dark.xaml" : "Themes/Light.xaml", UriKind.Relative);
+            Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = themeUri });
+
+            if (sender is Button btn)
+            {
+                btn.Content = _isDarkTheme ? "☀" : "🌙";
+            }
+        }
 
         private void SetActiveNav(Button active)
         {
