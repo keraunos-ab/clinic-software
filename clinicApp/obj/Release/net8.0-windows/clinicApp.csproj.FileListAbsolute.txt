@@ -148,6 +148,8 @@ C:\Users\User\source\repos\clinic-software\clinicApp\obj\Release\net8.0-windows\
 C:\Users\User\source\repos\clinic-software\clinicApp\obj\Release\net8.0-windows\clinicApp.pdb
 C:\Users\User\source\repos\clinic-software\clinicApp\obj\Release\net8.0-windows\clinicApp.genruntimeconfig.cache
 C:\Users\User\source\repos\clinic-software\clinicApp\obj\Release\net8.0-windows\ref\clinicApp.dll
+C:\Users\User\source\repos\clinic-software\clinicApp\obj\Release\net8.0-windows\Themes\Dark.baml
+C:\Users\User\source\repos\clinic-software\clinicApp\obj\Release\net8.0-windows\Themes\Light.baml
 C:\Users\User\source\repos\clinic-software\clinicApp\bin\Release\net8.0-windows\clinicApp.dll.manifest
 C:\Users\User\source\repos\clinic-software\clinicApp\bin\Release\net8.0-windows\clinicApp.application
 C:\Users\User\source\repos\clinic-software\clinicApp\obj\Release\net8.0-windows\clinicApp.dll.manifest

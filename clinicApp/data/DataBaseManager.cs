@@ -195,6 +195,30 @@ namespace clinicApp.data
             cmd.ExecuteNonQuery();
         }
 
+        public int GetTodaysSessionCount()
+        {
+            List<Session> sessions = new();
+            string query = "SELECT * FROM visits WHERE date = @Today";
+            using var conn = new SQLiteConnection(_clinicConnectionString);
+            using var cmd = new SQLiteCommand(query, conn);
+            string today = DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd");
+            cmd.Parameters.AddWithValue("@Today", today);
+            conn.Open();
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                sessions.Add(new Session
+                {
+                    Id = Convert.ToInt32(reader["id"]),
+                    PatientId = Convert.ToInt32(reader["patient_id"]),
+                    Date = DateOnly.Parse(reader["date"].ToString()!),
+                    Time = TimeOnly.Parse(reader["time"].ToString()!),
+                    Description = reader["description"]?.ToString()
+                });
+            }
+            return sessions.Count;
+        }
+
         public List<Session> GetSessionsByPatient(int patientId)
         {
             List<Session> sessions = new();
@@ -309,7 +333,7 @@ namespace clinicApp.data
             cmd.ExecuteNonQuery();
         }
 
-        public void GetPatientByID(int patientId)
+        public Patient GetPatientByID(int patientId)
         {
             string query = "SELECT * FROM Patients WHERE id = @PatientId";
             using var conn = new SQLiteConnection(_clinicConnectionString);
@@ -319,11 +343,20 @@ namespace clinicApp.data
             using var reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-                Console.WriteLine($"ID: {reader["id"]}, Name: {reader["first_name"]} {reader["last_name"]}, Phone: {reader["phone"]}, Email: {reader["email"]}, Note: {reader["note"]}");
+                return new Patient
+                {
+                    Id = Convert.ToInt32(reader["id"]),
+                    FirstName = reader["first_name"]?.ToString() ?? "",
+                    LastName = reader["last_name"]?.ToString() ?? "",
+                    Phone = reader["phone"]?.ToString(),
+                    Email = reader["email"]?.ToString(),
+                    Note = reader["note"]?.ToString()
+                };
             }
             else
             {
                 Console.WriteLine("Patient not found.");
+                return null;
             }
         }
         public void AddSession(int patientId, DateTime date, TimeSpan time, string? description = null)

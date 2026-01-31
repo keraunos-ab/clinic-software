@@ -83,9 +83,9 @@
                 <StackPanel>
                     <TextBlock Foreground="{DynamicResource Text0Brush}"
                                FontSize="16"
-                               FontWeight="SemiBold">
+                               FontWeight="SemiBold" Width="Auto"
+                               >
                         <Run Text="{Binding FirstName, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                        <Run Text=" " />
                         <Run Text="{Binding LastName, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                     </TextBlock>
 
@@ -95,38 +95,52 @@
                         Content="History"
                         Style="{StaticResource InlineButtonStyle}"
                         Click="HistoryButton_Click" />
+                
+                <Button x:Name="saveEditButton"
+                        Content="Edit"
+                        Style="{StaticResource InlineButtonStyle}"
+                        Click="saveEditButton_Click" Margin="212,0,10,0" />
             </Grid>
 
             <!-- Contact chips -->
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
-                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" Style="{StaticResource ChipStyle}">
+                <Border Width="110" Grid.Column="0" HorizontalAlignment="Left" Style="{StaticResource ChipStyle}">
                     <StackPanel>
                         <TextBlock Text="Phone"
                                    Foreground="{DynamicResource HintBrush}"
                                    FontSize="11" />
-                        <TextBlock Text="{Binding Phone, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                   Foreground="{DynamicResource Text1Brush}"
-                                   FontSize="13"
-                                   Margin="0,4,0,0" />
+                        <TextBox x:Name="PhoneTextBox"
+                                 Text="{Binding Phone, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                 Foreground="{DynamicResource Text1Brush}"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 FontSize="13"
+                                 Margin="0,4,0,0"
+                                 IsReadOnly="True"
+                                 IsReadOnlyCaretVisible="True" />
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="2" Style="{StaticResource ChipStyle}">
+                <Border Width="228" HorizontalAlignment="Left" Grid.Column="1" Style="{StaticResource ChipStyle}" Grid.ColumnSpan="2">
                     <StackPanel>
                         <TextBlock Text="Email"
                                    Foreground="{DynamicResource HintBrush}"
                                    FontSize="11" />
-                        <TextBlock Text="{Binding Email, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                   Foreground="{DynamicResource Text1Brush}"
-                                   FontSize="13"
-                                   Margin="0,4,0,0"
-                                   TextTrimming="CharacterEllipsis" />
+                        <TextBox x:Name="EmailTextBox"
+                                 Text="{Binding Email, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                 Foreground="{DynamicResource Text1Brush}"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 FontSize="13"
+                                 Margin="0,4,0,0"
+                                 IsReadOnly="True"
+                                 IsReadOnlyCaretVisible="True" />
                     </StackPanel>
                 </Border>
             </Grid>
@@ -142,13 +156,17 @@
                     <TextBlock Text="Note"
                                Foreground="{DynamicResource HintBrush}"
                                FontSize="11" />
-                    <TextBlock Text="{Binding Note, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                               Foreground="{DynamicResource Text1Brush}"
-                               FontSize="13"
-                               Margin="0,6,0,0"
-                               TextWrapping="Wrap"
-                               MaxHeight="84"
-                               TextTrimming="WordEllipsis" />
+                    <TextBox x:Name="NoteTextBox"
+                             Text="{Binding Note, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                             Foreground="{DynamicResource Text1Brush}"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             FontSize="13"
+                             Margin="0,6,0,0"
+                             TextWrapping="Wrap"
+                             MaxHeight="84"
+                             IsReadOnly="True"
+                             IsReadOnlyCaretVisible="True" />
                 </StackPanel>
             </Border>
         </Grid>

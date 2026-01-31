@@ -181,13 +181,13 @@
         </Grid>
 
         <Border Grid.Row="2" Style="{StaticResource CardStyle}">
-            <ListView x:Name="AppointmentsList"
+            <ListView x:Name="AppointmentsList" Width="Auto" SizeChanged="AppointmentsList_SizeChanged"
                       Style="{StaticResource ModernListViewStyle}"
                       ItemContainerStyle="{StaticResource ModernListViewItemStyle}">
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource ModernGridViewHeaderStyle}">
 
-                        <GridViewColumn Header="Patient" Width="180">
+                        <GridViewColumn Header="Patient" x:Name="PatientColomn">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding PatientName}" Style="{StaticResource CellTextStyle}" />
@@ -195,7 +195,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Date" Width="110">
+                        <GridViewColumn Header="Date" x:Name="DateColomn">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Date}" Style="{StaticResource CellTextStyle}" />
@@ -203,7 +203,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Time" Width="70">
+                        <GridViewColumn Header="Time" x:Name="TimeColomn">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Time}" Style="{StaticResource CellTextStyle}" />
@@ -211,7 +211,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Note" Width="410">
+                        <GridViewColumn Header="Note" x:Name="NoteColomn">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Note}" Style="{StaticResource CellTextStyle}" />
@@ -219,7 +219,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="" Width="100">
+                        <GridViewColumn Header="" x:Name="DoneColomn">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Content="Done"

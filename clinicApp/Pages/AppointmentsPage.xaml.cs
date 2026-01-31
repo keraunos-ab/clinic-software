@@ -19,6 +19,28 @@ namespace clinicApp
             LoadAppointments();
         }
 
+        private void AppointmentsList_SizeChanged(object sender, RoutedEventArgs e)
+        {
+            double width = AppointmentsList.ActualWidth;
+            if (width <=0 )
+            {
+                //wait 200ms
+                PatientColomn.Width = width * 0.25;
+                DateColomn.Width = width * 0.20;
+                TimeColomn.Width = width * 0.15;
+                NoteColomn.Width = width * 0.30;
+                DoneColomn.Width = width * 0.10;
+            }
+            else
+            {
+                PatientColomn.Width = width * 0.355;
+                DateColomn.Width = width * 0.10;
+                TimeColomn.Width = width * 0.10;
+                NoteColomn.Width = width * 0.35;
+                DoneColomn.Width = width * 0.08;
+            }
+        }
+
         private void LoadAppointments()
         {
             try

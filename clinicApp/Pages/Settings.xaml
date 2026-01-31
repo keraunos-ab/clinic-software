@@ -107,7 +107,7 @@
     <Grid x:Name="RootGrid" Background="{DynamicResource WindowBackgroundBrush}" Margin="28">
         <Border Width="900"
                 MaxWidth="900"
-                Padding="40"
+                Padding="0"
                 CornerRadius="18"
                 Background="Transparent"
                 BorderBrush="{DynamicResource CardStrokeBrush}"
@@ -125,10 +125,12 @@
                         <TextBlock Text="Settings"
                                    Foreground="{DynamicResource Text0Brush}"
                                    FontSize="32"
+                                   Padding="40,40,0,0"
                                    FontWeight="SemiBold" />
                         <TextBlock Text="Update your credentials"
                                    Foreground="{DynamicResource HintBrush}"
                                    FontSize="16"
+                                   Padding="40,0,0,0"
                                    Margin="0,8,0,0" />
                     </StackPanel>
 
@@ -204,6 +206,8 @@
                     <TextBlock Text="Changes here override the information provided during introduction."
                                Foreground="{DynamicResource HintBrush}"
                                FontSize="12"
+                               TextAlignment="Center"
+                               Padding="10"
                                Margin="0,12,0,0" />
                 </StackPanel>
             </ScrollViewer>

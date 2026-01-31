@@ -55,6 +55,29 @@
             </Setter>
         </Style>
 
+        <Style x:Key="InputBorderStyle" TargetType="Border">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Background" Value="{DynamicResource CardContainerBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderBrush">
+                        <Setter.Value>
+                            <SolidColorBrush Color="{DynamicResource Blue0}" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeBrush}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.6" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="PrimaryButtonStyle" TargetType="Button">
             <Setter Property="Height" Value="40" />
             <Setter Property="FontSize" Value="14" />
@@ -159,9 +182,33 @@
 
             <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,10,10">
                 <TextBlock Text="Date" Style="{StaticResource LabelStyle}" />
-                <DatePicker x:Name="SessionDate"
-                            Height="40"
-                            ToolTip="Select session date"/>
+                <Border Style="{StaticResource InputBorderStyle}">
+                    <DatePicker x:Name="SessionDate"
+                                VerticalContentAlignment="Center"
+                                Foreground="{DynamicResource Text0Brush}"
+                                BorderThickness="0"
+                                Background="Transparent">
+                        <DatePicker.Resources>
+                            <Style TargetType="{x:Type DatePickerTextBox}">
+                                <Setter Property="Foreground" Value="{DynamicResource Text0Brush}"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type DatePickerTextBox}">
+                                            <Grid Background="{TemplateBinding Background}">
+                                                <ScrollViewer x:Name="PART_ContentHost" 
+                                                              Margin="14,0,0,0" 
+                                                              VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DatePicker.Resources>
+                    </DatePicker>
+                </Border>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,0,0,10">

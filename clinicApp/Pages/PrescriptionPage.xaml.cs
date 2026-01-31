@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -28,9 +27,9 @@ namespace clinicApp
             InitializeComponent();
 
             _medicineList = FindName("MedicineList") as StackPanel;
-
             DateInput.Text = DateTime.Now.ToString("yyyy-MM-dd");
             Doctor dr = db.GetDoctorCredentials();
+            ClinicTitle.Text = dr.getClinicName();
             DoctorNameText.Text = "Dr " + dr.getFirstName() + " " + dr.getLastName();
             Specialty.Text = dr.getSpecialty();
             N_order.Text = "N° " + dr.getN_dordre();
@@ -75,9 +74,9 @@ namespace clinicApp
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
             container.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) });   // Medicament
-            container.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1.3, GridUnitType.Star) }); // Dosage (wider)
-            container.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.9, GridUnitType.Star) }); // N° boites (tighter)
-            container.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1.2, GridUnitType.Star) }); // Poscologie
+            container.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1.4, GridUnitType.Star) }); // Dosage (wider)
+            container.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.4, GridUnitType.Star) }); // N° boites (tighter)
+            container.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1.3, GridUnitType.Star) }); // Poscologie
             container.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });                        // Remove
 
             var searchBox = new TextBox

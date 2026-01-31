@@ -6,12 +6,13 @@
       FontFamily="Segoe UI"
       xmlns:local="clr-namespace:clinicApp"
       mc:Ignorable="d"
+      Margin="0"
       d:DesignHeight="1080" d:DesignWidth="1920"
       Title="Home">
 
     <Grid Background="Transparent" Margin="28">
-        <Border Width="910"
-                Height="540"
+        <Border MinWidth="910"
+                MinHeight="540"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 CornerRadius="18"
@@ -37,34 +38,35 @@
                            Foreground="{DynamicResource HintBrush}"
                            FontSize="18"
                            FontWeight="SemiBold"
-                           Text="—" />
+                           Text="clock here" />
 
                 <!-- Centered welcome -->
                 <StackPanel Grid.Row="1"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
-                    <TextBlock Text="Welcome back"
+                    <TextBlock Text="Welcome back&#x0a;dr"
+                               x:Name="WelcomeDr"
                                Foreground="{DynamicResource Text0Brush}"
                                FontSize="44"
                                FontWeight="SemiBold"
                                TextAlignment="Center" />
-                    <TextBlock x:Name="DoctorNameText"
-                               Text="Dr —"
-                               Foreground="{DynamicResource Text0Brush}"
-                               FontSize="44"
-                               FontWeight="SemiBold"
-                               TextAlignment="Center"
-                               Margin="0,4,0,0" />
                 </StackPanel>
 
                 <!-- Bottom-left appointments -->
-                <TextBlock Grid.Row="2"
+                <TextBlock x:Name="AppointmentCounter"
+                           Text="You have # appointment(s) today."
+                           Grid.Row="2"
                            HorizontalAlignment="Left"
                            Foreground="{DynamicResource Text1Brush}"
                            FontSize="22">
-                    <Run Text="You have " />
-                    <Run x:Name="TodaysCountText" Text="0" FontWeight="SemiBold" Foreground="{DynamicResource Text0Brush}" />
-                    <Run Text=" appointment(s) today." />
+                </TextBlock>
+
+                <TextBlock x:Name="SessionCouter"
+                           Text="You did # session(s) today."
+                           Grid.Row="2"
+                           HorizontalAlignment="Right"
+                           Foreground="{DynamicResource Text1Brush}"
+                           FontSize="22">
                 </TextBlock>
             </Grid>
         </Border>

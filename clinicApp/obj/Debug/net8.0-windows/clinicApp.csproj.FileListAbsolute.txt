@@ -304,3 +304,5 @@ C:\Users\m\Source\Repos\clinic-software\clinicApp\obj\Debug\net8.0-windows\clini
 C:\Users\m\Source\Repos\clinic-software\clinicApp\obj\Debug\net8.0-windows\ref\clinicApp.dll
 C:\Users\User\source\repos\clinic-software\clinicApp\obj\Debug\net8.0-windows\Themes\Dark.baml
 C:\Users\User\source\repos\clinic-software\clinicApp\obj\Debug\net8.0-windows\Themes\Light.baml
+C:\Users\User\source\repos\clinic-software\clinicApp\bin\Debug\net8.0-windows\Wpf.Ui.dll
+C:\Users\User\source\repos\clinic-software\clinicApp\bin\Debug\net8.0-windows\Wpf.Ui.Abstractions.dll

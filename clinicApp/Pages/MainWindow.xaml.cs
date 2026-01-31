@@ -55,6 +55,7 @@ namespace clinicApp
                 MainFrame.Navigate(new HomePage());
                 SetActiveNav(NavHomeButton);
             }
+            TitleText.Text = "☆ Welcome to " + db.GetDoctorCredentials().getClinicName() + " Software";
         }
 
         private static bool IsFirstRun()
@@ -173,20 +174,30 @@ namespace clinicApp
         private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
         private void MaximizeRestoreButton_Click(object sender, RoutedEventArgs e)
-            => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+        {
+            if(WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+                maximize_button.Content = "🗖";
+            }
+            else
+            {
+                WindowState = WindowState.Maximized;
+                maximize_button.Content = "🗗";
+            }
+        }
+            
 
         private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
 
-        private void ThemeButton_Click(object sender, RoutedEventArgs e)
+        private void ThemeToggle_Click(object sender, RoutedEventArgs e)
         {
-            _isDarkTheme = !_isDarkTheme;
-            Application.Current.Resources.MergedDictionaries.Clear();
-            var themeUri = new Uri(_isDarkTheme ? "Themes/Dark.xaml" : "Themes/Light.xaml", UriKind.Relative);
-            Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = themeUri });
-
-            if (sender is Button btn)
+            if (sender is System.Windows.Controls.Primitives.ToggleButton toggle)
             {
-                btn.Content = _isDarkTheme ? "☀" : "🌙";
+                _isDarkTheme = toggle.IsChecked == true;
+                Application.Current.Resources.MergedDictionaries.Clear();
+                var themeUri = new Uri(_isDarkTheme ? "Themes/Dark.xaml" : "Themes/Light.xaml", UriKind.Relative);
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = themeUri });
             }
         }
 

@@ -27,6 +27,112 @@
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="52" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border x:Name="Bd" CornerRadius="12">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="{DynamicResource Blue0}" Offset="0" />
+                                        <GradientStop Color="{DynamicResource Blue1}" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="18"
+                                              ShadowDepth="0"
+                                              Opacity="0.35"
+                                              Color="#FF1A4ED8" />
+                                </Border.Effect>
+                            </Border>
+                            <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.95" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.85" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.55" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CustomComboBox" TargetType="ComboBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#888888"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5,3"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="ToggleButton"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        Background="{TemplateBinding Background}"
+                        Grid.Column="2" 
+                        Focusable="false"
+                        IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                        ClickMode="Press">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="Border" 
+                                        Background="{TemplateBinding Background}" 
+                                        BorderBrush="{TemplateBinding BorderBrush}" 
+                                        BorderThickness="1">
+                                            <Path x:Name="Arrow" Fill="Gray" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                          Margin="0,0,8,0" Data="M0,0 L4,4 L8,0 Z"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="#F0F0F0"/>
+                                                <Setter TargetName="Arrow" Property="Fill" Value="Black"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+
+                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False" 
+                                      Content="{TemplateBinding SelectionBoxItem}"
+                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                      ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                      Margin="{TemplateBinding Padding}"
+                                      VerticalAlignment="Center" 
+                                      HorizontalAlignment="Center" />
+
+                            <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" 
+                           AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+                                <Grid Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder" Background="White" BorderThickness="1" BorderBrush="Gray"/>
+                                    <ScrollViewer Margin="4" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <Viewbox Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -60,107 +166,117 @@
                         Canvas.Top="994" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
                 <TextBlock Text="Nom :"
+                           TextAlignment="Right"
                          Background="Transparent"
                            Style="{StaticResource LabelText}"
-                           Canvas.Left="452"
-                           Canvas.Top="181" HorizontalAlignment="Left" Width="159"/>
+                           Canvas.Left="420"
+                           Canvas.Top="175" HorizontalAlignment="Center" Width="159" Height="33" VerticalAlignment="Top"/>
                 <TextBox x:Name="FirstNameInput"
                          Style="{StaticResource InputText}"
                          Background="Transparent"
-                         Canvas.Left="585"
-                         Canvas.Top="177"
-                         Width="205" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                         Canvas.Left="579"
+                         Canvas.Top="175"
+                         Width="205" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
                 <TextBlock Text="Prenom :"
+                           TextAlignment="Right"
                          Background="Transparent"
                            Style="{StaticResource LabelText}"
-                           Canvas.Left="452"
-                           Canvas.Top="214" HorizontalAlignment="Left" Width="159"/>
+                           Canvas.Left="420"
+                           Canvas.Top="210" HorizontalAlignment="Center" Width="159" Height="32" VerticalAlignment="Top"/>
                 <TextBox x:Name="LastNameInput"
                          Style="{StaticResource InputText}"
                          Background="Transparent"
-                         Canvas.Left="585"
-                         Canvas.Top="210"
-                         Width="205" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                         Canvas.Left="579"
+                         Canvas.Top="208"
+                         Width="205" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
                 <TextBlock Text="Age :"
+                           TextAlignment="Right"
                            Style="{StaticResource LabelText}"
                          Background="Transparent"
-                           Canvas.Left="452"
-                           Canvas.Top="247" HorizontalAlignment="Left" Width="159"/>
+                           Canvas.Left="420"
+                           Canvas.Top="243" HorizontalAlignment="Center" Width="159" Height="31" VerticalAlignment="Top"/>
                 <TextBox x:Name="AgeInput"
                          Style="{StaticResource InputText}"
                          Background="Transparent"
-                         Canvas.Left="585"
-                         Canvas.Top="243"
-                         Width="205" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                         Canvas.Left="579"
+                         Canvas.Top="241"
+                         Width="205" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
                 <TextBlock Text="Sexe :"
+                           TextAlignment="Right"
                            Style="{StaticResource LabelText}"
                          Background="Transparent"
-                           Canvas.Left="452"
-                           Canvas.Top="280" HorizontalAlignment="Left" Width="159"/>
+                           Canvas.Left="420"
+                           Canvas.Top="276" HorizontalAlignment="Center" Width="159" Height="35" VerticalAlignment="Top"/>
 
-                <ComboBox x:Name="SexInput"
-                          Background="Transparent"
-                          Canvas.Left="585"
-                          Canvas.Top="276"
+                <ComboBox Style="{StaticResource CustomComboBox}"
+                          x:Name="SexInput"
+                          Background="White"
+                          Canvas.Left="579"
+                          Canvas.Top="274"
                           Width="205"
                           Height="37"
                           HorizontalContentAlignment="Center"
                           VerticalContentAlignment="Center"
                           FontSize="20"
-                          SelectedIndex="0" HorizontalAlignment="Left" VerticalAlignment="Center">
-                    <ComboBoxItem Content="Male" Background="Transparent"/>
-                    <ComboBoxItem Content="Female" Background="Transparent"/>
+                          SelectedIndex="0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <ComboBoxItem Content="Male" Background="White"/>
+                    <ComboBoxItem Content="Female" Background="White"/>
                 </ComboBox>
 
-                <TextBlock Text="Oran le :"
+                <TextBlock Text="Date :"
+                           TextAlignment="Right"
                            Style="{StaticResource LabelText}"
                            Width="120"
                            Background="Transparent"
-                           Canvas.Left="452"
-                           Canvas.Top="315" HorizontalAlignment="Left"/>
+                           Canvas.Left="459"
+                           Canvas.Top="311" HorizontalAlignment="Center" Height="32" VerticalAlignment="Top"/>
                 <TextBox x:Name="DateInput"
                          Style="{StaticResource InputText}"
                          Background="Transparent"
-                         Canvas.Left="585"
-                         Canvas.Top="311"
-                         Width="205" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                         Canvas.Left="579"
+                         Canvas.Top="309"
+                         Width="205" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
-                <StackPanel Canvas.Left="40" Canvas.Top="350" Width="720" HorizontalAlignment="Center" Height="685" VerticalAlignment="Top">
+                <StackPanel Canvas.Left="15" Canvas.Top="350" Width="770" HorizontalAlignment="Center" Height="685" VerticalAlignment="Top" >
+
                     <ScrollViewer x:Name="MedicineScroll"
-                                  Height="601"
+                                  Height="605"
                                   Background="#40FFFFFF"
                                   VerticalScrollBarVisibility="Disabled"
                                   CanContentScroll="False">
-                        
+
                         <StackPanel>
                             <Grid Margin="0,0,0,10">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="355*"/>
                                     <!-- Remove btn (35 width + 8 margin) -->
                                     <!-- Medicament -->
-                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="170*"/>
                                     <!-- Dosage -->
-                                    <ColumnDefinition Width="1.2*"/>
+                                    <ColumnDefinition Width="70*"/>
                                     <!-- N° boites -->
-                                    <ColumnDefinition Width="1.2*"/>
+                                    <ColumnDefinition Width="140*"/>
                                     <!-- Poscologie -->
-                                    <ColumnDefinition Width="43"/>
+                                    <ColumnDefinition Width="25"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="Medicament"
+                                <TextBlock Text="Medicament"
                                            FontSize="16" FontWeight="Bold"
-                                           HorizontalAlignment="Center"/>
+                                           HorizontalAlignment="Center" Width="92"/>
+
                                 <TextBlock Grid.Column="1" Text="Dosage"
                                            FontSize="16" FontWeight="Bold"
-                                           HorizontalAlignment="Center"/>
+                                           HorizontalAlignment="Center" Width="56"/>
+
                                 <TextBlock Grid.Column="2" Text="N° boites"
                                            FontSize="16" FontWeight="Bold"
-                                           HorizontalAlignment="Center"/>
+                                           HorizontalAlignment="Center" Width="70"/>
+
                                 <TextBlock Grid.Column="3" Text="Poscologie"
                                            FontSize="16" FontWeight="Bold"
-                                           HorizontalAlignment="Center"/>
+                                           HorizontalAlignment="Center" Width="81"/>
                                 <!-- Column 4 reserved for remove button alignment -->
                             </Grid>
 
@@ -171,15 +287,24 @@
                     <StackPanel
                 Width="253" Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right">
                         <Button x:Name="AddMedicineButton"
-                                Content="+"
-                                Width="80"
-                                Height="50"
-                                FontSize="24"
+                                Style="{StaticResource PrimaryButtonStyle}"
                                 FontWeight="Bold"
-                                Click="AddMedicineButton_Click"
-                                Margin="10,0"/>
+                                FontSize="24"
+                                Margin="10,0"
+                                Content="+"
+                                Height="50"
+                                Width="80"
+                                Click="AddMedicineButton_Click"/>
                         <Button
-                Width="140" x:Name="FinishButton" Margin="10,0" Height="50" FontSize="18" FontWeight="Bold" Content="Finish / Print" Click="FinishButton_Click"/>
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            x:Name="FinishButton"
+                            FontWeight="Bold"
+                            Content="Print"
+                            Margin="10,0"
+                            FontSize="18"
+                            Height="50"
+                            Width="140"
+                            Click="FinishButton_Click"/>
                     </StackPanel>
                 </StackPanel>
 
@@ -188,14 +313,14 @@
                            Text="bruce wayne"
                            FontFamily="Constantia"
                            FontSize="28"
-                           FontWeight="Bold"
+                           FontWeight="DemiBold"
                            Foreground="Black"
                            Background="Transparent"
                            Width="490"
                            Height="42"
                            TextAlignment="Left"
                            Canvas.Left="10"
-                           Canvas.Top="74" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                           Canvas.Top="96" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
                 <TextBlock x:Name="Specialty"
                            Text="Caped crusador"
@@ -207,7 +332,7 @@
                            Width="410"
                            Height="26"
                            TextAlignment="Left"
-                           Canvas.Top="116" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="10"/>
+                           Canvas.Top="138" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="10"/>
 
                 <TextBlock x:Name="adress"
                         Text="123, wayme street, gotham"
@@ -222,8 +347,8 @@
                 <TextBlock Text="Patient :"
                         FontWeight="Bold"
                         Style="{StaticResource LabelText}"
-                        Canvas.Left="649"
-                        Canvas.Top="142" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        Canvas.Left="625"
+                        Canvas.Top="142" HorizontalAlignment="Left"/>
                 <TextBlock x:Name="N_order"
                            Text="N d'ordre : 4104"
                         FontFamily="Constantia"
@@ -234,7 +359,7 @@
                         Width="195"
                         Height="29"
                         TextAlignment="Left"
-                        Canvas.Top="150" Canvas.Left="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        Canvas.Top="172" Canvas.Left="10" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <Image x:Name="UserLogoWatermark"
                        Source="{Binding UserLogoImage, TargetNullValue='pack://application:,,,/Pictures/placeHolderLogo.png'}"
                        Width="580"
@@ -245,6 +370,17 @@
                        Canvas.Left="110"
                        Canvas.Top="240"
                        Panel.ZIndex="-1"/>
+                <TextBlock  x:Name="ClinicTitle"
+                            Text="Lablack z Health clinic"
+                            FontFamily="Constantia"
+                            FontSize="28"
+                            Margin="0,20,0,0"
+                            FontWeight="Bold"
+                            Foreground="#FF2F6FED"
+                            Background="Transparent"
+                            Width="800"
+                            Height="Auto"
+                            TextAlignment="Center"/>
             </Canvas>
         </Grid>
     </Viewbox>
