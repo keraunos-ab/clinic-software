@@ -1,8 +1,10 @@
 ﻿using clinicApp.data;
 using clinicApp.Pages;
+using clinicApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,7 +20,7 @@ namespace clinicApp
         private const string CredentialsTableName = "UserCredentials";
 
         private readonly DispatcherTimer _topBarClockTimer = new() { Interval = TimeSpan.FromSeconds(1) };
-        private bool _isDarkTheme = false;
+        private bool _isInitializing = true;
 
         private readonly List<System.Type> _pageCycleOrder =
         [
@@ -45,6 +47,16 @@ namespace clinicApp
             _topBarClockTimer.Tick += (_, __) => UpdateTopBarDateTime();
             _topBarClockTimer.Start();
 
+            // Set up language manager
+            LanguageManager.Instance.LanguageChanged += OnLanguageChanged;
+            LanguageSelector.SelectedIndex = LanguageManager.Instance.GetCurrentLanguageIndex();
+            FlowDirection = LanguageManager.Instance.GetFlowDirection();
+
+            // Set up theme manager - apply saved theme and sync toggle
+            ThemeManager.Instance.ApplyTheme();
+            ThemeSwitch.IsChecked = ThemeManager.Instance.IsDarkTheme;
+            _isInitializing = false;
+
             if (IsFirstRun())
             {
                 MainFrame.Navigate(new Introduction());
@@ -56,6 +68,11 @@ namespace clinicApp
                 SetActiveNav(NavHomeButton);
             }
             TitleText.Text = "☆ Welcome to " + db.GetDoctorCredentials().getClinicName() + " Software";
+        }
+
+        private void OnLanguageChanged(object? sender, string language)
+        {
+            FlowDirection = LanguageManager.Instance.GetFlowDirection();
         }
 
         private static bool IsFirstRun()
@@ -85,21 +102,25 @@ namespace clinicApp
             }
             catch
             {
-                // If anything is off (corrupt DB, etc.), treat as first run to recover via onboarding.
                 return true;
             }
         }
 
         private void UpdateTopBarDateTime()
         {
-            // Example: "Sat, Jan 24 • 14:05:09"
-            TopBarDateTimeText.Text = DateTime.Now.ToString("ddd, MMM d  •  HH:mm:ss");
+            // Get the appropriate culture based on current language
+            CultureInfo culture = LanguageManager.Instance.CurrentLanguage switch
+            {
+                "French" => new CultureInfo("fr-FR"),
+                "Arabic" => new CultureInfo("ar-SA"),
+                _ => new CultureInfo("en-US")
+            };
+            
+            TopBarDateTimeText.Text = DateTime.Now.ToString("ddd, MMM d  •  HH:mm:ss", culture);
         }
 
         private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            // Ctrl + '+' (often comes as Key.OemPlus with Shift)
-            // Also support Ctrl + '=' (same key without Shift on US layouts)
             if (Keyboard.Modifiers == ModifierKeys.Control && (e.Key == Key.OemPlus || e.Key == Key.Add))
             {
                 e.Handled = true;
@@ -107,11 +128,9 @@ namespace clinicApp
                 return;
             }
 
-            // Ctrl+Tab / Ctrl+Shift+Tab : cycle pages
             if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && e.Key == Key.Tab)
             {
                 e.Handled = true;
-
                 bool backwards = Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
                 CyclePage(backwards);
             }
@@ -132,50 +151,23 @@ namespace clinicApp
 
         private void NavigateToPageType(System.Type pageType)
         {
-            if (pageType == typeof(HomePage))
-            {
-                HomeButton_Click(this, new RoutedEventArgs());
-                return;
-            }
-
-            if (pageType == typeof(PatientsPage))
-            {
-                PatientsButton_Click(this, new RoutedEventArgs());
-                return;
-            }
-
-            if (pageType == typeof(AppointmentsPage))
-            {
-                AppointmentsButton_Click(this, new RoutedEventArgs());
-                return;
-            }
-
-            if (pageType == typeof(PrescriptionPage))
-            {
-                PrescriptionButton_Click(this, new RoutedEventArgs());
-                return;
-            }
-
-            if (pageType == typeof(Settings))
-            {
-                SettingsButton_Click(this, new RoutedEventArgs());
-                return;
-            }
+            if (pageType == typeof(HomePage)) { HomeButton_Click(this, new RoutedEventArgs()); return; }
+            if (pageType == typeof(PatientsPage)) { PatientsButton_Click(this, new RoutedEventArgs()); return; }
+            if (pageType == typeof(AppointmentsPage)) { AppointmentsButton_Click(this, new RoutedEventArgs()); return; }
+            if (pageType == typeof(PrescriptionPage)) { PrescriptionButton_Click(this, new RoutedEventArgs()); return; }
+            if (pageType == typeof(Settings)) { SettingsButton_Click(this, new RoutedEventArgs()); return; }
         }
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                DragMove();
-            }
+            if (e.ChangedButton == MouseButton.Left) DragMove();
         }
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
         private void MaximizeRestoreButton_Click(object sender, RoutedEventArgs e)
         {
-            if(WindowState == WindowState.Maximized)
+            if (WindowState == WindowState.Maximized)
             {
                 WindowState = WindowState.Normal;
                 maximize_button.Content = "🗖";
@@ -186,7 +178,6 @@ namespace clinicApp
                 maximize_button.Content = "🗗";
             }
         }
-            
 
         private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
 
@@ -194,11 +185,16 @@ namespace clinicApp
         {
             if (sender is System.Windows.Controls.Primitives.ToggleButton toggle)
             {
-                _isDarkTheme = toggle.IsChecked == true;
-                Application.Current.Resources.MergedDictionaries.Clear();
-                var themeUri = new Uri(_isDarkTheme ? "Themes/Dark.xaml" : "Themes/Light.xaml", UriKind.Relative);
-                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = themeUri });
+                ThemeManager.Instance.SetTheme(toggle.IsChecked == true);
             }
+        }
+
+        private void LanguageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_isInitializing) return;
+            if (LanguageSelector?.SelectedIndex == null || LanguageSelector.SelectedIndex < 0) return;
+
+            LanguageManager.Instance.SetLanguageByIndex(LanguageSelector.SelectedIndex);
         }
 
         private void SetActiveNav(Button active)
@@ -208,7 +204,6 @@ namespace clinicApp
             NavAppointmentsButton.IsDefault = false;
             NavPrescriptionButton.IsDefault = false;
             NavSettingsButton.IsDefault = false;
-
             active.IsDefault = true;
         }
 
@@ -253,21 +248,11 @@ namespace clinicApp
         {
             switch (e.Content)
             {
-                case HomePage:
-                    SetActiveNav(NavHomeButton);
-                    break;
-                case PatientsPage:
-                    SetActiveNav(NavPatientsButton);
-                    break;
-                case AppointmentsPage:
-                    SetActiveNav(NavAppointmentsButton);
-                    break;
-                case PrescriptionPage:
-                    SetActiveNav(NavPrescriptionButton);
-                    break;
-                case Settings:
-                    SetActiveNav(NavSettingsButton);
-                    break;
+                case HomePage: SetActiveNav(NavHomeButton); break;
+                case PatientsPage: SetActiveNav(NavPatientsButton); break;
+                case AppointmentsPage: SetActiveNav(NavAppointmentsButton); break;
+                case PrescriptionPage: SetActiveNav(NavPrescriptionButton); break;
+                case Settings: SetActiveNav(NavSettingsButton); break;
             }
         }
     }

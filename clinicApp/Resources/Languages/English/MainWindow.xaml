@@ -1,0 +1,23 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Top bar -->
+    <sys:String x:Key="AppTitle">Clinic Management System</sys:String>
+    <sys:String x:Key="ClockPlaceholder">Clock here</sys:String>
+
+    <!-- Left card -->
+    <sys:String x:Key="ClinicTagline">Your personal Health Clinic</sys:String>
+
+    <!-- Navigation -->
+    <sys:String x:Key="NavHome">Home</sys:String>
+    <sys:String x:Key="NavPatients">Patients</sys:String>
+    <sys:String x:Key="NavAppointments">Appointments</sys:String>
+    <sys:String x:Key="NavPrescriptions">Prescriptions</sys:String>
+    <sys:String x:Key="NavSettings">Settings</sys:String>
+
+    <!-- Tip box -->
+    <sys:String x:Key="TipTitle">Tip</sys:String>
+    <sys:String x:Key="TipText">Use the + button for quick actions.</sys:String>
+</ResourceDictionary>

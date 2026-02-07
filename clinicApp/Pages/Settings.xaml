@@ -122,12 +122,12 @@
                 <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                     <!-- Header -->
                     <StackPanel Orientation="Vertical" Margin="0,0,0,18">
-                        <TextBlock Text="Settings"
+                        <TextBlock Text="{DynamicResource SettingsHeader}"
                                    Foreground="{DynamicResource Text0Brush}"
                                    FontSize="32"
                                    Padding="40,40,0,0"
                                    FontWeight="SemiBold" />
-                        <TextBlock Text="Update your credentials"
+                        <TextBlock Text="{DynamicResource SettingsSubtitle}"
                                    Foreground="{DynamicResource HintBrush}"
                                    FontSize="16"
                                    Padding="40,0,0,0"
@@ -136,6 +136,7 @@
 
                     <!-- Fieldset: User credentials -->
                     <Border Margin="0,0,0,18"
+                            Width="Auto"
                             Padding="22"
                             CornerRadius="14"
                             Background="Transparent"
@@ -154,7 +155,7 @@
                                     BorderBrush="{DynamicResource CardStrokeBrush}"
                                     BorderThickness="1"
                                     Margin="6,-18,0,8">
-                                <TextBlock Text="User credentials"
+                                <TextBlock Text="{DynamicResource SettingsSectionTitle}"
                                            Foreground="{DynamicResource Text0Brush}"
                                            FontSize="12"
                                            FontWeight="SemiBold" />
@@ -162,39 +163,100 @@
 
                             <StackPanel Grid.Row="1" Orientation="Vertical">
                                 <StackPanel>
-                                    <TextBlock Text="First Name" Style="{StaticResource LabelStyle}" />
+                                    <TextBlock Text="{DynamicResource LabelFirstName}" Style="{StaticResource LabelStyle}" />
                                     <TextBox x:Name="FirstNameTextBox" Style="{StaticResource InputBoxStyle}" />
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Text="Last Name" Style="{StaticResource LabelStyle}" />
+                                    <TextBlock Text="{DynamicResource LabelLastName}" Style="{StaticResource LabelStyle}" />
                                     <TextBox x:Name="LastNameTextBox" Style="{StaticResource InputBoxStyle}" />
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Text="Phone Number" Style="{StaticResource LabelStyle}" />
+                                    <TextBlock Text="{DynamicResource LabelPhone}" Style="{StaticResource LabelStyle}" />
                                     <TextBox x:Name="PhoneTextBox" Style="{StaticResource InputBoxStyle}" />
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Text="Email" Style="{StaticResource LabelStyle}" />
+                                    <TextBlock Text="{DynamicResource LabelEmail}" Style="{StaticResource LabelStyle}" />
                                     <TextBox x:Name="EmailTextBox" Style="{StaticResource InputBoxStyle}" />
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Text="N° ordre" Style="{StaticResource LabelStyle}" />
+                                    <TextBlock Text="{DynamicResource LabelOrdre}" Style="{StaticResource LabelStyle}" />
                                     <TextBox x:Name="OrdreTextBox" Style="{StaticResource InputBoxStyle}" />
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Text="Doctor Specialty" Style="{StaticResource LabelStyle}" />
+                                    <TextBlock Text="{DynamicResource LabelSpecialty}" Style="{StaticResource LabelStyle}" />
                                     <TextBox x:Name="SpecialtyTextBox" Style="{StaticResource InputBoxStyle}" />
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Text="Clinic Name" Style="{StaticResource LabelStyle}" />
+                                    <TextBlock Text="{DynamicResource LabelClinicName}" Style="{StaticResource LabelStyle}" />
                                     <TextBox x:Name="ClinicNameTextBox" Style="{StaticResource InputBoxStyle}" />
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Text="Clinic Address" Style="{StaticResource LabelStyle}" />
+                                    <TextBlock Text="{DynamicResource LabelClinicAddress}" Style="{StaticResource LabelStyle}" />
                                     <TextBox x:Name="ClinicAddressTextBox" Style="{StaticResource InputBoxStyle}" />
                                 </StackPanel>
 
-                                <Button Content="Save changes"
+                                <!-- Clinic Logo Section -->
+                                <StackPanel Margin="0,18,0,0">
+                                    <TextBlock Text="{DynamicResource LabelLogo}" Style="{StaticResource LabelStyle}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="16" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <!-- Logo Preview -->
+                                        <Border Grid.Column="0"
+                                                Width="80"
+                                                Height="80"
+                                                CornerRadius="12"
+                                                Background="{DynamicResource CardContainerBrush}"
+                                                BorderBrush="{DynamicResource ChromeBorderBrush}"
+                                                BorderThickness="1">
+                                            <Image x:Name="LogoPreviewImage"
+                                                   Stretch="Uniform"
+                                                   Margin="8" />
+                                        </Border>
+                                        
+                                        <!-- Browse Button and File Name -->
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                            <Button x:Name="LogoBrowseButton"
+                                                    Content="{DynamicResource BtnBrowseLogo}"
+                                                    Height="44"
+                                                    Width="200"
+                                                    HorizontalAlignment="Left"
+                                                    Cursor="Hand"
+                                                    Click="BrowseLogoButton_Click">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border x:Name="Bd"
+                                                                CornerRadius="10"
+                                                                Background="{DynamicResource CardContainerBrush}"
+                                                                BorderBrush="{DynamicResource ChromeBorderBrush}"
+                                                                BorderThickness="1">
+                                                            <ContentPresenter HorizontalAlignment="Center"
+                                                                              VerticalAlignment="Center" />
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource CardStrokeBrush}" />
+                                                            </Trigger>
+                                                            <Trigger Property="IsPressed" Value="True">
+                                                                <Setter TargetName="Bd" Property="Opacity" Value="0.85" />
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                            <TextBlock x:Name="LogoFileNameText"
+                                                       Foreground="{DynamicResource HintBrush}"
+                                                       FontSize="12"
+                                                       Margin="0,6,0,0" />
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+
+                                <Button Content="{DynamicResource BtnSaveChanges}"
                                         Style="{StaticResource PrimaryButtonStyle}"
                                         Width="200"
                                         Margin="30"
@@ -203,7 +265,248 @@
                         </Grid>
                     </Border>
 
-                    <TextBlock Text="Changes here override the information provided during introduction."
+                    <!-- Fieldset: Password Protection -->
+                    <Border Margin="0,0,0,18"
+                            Width="Auto"
+                            Padding="22"
+                            CornerRadius="14"
+                            Background="Transparent"
+                            BorderBrush="{DynamicResource CardStrokeBrush}"
+                            BorderThickness="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Border Background="{DynamicResource CardBgBrush}"
+                                    Padding="6,0"
+                                    HorizontalAlignment="Left"
+                                    CornerRadius="6"
+                                    BorderBrush="{DynamicResource CardStrokeBrush}"
+                                    BorderThickness="1"
+                                    Margin="6,-18,0,8">
+                                <TextBlock Text="{DynamicResource PasswordSectionTitle}"
+                                           Foreground="{DynamicResource Text0Brush}"
+                                           FontSize="12"
+                                           FontWeight="SemiBold" />
+                            </Border>
+
+                            <StackPanel Grid.Row="1" Orientation="Vertical">
+                                <!-- Enable Password Toggle -->
+                                <Grid Margin="0,10,0,20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Grid.Column="0"
+                                               Text="{DynamicResource LabelEnablePassword}"
+                                               Foreground="{DynamicResource Text1Brush}"
+                                               FontSize="14"
+                                               VerticalAlignment="Center" />
+                                    
+                                    <ToggleButton x:Name="PasswordToggle"
+                                                  Grid.Column="1"
+                                                  Width="60"
+                                                  Height="30"
+                                                  Cursor="Hand"
+                                                  Click="PasswordToggle_Click">
+                                        <ToggleButton.Template>
+                                            <ControlTemplate TargetType="ToggleButton">
+                                                <Grid Background="Transparent">
+                                                    <Border x:Name="Track"
+                                                            Background="{DynamicResource CardContainerBrush}"
+                                                            BorderBrush="{DynamicResource ChromeBorderBrush}"
+                                                            BorderThickness="1"
+                                                            CornerRadius="15" />
+                                                    <Border x:Name="Knob"
+                                                            Width="24"
+                                                            Height="24"
+                                                            Margin="3"
+                                                            HorizontalAlignment="Left"
+                                                            Background="{DynamicResource HintBrush}"
+                                                            CornerRadius="12">
+                                                        <Border.RenderTransform>
+                                                            <TranslateTransform x:Name="KnobTranslate" X="0" />
+                                                        </Border.RenderTransform>
+                                                    </Border>
+                                                </Grid>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter TargetName="Track" Property="Background">
+                                                            <Setter.Value>
+                                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                                    <GradientStop Color="{DynamicResource Blue0}" Offset="0" />
+                                                                    <GradientStop Color="{DynamicResource Blue1}" Offset="1" />
+                                                                </LinearGradientBrush>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter TargetName="Knob" Property="Background" Value="White" />
+                                                        <Trigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetName="KnobTranslate"
+                                                                                     Storyboard.TargetProperty="X"
+                                                                                     To="30" Duration="0:0:0.2" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.EnterActions>
+                                                        <Trigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetName="KnobTranslate"
+                                                                                     Storyboard.TargetProperty="X"
+                                                                                     To="0" Duration="0:0:0.2" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.ExitActions>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </ToggleButton.Template>
+                                    </ToggleButton>
+                                </Grid>
+
+                                <!-- Password Fields Panel (shown when password is being set/changed) -->
+                                <StackPanel x:Name="PasswordFieldsPanel" Visibility="Collapsed">
+                                    <!-- Current Password (for changing/removing) -->
+                                    <StackPanel x:Name="CurrentPasswordPanel" Visibility="Collapsed" Margin="0,0,0,10">
+                                        <TextBlock Text="{DynamicResource LabelCurrentPassword}" Style="{StaticResource LabelStyle}" />
+                                        <PasswordBox x:Name="CurrentPasswordBox" Height="44" Padding="14,0,14,0"
+                                                     FontSize="14">
+                                            <PasswordBox.Template>
+                                                <ControlTemplate TargetType="PasswordBox">
+                                                    <Grid>
+                                                        <Border x:Name="Bd"
+                                                                Background="{DynamicResource CardContainerBrush}"
+                                                                BorderBrush="{DynamicResource ChromeBorderBrush}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="10" />
+                                                        <ScrollViewer x:Name="PART_ContentHost"
+                                                                      Margin="{TemplateBinding Padding}"
+                                                                      VerticalAlignment="Center" />
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsKeyboardFocused" Value="True">
+                                                            <Setter TargetName="Bd" Property="BorderBrush">
+                                                                <Setter.Value>
+                                                                    <SolidColorBrush Color="{DynamicResource Blue0}" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </PasswordBox.Template>
+                                        </PasswordBox>
+                                    </StackPanel>
+
+                                    <!-- New Password -->
+                                    <StackPanel Margin="0,0,0,10">
+                                        <TextBlock Text="{DynamicResource LabelNewPassword}" Style="{StaticResource LabelStyle}" />
+                                        <PasswordBox x:Name="NewPasswordBox" Height="44" Padding="14,0,14,0"
+                                                     FontSize="14">
+                                            <PasswordBox.Template>
+                                                <ControlTemplate TargetType="PasswordBox">
+                                                    <Grid>
+                                                        <Border x:Name="Bd"
+                                                                Background="{DynamicResource CardContainerBrush}"
+                                                                BorderBrush="{DynamicResource ChromeBorderBrush}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="10" />
+                                                        <ScrollViewer x:Name="PART_ContentHost"
+                                                                      Margin="{TemplateBinding Padding}"
+                                                                      VerticalAlignment="Center" />
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsKeyboardFocused" Value="True">
+                                                            <Setter TargetName="Bd" Property="BorderBrush">
+                                                                <Setter.Value>
+                                                                    <SolidColorBrush Color="{DynamicResource Blue0}" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </PasswordBox.Template>
+                                        </PasswordBox>
+                                    </StackPanel>
+
+                                    <!-- Confirm Password -->
+                                    <StackPanel Margin="0,0,0,10">
+                                        <TextBlock Text="{DynamicResource LabelConfirmPassword}" Style="{StaticResource LabelStyle}" />
+                                        <PasswordBox x:Name="ConfirmPasswordBox" Height="44" Padding="14,0,14,0"
+                                                     FontSize="14">
+                                            <PasswordBox.Template>
+                                                <ControlTemplate TargetType="PasswordBox">
+                                                    <Grid>
+                                                        <Border x:Name="Bd"
+                                                                Background="{DynamicResource CardContainerBrush}"
+                                                                BorderBrush="{DynamicResource ChromeBorderBrush}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="10" />
+                                                        <ScrollViewer x:Name="PART_ContentHost"
+                                                                      Margin="{TemplateBinding Padding}"
+                                                                      VerticalAlignment="Center" />
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsKeyboardFocused" Value="True">
+                                                            <Setter TargetName="Bd" Property="BorderBrush">
+                                                                <Setter.Value>
+                                                                    <SolidColorBrush Color="{DynamicResource Blue0}" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </PasswordBox.Template>
+                                        </PasswordBox>
+                                    </StackPanel>
+
+                                    <!-- Action Buttons -->
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+                                        <Button x:Name="SetPasswordButton"
+                                                Content="{DynamicResource BtnSetPassword}"
+                                                Style="{StaticResource PrimaryButtonStyle}"
+                                                Width="180"
+                                                Margin="0,0,10,0"
+                                                Click="SetPasswordButton_Click" />
+                                        
+                                        <Button x:Name="RemovePasswordButton"
+                                                Content="{DynamicResource BtnRemovePassword}"
+                                                Width="180"
+                                                Height="52"
+                                                Cursor="Hand"
+                                                Visibility="Collapsed"
+                                                Click="RemovePasswordButton_Click">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border x:Name="Bd"
+                                                            CornerRadius="12"
+                                                            Background="{DynamicResource CardContainerBrush}"
+                                                            BorderBrush="{DynamicResource ChromeBorderBrush}"
+                                                            BorderThickness="1">
+                                                        <ContentPresenter HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center" />
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Bd" Property="BorderBrush" Value="#FFE53935" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed" Value="True">
+                                                            <Setter TargetName="Bd" Property="Opacity" Value="0.85" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <TextBlock Text="{DynamicResource SettingsFooter}"
                                Foreground="{DynamicResource HintBrush}"
                                FontSize="12"
                                TextAlignment="Center"

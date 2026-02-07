@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="SettingsTitle">Parametres</sys:String>
+    <sys:String x:Key="SettingsHeader">Parametres</sys:String>
+    <sys:String x:Key="SettingsSubtitle">Mettez a jour vos informations</sys:String>
+    
+    <sys:String x:Key="SettingsSectionTitle">Informations utilisateur</sys:String>
+    
+    <sys:String x:Key="LabelFirstName">Prenom</sys:String>
+    <sys:String x:Key="LabelLastName">Nom</sys:String>
+    <sys:String x:Key="LabelPhone">Numero de telephone</sys:String>
+    <sys:String x:Key="LabelEmail">Email</sys:String>
+    <sys:String x:Key="LabelOrdre">No. ordre</sys:String>
+    <sys:String x:Key="LabelSpecialty">Specialite du medecin</sys:String>
+    <sys:String x:Key="LabelClinicName">Nom de la clinique</sys:String>
+    <sys:String x:Key="LabelClinicAddress">Adresse de la clinique</sys:String>
+    <sys:String x:Key="LabelLogo">Logo de la clinique (optionnel)</sys:String>
+    
+    <sys:String x:Key="BtnBrowseLogo">Parcourir...</sys:String>
+    <sys:String x:Key="BtnSaveChanges">Enregistrer les modifications</sys:String>
+    <sys:String x:Key="SettingsFooter">Les modifications ici remplacent les informations fournies lors de l'introduction.</sys:String>
+
+    <!-- Password Protection Section -->
+    <sys:String x:Key="PasswordSectionTitle">Protection par mot de passe</sys:String>
+    <sys:String x:Key="LabelEnablePassword">Activer la protection par mot de passe</sys:String>
+    <sys:String x:Key="LabelCurrentPassword">Mot de passe actuel</sys:String>
+    <sys:String x:Key="LabelNewPassword">Nouveau mot de passe</sys:String>
+    <sys:String x:Key="LabelConfirmPassword">Confirmer le nouveau mot de passe</sys:String>
+    <sys:String x:Key="BtnSetPassword">Definir le mot de passe</sys:String>
+    <sys:String x:Key="BtnChangePassword">Changer le mot de passe</sys:String>
+    <sys:String x:Key="BtnRemovePassword">Supprimer le mot de passe</sys:String>
+    <sys:String x:Key="PasswordSetSuccess">Le mot de passe a ete defini avec succes.</sys:String>
+    <sys:String x:Key="PasswordChangedSuccess">Le mot de passe a ete change avec succes.</sys:String>
+    <sys:String x:Key="PasswordRemovedSuccess">La protection par mot de passe a ete supprimee.</sys:String>
+    <sys:String x:Key="PasswordMismatch">Les mots de passe ne correspondent pas.</sys:String>
+    <sys:String x:Key="PasswordRequired">Veuillez entrer un mot de passe.</sys:String>
+    <sys:String x:Key="CurrentPasswordIncorrect">Le mot de passe actuel est incorrect.</sys:String>
+
+    <!-- Button Styles -->
+    <Style x:Key="GreenButton" TargetType="Button">
+        <Setter Property="Background" Value="Green"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderBrush" Value="DarkGreen"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="5,2"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="Blue"/>
+                <Setter Property="BorderBrush" Value="DarkBlue"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="RoyalBlue"/>
+                <Setter Property="BorderBrush" Value="DarkSlateBlue"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

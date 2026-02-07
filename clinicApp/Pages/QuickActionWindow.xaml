@@ -81,7 +81,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Quick Add"
+                <TextBlock Text="{DynamicResource Title}"
                            Foreground="{DynamicResource Text0Brush}"
                            FontSize="20"
                            FontWeight="SemiBold"
@@ -101,13 +101,13 @@
                 <TabControl x:Name="QuickActionTabs"
                             Style="{StaticResource QuickTabControlStyle}"
                             ItemContainerStyle="{StaticResource QuickTabItemStyle}">
-                    <TabItem Header="Patient">
+                    <TabItem Header="{DynamicResource TabPatient}">
                         <Frame x:Name="PatientFrame" NavigationUIVisibility="Hidden" Background="Transparent"/>
                     </TabItem>
-                    <TabItem Header="Appointment">
+                    <TabItem Header="{DynamicResource TabAppointment}">
                         <Frame x:Name="AppointmentFrame" NavigationUIVisibility="Hidden" Background="Transparent"/>
                     </TabItem>
-                    <TabItem Header="Session">
+                    <TabItem Header="{DynamicResource TabSession}">
                         <Frame x:Name="SessionFrame" NavigationUIVisibility="Hidden" Background="Transparent"/>
                     </TabItem>
                 </TabControl>

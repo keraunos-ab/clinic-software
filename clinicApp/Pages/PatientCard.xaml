@@ -92,12 +92,12 @@
                 </StackPanel>
 
                 <Button Grid.Column="1"
-                        Content="History"
+                        Content="{DynamicResource BtnHistory}"
                         Style="{StaticResource InlineButtonStyle}"
                         Click="HistoryButton_Click" />
                 
                 <Button x:Name="saveEditButton"
-                        Content="Edit"
+                        Content="{DynamicResource BtnEdit}"
                         Style="{StaticResource InlineButtonStyle}"
                         Click="saveEditButton_Click" Margin="212,0,10,0" />
             </Grid>
@@ -112,7 +112,7 @@
 
                 <Border Width="110" Grid.Column="0" HorizontalAlignment="Left" Style="{StaticResource ChipStyle}">
                     <StackPanel>
-                        <TextBlock Text="Phone"
+                        <TextBlock Text="{DynamicResource LabelPhone}"
                                    Foreground="{DynamicResource HintBrush}"
                                    FontSize="11" />
                         <TextBox x:Name="PhoneTextBox"
@@ -129,7 +129,7 @@
 
                 <Border Width="228" HorizontalAlignment="Left" Grid.Column="1" Style="{StaticResource ChipStyle}" Grid.ColumnSpan="2">
                     <StackPanel>
-                        <TextBlock Text="Email"
+                        <TextBlock Text="{DynamicResource LabelEmail}"
                                    Foreground="{DynamicResource HintBrush}"
                                    FontSize="11" />
                         <TextBox x:Name="EmailTextBox"
@@ -153,7 +153,7 @@
                     BorderThickness="1"
                     Padding="12">
                 <StackPanel>
-                    <TextBlock Text="Note"
+                    <TextBlock Text="{DynamicResource LabelNote}"
                                Foreground="{DynamicResource HintBrush}"
                                FontSize="11" />
                     <TextBox x:Name="NoteTextBox"

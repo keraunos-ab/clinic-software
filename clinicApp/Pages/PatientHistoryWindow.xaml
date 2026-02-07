@@ -16,7 +16,7 @@
 
         <!-- Header -->
         <StackPanel Grid.Row="0" Margin="0,0,0,18">
-            <TextBlock Text="Patient History"
+            <TextBlock Text="{DynamicResource HeaderTitle}"
                        FontSize="13"
                        FontWeight="SemiBold"
                        Foreground="{DynamicResource HintBrush}"

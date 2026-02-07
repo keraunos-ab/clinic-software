@@ -62,11 +62,11 @@
                 <ColumnDefinition Width="420" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Patients"
-                       FontSize="22"
-                       FontWeight="SemiBold"
-                       Foreground="{DynamicResource Text0Brush}"
-                       VerticalAlignment="Center" />
+        <TextBlock Text="{DynamicResource PatientsTitle}"
+                   FontSize="22"
+                   FontWeight="SemiBold"
+                   Foreground="{DynamicResource Text0Brush}"
+                   VerticalAlignment="Center" />
 
             <TextBox Grid.Column="1"
                      x:Name="SearchTextBox"
@@ -77,7 +77,7 @@
         <TextBlock Grid.Row="2"
                    Foreground="{DynamicResource HintBrush}"
                    FontSize="12"
-                   Text="Search by first or last name." />
+                   Text="{DynamicResource PatientsSearchHint}" />
 
         <!-- Patients list -->
         <ScrollViewer Grid.Row="4"

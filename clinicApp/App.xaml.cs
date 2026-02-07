@@ -3,6 +3,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Windows;
 using clinicApp.Pages;
+using clinicApp.Services;
 
 namespace clinicApp
 {
@@ -11,19 +12,37 @@ namespace clinicApp
         private const string CredentialsDbFileName = "UserCredentials.db";
         private const string CredentialsTableName = "UserCredentials";
 
-        protected override void OnStartup(StartupEventArgs e)
+        private void Application_Startup(object sender, StartupEventArgs e)
         {
-            base.OnStartup(e);
-
-            ShutdownMode = ShutdownMode.OnMainWindowClose;
+            // Prevent auto-shutdown before any dialogs
+            ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            
+            // Apply saved language BEFORE creating any windows
+            LanguageManager.Instance.ApplyLanguage();
 
             if (IsFirstRun())
             {
+                ShutdownMode = ShutdownMode.OnMainWindowClose;
                 MainWindow = new IntroductionWindow();
                 MainWindow.Show();
                 return;
             }
 
+            // Check if password protection is enabled
+            if (PasswordEntry.IsPasswordEnabled())
+            {
+                var passwordDialog = new PasswordEntry();
+                passwordDialog.ShowDialog();
+
+                if (!passwordDialog.IsAuthenticated)
+                {
+                    // User closed the dialog without authenticating or failed
+                    Shutdown();
+                    return;
+                }
+            }
+
+            ShutdownMode = ShutdownMode.OnMainWindowClose;
             MainWindow = new MainWindow();
             MainWindow.Show();
         }

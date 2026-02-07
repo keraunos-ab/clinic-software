@@ -1,0 +1,17 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="AppointmentsTitle">Appointments</sys:String>
+    <sys:String x:Key="AppointmentsHeader">Appointments</sys:String>
+    <sys:String x:Key="AppointmentsSubtitle">Closest upcoming appointments appear first.</sys:String>
+
+    <sys:String x:Key="ColPatient">Patient</sys:String>
+    <sys:String x:Key="ColDate">Date</sys:String>
+    <sys:String x:Key="ColTime">Time</sys:String>
+    <sys:String x:Key="ColNote">Note</sys:String>
+    
+    <sys:String x:Key="BtnDone">Done</sys:String>
+
+</ResourceDictionary>

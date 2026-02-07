@@ -1,0 +1,21 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="AddSessionTitle">صفحة إضافة جلسة</sys:String>
+    <sys:String x:Key="AddSessionHeader">إضافة جلسة جديدة</sys:String>
+    
+    <sys:String x:Key="LabelPatientFirstName">الاسم الأول للمريض</sys:String>
+    <sys:String x:Key="LabelPatientLastName">اسم عائلة المريض</sys:String>
+    <sys:String x:Key="LabelDate">التاريخ</sys:String>
+    <sys:String x:Key="LabelTime">الوقت</sys:String>
+    <sys:String x:Key="LabelDescription">الوصف</sys:String>
+
+    <sys:String x:Key="ToolTipSearchPatients">اكتب للبحث عن المرضى</sys:String>
+    <sys:String x:Key="ToolTipLastNameAutoFill">سيتم ملء اسم العائلة تلقائياً</sys:String>
+    <sys:String x:Key="ToolTipEnterTime">أدخل الوقت (مثال: 14:30)</sys:String>
+    <sys:String x:Key="ToolTipDescription">ملاحظة اختيارية حول الجلسة</sys:String>
+
+    <sys:String x:Key="BtnSave">حفظ</sys:String>
+</ResourceDictionary>

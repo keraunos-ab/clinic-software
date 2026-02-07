@@ -1,0 +1,23 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Top bar -->
+    <sys:String x:Key="AppTitle">نظام إدارة العيادة</sys:String>
+    <sys:String x:Key="ClockPlaceholder">الساعة هنا</sys:String>
+
+    <!-- Left card -->
+    <sys:String x:Key="ClinicTagline">عيادة الصحة الخاصة بك</sys:String>
+
+    <!-- Navigation -->
+    <sys:String x:Key="NavHome">القائمة الرئيسية</sys:String>
+    <sys:String x:Key="NavPatients">مرضى</sys:String>
+    <sys:String x:Key="NavAppointments">المواعيد</sys:String>
+    <sys:String x:Key="NavPrescriptions">الوصفات الطبية</sys:String>
+    <sys:String x:Key="NavSettings">إعدادات</sys:String>
+
+    <!-- Tip box -->
+    <sys:String x:Key="TipTitle">نصيحة</sys:String>
+    <sys:String x:Key="TipText">استخدم زر "+" لتنفيذ الإجراءات السريعة.</sys:String>
+</ResourceDictionary>

@@ -81,12 +81,12 @@
                     <ControlTemplate TargetType="ComboBox">
                         <Grid>
                             <ToggleButton x:Name="ToggleButton"
+                                          Width="205"
                         BorderBrush="{TemplateBinding BorderBrush}"
-                        Background="{TemplateBinding Background}"
-                        Grid.Column="2" 
+                        Background="{TemplateBinding Background}" 
                         Focusable="false"
                         IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                        ClickMode="Press">
+                        ClickMode="Press" HorizontalAlignment="Center" Height="38">
                                 <ToggleButton.Template>
                                     <ControlTemplate TargetType="ToggleButton">
                                         <Border x:Name="Border" 

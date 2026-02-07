@@ -116,7 +116,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Title -->
-            <TextBlock Text="Add New Patient"
+            <TextBlock Text="{DynamicResource AddPatientTitle}"
                        Grid.Row="0" Grid.ColumnSpan="2"
                        Foreground="{DynamicResource Text0Brush}"
                        FontSize="18"
@@ -124,46 +124,46 @@
                        Margin="0"/>
 
             <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,10">
-                <TextBlock Text="First Name" Style="{StaticResource LabelStyle}" />
+                <TextBlock Text="{DynamicResource LabelFirstName}" Style="{StaticResource LabelStyle}" />
                 <TextBox x:Name="PatientFirstName"
                          Style="{StaticResource InputBoxStyle}"
-                         ToolTip="Enter patient's first name"/>
+                         ToolTip="{DynamicResource ToolTipFirstName}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,10">
-                <TextBlock Text="Last Name" Style="{StaticResource LabelStyle}" />
+                <TextBlock Text="{DynamicResource LabelLastName}" Style="{StaticResource LabelStyle}" />
                 <TextBox x:Name="PatientLastName"
                          Style="{StaticResource InputBoxStyle}"
-                         ToolTip="Enter patient's last name"/>
+                         ToolTip="{DynamicResource ToolTipLastName}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,10">
-                <TextBlock Text="Phone" Style="{StaticResource LabelStyle}" />
+                <TextBlock Text="{DynamicResource LabelPhone}" Style="{StaticResource LabelStyle}" />
                 <TextBox x:Name="Phone"
                          Style="{StaticResource InputBoxStyle}"
-                         ToolTip="Enter patient's phone number"/>
+                         ToolTip="{DynamicResource ToolTipPhone}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,0,0,10">
-                <TextBlock Text="Email" Style="{StaticResource LabelStyle}" />
+                <TextBlock Text="{DynamicResource LabelEmail}" Style="{StaticResource LabelStyle}" />
                 <TextBox x:Name="Email"
                          Style="{StaticResource InputBoxStyle}"
-                         ToolTip="Enter patient's email"/>
+                         ToolTip="{DynamicResource ToolTipEmail}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Margin="0,0,0,10">
-                <TextBlock Text="Note" Style="{StaticResource LabelStyle}" />
+                <TextBlock Text="{DynamicResource LabelNote}" Style="{StaticResource LabelStyle}" />
                 <TextBox x:Name="Note"
                          Style="{StaticResource InputBoxStyle}"
                          AcceptsReturn="True"
                          TextWrapping="Wrap"
                          VerticalScrollBarVisibility="Auto"
                          Height="57"
-                         ToolTip="Optional notes about the patient"/>
+                         ToolTip="{DynamicResource ToolTipNote}"/>
             </StackPanel>
 
             <Button Grid.Row="5" Grid.ColumnSpan="2"
-                    Content="Save"
+                    Content="{DynamicResource BtnSave}"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Click="SavePatient_Click"/>
         </Grid>

@@ -1,0 +1,12 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="Title">إضافة سريعة</sys:String>
+
+    <sys:String x:Key="TabPatient">مريض</sys:String>
+    <sys:String x:Key="TabAppointment">موعد</sys:String>
+    <sys:String x:Key="TabSession">جلسة</sys:String>
+
+</ResourceDictionary>

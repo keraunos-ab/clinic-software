@@ -13,6 +13,8 @@ namespace clinicApp
         private readonly DataBaseManager _db = new();
         private List<AppointmentRow> _all = new();
 
+        private const int ExpiredThresholdHours = 1;
+
         public AppointmentsPage()
         {
             InitializeComponent();
@@ -24,7 +26,6 @@ namespace clinicApp
             double width = AppointmentsList.ActualWidth;
             if (width <=0 )
             {
-                //wait 200ms
                 PatientColomn.Width = width * 0.25;
                 DateColomn.Width = width * 0.20;
                 TimeColomn.Width = width * 0.15;
@@ -47,8 +48,10 @@ namespace clinicApp
             {
                 var appointments = _db.GetAllAppointments();
                 var patients = _db.GetAllPatients();
+                var now = DateTime.Now;
+                var expiredCutoff = now.AddHours(-ExpiredThresholdHours);
 
-                _all =
+                var allAppointments =
                     (from a in appointments
                      join p in patients on a.PatientId equals p.Id
                      select new AppointmentRow(
@@ -58,9 +61,19 @@ namespace clinicApp
                          a.Time.ToString("HH:mm"),
                          string.IsNullOrWhiteSpace(a.Note) ? "—" : a.Note,
                          ToLocalDateTime(a.Date, a.Time)))
-                    // Newest/upcoming first; older appointments sink lower
+                    .ToList();
+
+                var activeAppointments = allAppointments
+                    .Where(x => x.When >= expiredCutoff)
+                    .OrderBy(x => x.When)
+                    .ToList();
+
+                var expiredAppointments = allAppointments
+                    .Where(x => x.When < expiredCutoff)
                     .OrderByDescending(x => x.When)
                     .ToList();
+
+                _all = activeAppointments.Concat(expiredAppointments).ToList();
 
                 AppointmentsList.ItemsSource = _all;
             }
@@ -99,7 +112,6 @@ namespace clinicApp
 
         private static DateTime ToLocalDateTime(DateOnly date, TimeOnly time)
         {
-            // Unspecified kind is fine here; it's local "wall clock" ordering.
             return date.ToDateTime(time);
         }
 

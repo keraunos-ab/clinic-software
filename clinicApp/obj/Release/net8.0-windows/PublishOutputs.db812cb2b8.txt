@@ -9,6 +9,8 @@ C:\Users\User\source\repos\clinic-software\clinicApp\bin\Release\net8.0-windows\
 C:\Users\User\source\repos\clinic-software\clinicApp\bin\Release\net8.0-windows\app.publish\SQLitePCLRaw.core.dll
 C:\Users\User\source\repos\clinic-software\clinicApp\bin\Release\net8.0-windows\app.publish\SQLitePCLRaw.provider.e_sqlite3.dll
 C:\Users\User\source\repos\clinic-software\clinicApp\bin\Release\net8.0-windows\app.publish\System.Data.SQLite.dll
+C:\Users\User\source\repos\clinic-software\clinicApp\bin\Release\net8.0-windows\app.publish\Wpf.Ui.dll
+C:\Users\User\source\repos\clinic-software\clinicApp\bin\Release\net8.0-windows\app.publish\Wpf.Ui.Abstractions.dll
 C:\Users\User\source\repos\clinic-software\clinicApp\bin\Release\net8.0-windows\app.publish\runtimes\browser-wasm\nativeassets\net8.0\e_sqlite3.a
 C:\Users\User\source\repos\clinic-software\clinicApp\bin\Release\net8.0-windows\app.publish\runtimes\linux-arm\native\libe_sqlite3.so
 C:\Users\User\source\repos\clinic-software\clinicApp\bin\Release\net8.0-windows\app.publish\runtimes\linux-arm64\native\libe_sqlite3.so

@@ -105,16 +105,23 @@ namespace clinicApp
             DateTime date = AppointmentDate.SelectedDate ?? DateTime.Now;
             TimeSpan time = TimeSpan.TryParse(AppointmentTime.Text, out var t) ? t : DateTime.Now.TimeOfDay;
 
-            dbManager.AddAppointment(patientId, date, time, Description.Text);
-            MessageBox.Show("Appointment added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                dbManager.AddAppointment(patientId, date, time, Description.Text);
+                MessageBox.Show("Appointment added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            PatientSearchBox.Text = "";
-            PatientLastName.Clear();
-            AppointmentTime.Clear();
-            Description.Clear();
+                PatientSearchBox.Text = "";
+                PatientLastName.Clear();
+                AppointmentTime.Clear();
+                Description.Clear();
 
-            PatientPopup.IsOpen = false;
-            PatientResultsList.ItemsSource = null;
+                PatientPopup.IsOpen = false;
+                PatientResultsList.ItemsSource = null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message, "Appointment Conflict", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
     }
 }

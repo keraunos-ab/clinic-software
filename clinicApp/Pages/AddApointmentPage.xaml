@@ -207,7 +207,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Add New Appointment"
+            <TextBlock Text="{DynamicResource AddAppointmentTitle}"
                        Grid.Row="0" Grid.ColumnSpan="2"
                        Foreground="{DynamicResource Text0Brush}"
                        FontSize="18"
@@ -216,12 +216,12 @@
 
             <!-- Patient Search (Prescription-like: TextBox + Popup) -->
             <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,10">
-                <TextBlock Text="Select Patient" Style="{StaticResource LabelStyle}" />
+                <TextBlock Text="{DynamicResource LabelSelectPatient}" Style="{StaticResource LabelStyle}" />
 
                 <Grid>
                     <TextBox x:Name="PatientSearchBox"
                              Style="{StaticResource InputBoxStyle}"
-                             ToolTip="Type to search patients"
+                             ToolTip="{DynamicResource ToolTipSearchPatient}"
                              TextChanged="PatientSearchBox_TextChanged"
                              PreviewKeyDown="PatientSearchBox_PreviewKeyDown"/>
 
@@ -252,16 +252,16 @@
 
             <!-- Patient Last Name -->
             <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,10">
-                <TextBlock Text="Patient Last Name" Style="{StaticResource LabelStyle}" />
+                <TextBlock Text="{DynamicResource LabelPatientLastName}" Style="{StaticResource LabelStyle}" />
                 <TextBox x:Name="PatientLastName"
                          Style="{StaticResource InputBoxStyle}"
-                         ToolTip="Patient last name will auto-fill"
+                         ToolTip="{DynamicResource ToolTipPatientLastName}"
                          IsReadOnly="True"/>
             </StackPanel>
 
             <!-- Date -->
             <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,10,10">
-                <TextBlock Text="Date" Style="{StaticResource LabelStyle}" />
+                <TextBlock Text="{DynamicResource LabelDate}" Style="{StaticResource LabelStyle}" />
                 <Border Style="{StaticResource InputBorderStyle}">
                     <DatePicker x:Name="AppointmentDate"
                         VerticalContentAlignment="Center"
@@ -293,26 +293,26 @@
 
             <!-- Time -->
             <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,0,0,10">
-                <TextBlock Text="Time" Style="{StaticResource LabelStyle}" />
+                <TextBlock Text="{DynamicResource LabelTime}" Style="{StaticResource LabelStyle}" />
                 <TextBox x:Name="AppointmentTime"
                          Style="{StaticResource InputBoxStyle}"
-                         ToolTip="Enter time (e.g. 14:30)"/>
+                         ToolTip="{DynamicResource ToolTipTime}"/>
             </StackPanel>
 
             <!-- Note / Description -->
             <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,0,0,10">
-                <TextBlock Text="Note" Style="{StaticResource LabelStyle}" />
+                <TextBlock Text="{DynamicResource LabelNote}" Style="{StaticResource LabelStyle}" />
                 <TextBox x:Name="Description"
                          Style="{StaticResource InputBoxStyle}"
                          AcceptsReturn="True"
                          TextWrapping="Wrap"
                          VerticalScrollBarVisibility="Auto"
                          Height="130"
-                         ToolTip="Optional note about the appointment"/>
+                         ToolTip="{DynamicResource ToolTipNote}"/>
             </StackPanel>
 
             <Button Grid.Row="5" Grid.ColumnSpan="2"
-                    Content="Save"
+                    Content="{DynamicResource BtnSave}"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Click="SaveApointment_Click"/>
         </Grid>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="AddAppointmentTitle">Ajouter un nouveau rendez-vous</sys:String>
+
+    <sys:String x:Key="LabelSelectPatient">Nom du patient</sys:String>
+    <sys:String x:Key="LabelPatientLastName">Prenom du patient</sys:String>
+    <sys:String x:Key="LabelDate">Date</sys:String>
+    <sys:String x:Key="LabelTime">Heure</sys:String>
+    <sys:String x:Key="LabelNote">Note</sys:String>
+
+    <sys:String x:Key="ToolTipSearchPatient">Tapez pour rechercher des patients</sys:String>
+    <sys:String x:Key="ToolTipPatientLastName">Le nom du patient sera rempli automatiquement</sys:String>
+    <sys:String x:Key="ToolTipTime">Entrez l'heure (ex: 14:30)</sys:String>
+    <sys:String x:Key="ToolTipNote">Note facultative sur le rendez-vous</sys:String>
+
+    <sys:String x:Key="BtnSave">Enregistrer</sys:String>
+
+</ResourceDictionary>

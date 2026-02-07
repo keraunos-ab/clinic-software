@@ -1,0 +1,19 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="HomeTitle">الرئيسية</sys:String>
+    
+    <!-- Welcome message -->
+    <sys:String x:Key="WelcomeBack">مرحباً بعودتك</sys:String>
+    <sys:String x:Key="DrPrefix">د.</sys:String>
+    
+    <!-- Counters - {0} is the count -->
+    <sys:String x:Key="AppointmentCount">لديك {0} موعد(مواعيد) اليوم.</sys:String>
+    <sys:String x:Key="SessionCount">أجريت {0} جلسة(جلسات) اليوم.</sys:String>
+    
+    <!-- Date format for Arabic culture -->
+    <sys:String x:Key="DateTimeFormat">ddd, d MMM  •  HH:mm:ss</sys:String>
+    
+</ResourceDictionary>

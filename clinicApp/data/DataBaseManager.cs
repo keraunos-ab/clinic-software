@@ -14,6 +14,8 @@ namespace clinicApp.data
         private readonly string _medicinesConnectionString;
         private readonly string _userCredentialsConnectionString;
 
+        public int AppointmentDurationMinutes { get; set; } = 30;
+
         public DataBaseManager(
             string clinicDbPath = "ClinicDB.sqlite",
             string medicinesDbPath = "data\\medicines.db",
@@ -310,6 +312,16 @@ namespace clinicApp.data
 
         public void AddAppointment(int patientId, DateTime date, TimeSpan time, string? note = null)
         {
+            // Check for conflicts before adding
+            if (HasAppointmentConflict(date, time, out var conflict))
+            {
+                var conflictTime = conflict!.Time.ToString("HH:mm");
+                var blockEndTime = conflict.Time.AddMinutes(AppointmentDurationMinutes).ToString("HH:mm");
+                throw new InvalidOperationException(
+                    $"Cannot add appointment. There is already an appointment at {conflictTime} " +
+                    $"which blocks the time slot until {blockEndTime}.");
+            }
+
             string query = @"
                 INSERT INTO Appointments (patient_id, date, time, note)
                 VALUES (@PatientId, @Date, @Time, @Note)";
@@ -567,6 +579,45 @@ namespace clinicApp.data
             }
 
             return patients;
+        }
+
+        public bool HasAppointmentConflict(DateTime date, TimeSpan time, out Apointment? conflictingAppointment)
+        {
+            conflictingAppointment = null;
+            var proposedStart = date.Date + time;
+            var proposedEnd = proposedStart.AddMinutes(AppointmentDurationMinutes);
+
+            string query = "SELECT * FROM Appointments WHERE date = @Date";
+            using var conn = new SQLiteConnection(_clinicConnectionString);
+            using var cmd = new SQLiteCommand(query, conn);
+            cmd.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
+            conn.Open();
+
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                var existingTime = TimeOnly.Parse(reader["time"].ToString()!);
+                var existingStart = date.Date + existingTime.ToTimeSpan();
+                var existingEnd = existingStart.AddMinutes(AppointmentDurationMinutes);
+
+                // Check for overlap: new appointment starts during existing, OR existing starts during new
+                bool overlaps = (proposedStart < existingEnd && proposedEnd > existingStart);
+
+                if (overlaps)
+                {
+                    conflictingAppointment = new Apointment
+                    {
+                        Id = Convert.ToInt32(reader["id"]),
+                        PatientId = Convert.ToInt32(reader["patient_id"]),
+                        Date = DateOnly.Parse(reader["date"].ToString()!),
+                        Time = existingTime,
+                        Note = reader["note"]?.ToString()
+                    };
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

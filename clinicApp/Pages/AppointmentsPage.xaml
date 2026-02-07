@@ -169,11 +169,11 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel>
-                <TextBlock Text="Appointments"
+                <TextBlock Text="{DynamicResource AppointmentsHeader}"
                            FontSize="22"
                            FontWeight="SemiBold"
                            Foreground="{DynamicResource Text0Brush}" />
-                <TextBlock Text="Closest upcoming appointments appear first."
+                <TextBlock Text="{DynamicResource AppointmentsSubtitle}"
                            FontSize="12"
                            Foreground="{DynamicResource HintBrush}"
                            Margin="0,6,0,0" />
@@ -187,7 +187,7 @@
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource ModernGridViewHeaderStyle}">
 
-                        <GridViewColumn Header="Patient" x:Name="PatientColomn">
+                        <GridViewColumn Header="{DynamicResource ColPatient}" x:Name="PatientColomn">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding PatientName}" Style="{StaticResource CellTextStyle}" />
@@ -195,7 +195,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Date" x:Name="DateColomn">
+                        <GridViewColumn Header="{DynamicResource ColDate}" x:Name="DateColomn">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Date}" Style="{StaticResource CellTextStyle}" />
@@ -203,7 +203,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Time" x:Name="TimeColomn">
+                        <GridViewColumn Header="{DynamicResource ColTime}" x:Name="TimeColomn">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Time}" Style="{StaticResource CellTextStyle}" />
@@ -211,7 +211,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Note" x:Name="NoteColomn">
+                        <GridViewColumn Header="{DynamicResource ColNote}" x:Name="NoteColomn">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Note}" Style="{StaticResource CellTextStyle}" />
@@ -222,8 +222,8 @@
                         <GridViewColumn Header="" x:Name="DoneColomn">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="Done"
-                                            Style="{StaticResource DoneButtonStyle}"
+                                    <Button Content="{DynamicResource BtnDone}"
+                                            Style="{StaticResource DoneButtonStyle}" Width="Auto"
                                             Click="DoneButton_Click" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
