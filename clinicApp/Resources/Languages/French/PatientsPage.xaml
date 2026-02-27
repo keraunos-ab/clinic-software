@@ -5,6 +5,6 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:String x:Key="PatientsTitle">Patients</sys:String>
-    <sys:String x:Key="PatientsSearchHint">Rechercher par prenom ou nom.</sys:String>
+    <sys:String x:Key="PatientsSearchHint">Rechercher par prénom ou nom.</sys:String>
 
 </ResourceDictionary>

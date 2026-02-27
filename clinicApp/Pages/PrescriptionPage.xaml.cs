@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -22,6 +24,9 @@ namespace clinicApp
 
         private StackPanel? _medicineList;
 
+        private List<PatientDisplay> _allPatients = new();
+        private bool _suppressSearch;
+
         public PrescriptionPage()
         {
             InitializeComponent();
@@ -32,7 +37,7 @@ namespace clinicApp
             ClinicTitle.Text = dr.getClinicName();
             DoctorNameText.Text = "Dr " + dr.getFirstName() + " " + dr.getLastName();
             Specialty.Text = dr.getSpecialty();
-            N_order.Text = "N° " + dr.getN_dordre();
+            N_order.Text = "N° D'ordre: " + dr.getN_dordre();
             phone.Text = dr.getPhoneNumber();
             mail.Text = dr.getEmail();
             adress.Text = dr.getClinicAddress();
@@ -50,6 +55,106 @@ namespace clinicApp
                 logo = bmp;
             }
             DataContext = new PrescriptionPageViewModel { UserLogoImage = logo };
+
+            Loaded += PrescriptionPage_Loaded;
+        }
+
+        private void PrescriptionPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            var patients = db.GetAllPatients();
+            _allPatients = patients
+                .Select(p => new PatientDisplay
+                {
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    DateOfBirth = p.DateOfBirth,
+                    Gender = p.Gender
+                })
+                .OrderBy(p => p.FirstName)
+                .ThenBy(p => p.LastName)
+                .ToList();
+        }
+
+        private void PatientSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_suppressSearch)
+                return;
+
+            string query = FirstNameInput.Text.Trim();
+
+            if (string.IsNullOrEmpty(query))
+            {
+                PatientPopup.IsOpen = false;
+                PatientResultsList.ItemsSource = null;
+                LastNameInput.Text = "";
+                AgeInput.Text = "";
+                SexInput.SelectedIndex = 0;
+                return;
+            }
+
+            var results = _allPatients
+                .Where(p =>
+                    p.FirstName.Contains(query, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.LastName.Contains(query, StringComparison.CurrentCultureIgnoreCase) ||
+                    p.FullName.Contains(query, StringComparison.CurrentCultureIgnoreCase))
+                .ToList();
+
+            PatientResultsList.ItemsSource = results;
+            PatientPopup.IsOpen = results.Count > 0;
+        }
+
+        private void PatientResultsList_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            CommitSelectedPatient();
+        }
+
+        private void PatientSearchBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!PatientPopup.IsOpen)
+                return;
+
+            if (e.Key == Key.Down)
+            {
+                PatientResultsList.SelectedIndex =
+                    Math.Min(PatientResultsList.SelectedIndex + 1, PatientResultsList.Items.Count - 1);
+                PatientResultsList.ScrollIntoView(PatientResultsList.SelectedItem);
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Up)
+            {
+                PatientResultsList.SelectedIndex =
+                    Math.Max(PatientResultsList.SelectedIndex - 1, 0);
+                PatientResultsList.ScrollIntoView(PatientResultsList.SelectedItem);
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Enter)
+            {
+                CommitSelectedPatient();
+                e.Handled = true;
+            }
+        }
+
+        private void CommitSelectedPatient()
+        {
+            if (PatientResultsList.SelectedItem is not PatientDisplay selected)
+                return;
+
+            _suppressSearch = true;
+
+            FirstNameInput.Text = selected.FirstName;
+            LastNameInput.Text = selected.LastName;
+
+            int age = DateTime.Now.Year - selected.DateOfBirth.Year;
+            if (DateTime.Now < selected.DateOfBirth.AddYears(age))
+                age--;
+            AgeInput.Text = age.ToString();
+
+            SexInput.SelectedIndex = selected.Gender.Equals("Female", StringComparison.OrdinalIgnoreCase) ? 1 : 0;
+
+            PatientPopup.IsOpen = false;
+            FirstNameInput.Select(FirstNameInput.Text.Length, 0);
+
+            _suppressSearch = false;
         }
 
         private void AddMedicineButton_Click(object sender, RoutedEventArgs e)
@@ -82,8 +187,10 @@ namespace clinicApp
             var searchBox = new TextBox
             {
                 Height = 38,
-                FontSize = 16,
-                Padding = new Thickness(6, 4, 6, 4)
+                FontSize = 18,
+                Padding = new Thickness(6, 4, 6, 4),
+                Background = Brushes.White,
+                BorderBrush = Brushes.Black
             };
             Grid.SetColumn(searchBox, 0);
 
@@ -115,24 +222,30 @@ namespace clinicApp
             var amountBox = new TextBox
             {
                 Height = 38,
-                FontSize = 16,
-                Padding = new Thickness(6, 4, 6, 4)
+                FontSize = 18,
+                Padding = new Thickness(6, 4, 6, 4),
+                Background = Brushes.White,
+                BorderBrush = Brushes.Black
             };
             Grid.SetColumn(amountBox, 1);
 
             var perDayBox = new TextBox
             {
                 Height = 38,
-                FontSize = 16,
-                Padding = new Thickness(6, 4, 6, 4)
+                FontSize = 18,
+                Padding = new Thickness(6, 4, 6, 4),
+                Background = Brushes.White,
+                BorderBrush = Brushes.Black
             };
             Grid.SetColumn(perDayBox, 2);
 
             var durationBox = new TextBox
             {
                 Height = 38,
-                FontSize = 16,
-                Padding = new Thickness(6, 4, 6, 4)
+                FontSize = 18,
+                Padding = new Thickness(6, 4, 6, 4),
+                Background = Brushes.White,
+                BorderBrush = Brushes.Black
             };
             Grid.SetColumn(durationBox, 3);
 

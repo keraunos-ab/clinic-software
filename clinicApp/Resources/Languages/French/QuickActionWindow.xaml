@@ -8,6 +8,6 @@
 
     <sys:String x:Key="TabPatient">Patient</sys:String>
     <sys:String x:Key="TabAppointment">Rendez-vous</sys:String>
-    <sys:String x:Key="TabSession">Seance</sys:String>
+    <sys:String x:Key="TabSession">Séance</sys:String>
 
 </ResourceDictionary>

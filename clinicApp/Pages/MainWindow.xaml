@@ -138,7 +138,7 @@
             </Grid.RowDefinitions>
 
             <!-- Top bar -->
-            <Grid Grid.Row="0" Margin="14,12,14,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <Grid Grid.Row="0" Margin="14,12,14,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" FlowDirection="LeftToRight">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -197,14 +197,14 @@
                         </ComboBoxItem>
                     </ComboBox>
 
-                    <ui:ToggleSwitch
+                    <ToggleButton
                         x:Name="ThemeSwitch"
                         Margin="0,0,12,0"
                         VerticalAlignment="Center"
                         IsChecked="False"
                         Click="ThemeToggle_Click">
-                        <ui:ToggleSwitch.Template>
-                            <ControlTemplate TargetType="{x:Type ui:ToggleSwitch}">
+                        <ToggleButton.Template>
+                            <ControlTemplate TargetType="{x:Type ToggleButton}">
                                 <Grid Width="75" Height="30" Background="Transparent" Cursor="Hand">
                                     <Border x:Name="Track" Background="#FF2F6FED" CornerRadius="15">
                                         <Grid>
@@ -251,8 +251,8 @@
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
-                        </ui:ToggleSwitch.Template>
-                    </ui:ToggleSwitch>
+                        </ToggleButton.Template>
+                    </ToggleButton>
 
                     <Button Content="—" Style="{DynamicResource TitleBarButton}" Click="MinimizeButton_Click" />
                     <Button x:Name="maximize_button" Content="🗗" Style="{DynamicResource TitleBarButton}" Click="MaximizeRestoreButton_Click" />
@@ -271,7 +271,9 @@
                 <!-- Left nav card -->
                 <ScrollViewer>
                     <Border Grid.Column="0" Padding="18" CornerRadius="18"
-                            Background="#0F111827" BorderBrush="#1AFFFFFF" BorderThickness="1">
+                            Background="{DynamicResource CardContainerBrush}" 
+                            BorderBrush="{DynamicResource ChromeBorderBrush}" 
+                            BorderThickness="1">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -284,7 +286,7 @@
                                 <Image Source="/Pictures/placeHolderLogo.png" Height="80" Width="80"/>
                                 <TextBlock x:Name="TitleText"
                                            Text="{DynamicResource ClinicTagline}"
-                                           Foreground="{StaticResource Text1Brush}"
+                                           Foreground="{DynamicResource Text1Brush}"
                                            FontSize="22" Height="Auto" FontWeight="SemiBold"
                                            TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center" />
                             </StackPanel>
@@ -293,31 +295,31 @@
                                 <Button x:Name="NavHomeButton"
                                         Content="{DynamicResource NavHome}"
                                         Tag="⌂" IsDefault="True"
-                                        Style="{StaticResource NavButtonStyle}"
+                                        Style="{DynamicResource NavButtonStyle}"
                                         Click="HomeButton_Click" />
 
                                 <Button x:Name="NavPatientsButton"
                                         Content="{DynamicResource NavPatients}"
                                         Tag="👥"
-                                        Style="{StaticResource NavButtonStyle}"
+                                        Style="{DynamicResource NavButtonStyle}"
                                         Click="PatientsButton_Click" />
 
                                 <Button x:Name="NavAppointmentsButton"
                                         Content="{DynamicResource NavAppointments}"
                                         Tag="🗓"
-                                        Style="{StaticResource NavButtonStyle}"
+                                        Style="{DynamicResource NavButtonStyle}"
                                         Click="AppointmentsButton_Click" />
 
                                 <Button x:Name="NavPrescriptionButton"
                                         Content="{DynamicResource NavPrescriptions}"
                                         Tag="💊"
-                                        Style="{StaticResource NavButtonStyle}"
+                                        Style="{DynamicResource NavButtonStyle}"
                                         Click="PrescriptionButton_Click" />
 
                                 <Button x:Name="NavSettingsButton"
                                         Content="{DynamicResource NavSettings}"
                                         Tag="⚙"
-                                        Style="{StaticResource NavButtonStyle}"
+                                        Style="{DynamicResource NavButtonStyle}"
                                         Click="SettingsButton_Click" />
                             </StackPanel>
 
@@ -325,10 +327,10 @@
                                     CornerRadius="14" Background="Transparent" BorderThickness="0">
                                 <StackPanel>
                                     <TextBlock Text="{DynamicResource TipTitle}"
-                                               Foreground="{StaticResource Text0Brush}"
+                                               Foreground="{DynamicResource Text0Brush}"
                                                FontSize="13" FontWeight="SemiBold" />
                                     <TextBlock Text="{DynamicResource TipText}"
-                                               Foreground="{StaticResource HintBrush}"
+                                               Foreground="{DynamicResource HintBrush}"
                                                FontSize="12" Margin="0,6,0,0" />
                                 </StackPanel>
                             </Border>
@@ -338,7 +340,9 @@
 
                 <!-- Content card -->
                 <Border Grid.Column="2" CornerRadius="18"
-                        Background="#0F111827" BorderBrush="#1AFFFFFF" BorderThickness="1">
+                        Background="{DynamicResource CardContainerBrush}" 
+                        BorderBrush="{DynamicResource ChromeBorderBrush}" 
+                        BorderThickness="1">
                     <Grid>
                         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Background="Transparent" />
                         <Button Content="+" Style="{StaticResource FabStyle}"

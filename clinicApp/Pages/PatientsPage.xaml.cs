@@ -1,7 +1,9 @@
 ﻿using clinicApp.data;
 using clinicApp.Models;
+using clinicApp.Services;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace clinicApp
@@ -15,6 +17,12 @@ namespace clinicApp
         {
             InitializeComponent();
             _db = new DataBaseManager();
+            
+            // Apply RTL for Arabic language
+            FlowDirection = LanguageManager.Instance.GetFlowDirection();
+            LanguageManager.Instance.LanguageChanged += (_, _) => 
+                FlowDirection = LanguageManager.Instance.GetFlowDirection();
+            
             LoadPatients();
         }
 

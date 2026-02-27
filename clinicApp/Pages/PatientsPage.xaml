@@ -7,6 +7,81 @@
       FontFamily="Segoe UI">
 
     <Page.Resources>
+
+        <Style x:Key="ScrollBarThumbStyle" TargetType="Thumb">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="IsTabStop" Value="false"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border x:Name="rectangle"
+                            Background="{DynamicResource ScrollBarThumbBrush}"
+                            Opacity="0.3" 
+                            CornerRadius="4"
+                            Margin="2,0,2,0"
+                            SnapsToDevicePixels="True" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="rectangle" Property="Opacity" Value="0.6" />
+                            </Trigger>
+                            <Trigger Property="IsDragging" Value="true">
+                                <Setter TargetName="rectangle" Property="Opacity" Value="0.8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernScrollBar" TargetType="ScrollBar">
+            <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
+            <Setter Property="Width" Value="8"/>
+            <Setter Property="Margin" Value="2,0,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid x:Name="Bg" SnapsToDevicePixels="true" Background="Transparent">
+                            <Track x:Name="PART_Track" IsDirectionReversed="true" IsEnabled="{TemplateBinding IsEnabled}">
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource ScrollBarThumbStyle}" />
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernScrollViewerStyle" TargetType="ScrollViewer">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollViewer">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <ScrollContentPresenter Grid.Column="0" Grid.Row="0" Margin="{TemplateBinding Padding}" />
+
+                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                   Grid.Column="1"
+                                   Value="{TemplateBinding VerticalOffset}"
+                                   Maximum="{TemplateBinding ScrollableHeight}"
+                                   ViewportSize="{TemplateBinding ViewportHeight}"
+                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                   Style="{StaticResource ModernScrollBar}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="SearchBoxStyle" TargetType="TextBox">
             <Setter Property="Height" Value="44" />
             <Setter Property="Padding" Value="14,0,14,0" />
@@ -80,8 +155,7 @@
                    Text="{DynamicResource PatientsSearchHint}" />
 
         <!-- Patients list -->
-        <ScrollViewer Grid.Row="4"
-                      VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="4" Style="{DynamicResource ModernScrollViewerStyle}">
             <ItemsControl x:Name="PatientsList">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -99,7 +173,11 @@
                             LastName="{Binding LastName}"
                             Phone="{Binding Phone}"
                             Email="{Binding Email}"
-                            Note="{Binding Note}" />
+                            Note="{Binding Note}"
+                            DateOfBirth="{Binding DateOfBirth}"
+                            Gender="{Binding Gender}"
+                            Weight="{Binding weight}"
+                            BloodType="{Binding BloodType}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

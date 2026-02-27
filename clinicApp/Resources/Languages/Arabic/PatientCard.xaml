@@ -5,9 +5,15 @@
 
     <sys:String x:Key="BtnHistory">السجل</sys:String>
     <sys:String x:Key="BtnEdit">تعديل</sys:String>
+    <sys:String x:Key="BtnSave">حفظ</sys:String>
+    <sys:String x:Key="BtnDlt">حذف</sys:String>
 
     <sys:String x:Key="LabelPhone">الهاتف</sys:String>
     <sys:String x:Key="LabelEmail">البريد الإلكتروني</sys:String>
+    <sys:String x:Key="LabelDob">تاريخ الميلاد</sys:String>
+    <sys:String x:Key="LabelGender">الجنس</sys:String>
+    <sys:String x:Key="LabelWeight">الوزن</sys:String>
+    <sys:String x:Key="LabelBloodType">فصيلة الدم</sys:String>
     <sys:String x:Key="LabelNote">ملاحظة</sys:String>
 
 </ResourceDictionary>

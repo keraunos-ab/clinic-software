@@ -4,18 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="SettingsTitle">Parametres</sys:String>
-    <sys:String x:Key="SettingsHeader">Parametres</sys:String>
-    <sys:String x:Key="SettingsSubtitle">Mettez a jour vos informations</sys:String>
+    <sys:String x:Key="SettingsTitle">paramètre</sys:String>
+    <sys:String x:Key="SettingsHeader">paramètre</sys:String>
+    <sys:String x:Key="SettingsSubtitle">Mettez à jour vos informations</sys:String>
     
     <sys:String x:Key="SettingsSectionTitle">Informations utilisateur</sys:String>
     
-    <sys:String x:Key="LabelFirstName">Prenom</sys:String>
+    <sys:String x:Key="LabelFirstName">Prénom</sys:String>
     <sys:String x:Key="LabelLastName">Nom</sys:String>
-    <sys:String x:Key="LabelPhone">Numero de telephone</sys:String>
+    <sys:String x:Key="LabelPhone">Numéro de téléphone</sys:String>
     <sys:String x:Key="LabelEmail">Email</sys:String>
-    <sys:String x:Key="LabelOrdre">No. ordre</sys:String>
-    <sys:String x:Key="LabelSpecialty">Specialite du medecin</sys:String>
+    <sys:String x:Key="LabelOrdre">N° d'ordre</sys:String>
+    <sys:String x:Key="LabelSpecialty">Spécialité du médecin</sys:String>
     <sys:String x:Key="LabelClinicName">Nom de la clinique</sys:String>
     <sys:String x:Key="LabelClinicAddress">Adresse de la clinique</sys:String>
     <sys:String x:Key="LabelLogo">Logo de la clinique (optionnel)</sys:String>
@@ -30,12 +30,12 @@
     <sys:String x:Key="LabelCurrentPassword">Mot de passe actuel</sys:String>
     <sys:String x:Key="LabelNewPassword">Nouveau mot de passe</sys:String>
     <sys:String x:Key="LabelConfirmPassword">Confirmer le nouveau mot de passe</sys:String>
-    <sys:String x:Key="BtnSetPassword">Definir le mot de passe</sys:String>
+    <sys:String x:Key="BtnSetPassword">Définir le mot de passe</sys:String>
     <sys:String x:Key="BtnChangePassword">Changer le mot de passe</sys:String>
     <sys:String x:Key="BtnRemovePassword">Supprimer le mot de passe</sys:String>
-    <sys:String x:Key="PasswordSetSuccess">Le mot de passe a ete defini avec succes.</sys:String>
-    <sys:String x:Key="PasswordChangedSuccess">Le mot de passe a ete change avec succes.</sys:String>
-    <sys:String x:Key="PasswordRemovedSuccess">La protection par mot de passe a ete supprimee.</sys:String>
+    <sys:String x:Key="PasswordSetSuccess">Le mot de passe a été défini avec succès.</sys:String>
+    <sys:String x:Key="PasswordChangedSuccess">Le mot de passe a été changé avec succès.</sys:String>
+    <sys:String x:Key="PasswordRemovedSuccess">La protection par mot de passe a été supprimée.</sys:String>
     <sys:String x:Key="PasswordMismatch">Les mots de passe ne correspondent pas.</sys:String>
     <sys:String x:Key="PasswordRequired">Veuillez entrer un mot de passe.</sys:String>
     <sys:String x:Key="CurrentPasswordIncorrect">Le mot de passe actuel est incorrect.</sys:String>

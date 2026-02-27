@@ -241,7 +241,17 @@ namespace clinicApp
         {
             var dialog = new QuickActionWindow();
             dialog.Owner = this;
-            dialog.ShowDialog();
+                dialog.ShowDialog();
+        }
+
+        public void RefreshCurrentPage()
+        {
+            var currentType = MainFrame.Content?.GetType();
+            if (currentType == typeof(HomePage)) { MainFrame.Navigate(new HomePage()); return; }
+            if (currentType == typeof(PatientsPage)) { MainFrame.Navigate(new PatientsPage()); return; }
+            if (currentType == typeof(AppointmentsPage)) { MainFrame.Navigate(new AppointmentsPage()); return; }
+            if (currentType == typeof(PrescriptionPage)) { MainFrame.Navigate(new PrescriptionPage()); return; }
+            if (currentType == typeof(Settings)) { MainFrame.Navigate(new Settings()); return; }
         }
 
         private void MainFrame_Navigated(object? sender, NavigationEventArgs e)

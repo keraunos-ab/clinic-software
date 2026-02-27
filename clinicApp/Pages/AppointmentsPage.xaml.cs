@@ -1,4 +1,5 @@
 ﻿using clinicApp.data;
+using clinicApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,6 +19,17 @@ namespace clinicApp
         public AppointmentsPage()
         {
             InitializeComponent();
+            
+            // Apply RTL for Arabic language
+            FlowDirection = LanguageManager.Instance.GetFlowDirection();
+            LanguageManager.Instance.LanguageChanged += (_, _) => 
+                FlowDirection = LanguageManager.Instance.GetFlowDirection();
+            
+            LoadAppointments();
+        }
+
+        private void OnAppointmentsChanged(object? sender, EventArgs e)
+        {
             LoadAppointments();
         }
 
@@ -29,16 +41,16 @@ namespace clinicApp
                 PatientColomn.Width = width * 0.25;
                 DateColomn.Width = width * 0.20;
                 TimeColomn.Width = width * 0.15;
-                NoteColomn.Width = width * 0.30;
+                NoteColomn.Width = width * 0.25;
                 DoneColomn.Width = width * 0.10;
             }
             else
             {
-                PatientColomn.Width = width * 0.355;
-                DateColomn.Width = width * 0.10;
-                TimeColomn.Width = width * 0.10;
-                NoteColomn.Width = width * 0.35;
-                DoneColomn.Width = width * 0.08;
+                PatientColomn.Width = width * 0.25;
+                DateColomn.Width = width * 0.20;
+                TimeColomn.Width = width * 0.15;
+                NoteColomn.Width = width * 0.25;
+                DoneColomn.Width = width * 0.10;
             }
         }
 

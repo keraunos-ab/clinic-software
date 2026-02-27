@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
+using clinicApp.Services;
 
 namespace clinicApp.Pages
 {
@@ -26,6 +27,11 @@ namespace clinicApp.Pages
         public Settings()
         {
             InitializeComponent();
+            
+            // Apply RTL for Arabic language
+            FlowDirection = LanguageManager.Instance.GetFlowDirection();
+            LanguageManager.Instance.LanguageChanged += (_, _) => 
+                FlowDirection = LanguageManager.Instance.GetFlowDirection();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

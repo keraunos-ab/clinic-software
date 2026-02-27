@@ -1,7 +1,9 @@
 ﻿<Page
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="clinicApp.PrescriptionPage"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d" x:Class="clinicApp.PrescriptionPage"
       Title="PrescriptionPage"
       FontFamily="Segoe UI">
 
@@ -72,6 +74,7 @@
         </Style>
 
         <Style x:Key="CustomComboBox" TargetType="ComboBox">
+            <Setter Property="FontSize" Value="18"/>
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="#888888"/>
             <Setter Property="BorderThickness" Value="1"/>
@@ -80,7 +83,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
                         <Grid>
-                            <ToggleButton x:Name="ToggleButton"
+                            <ToggleButton x:Name="ToggleButton" FontSize="18"
                                           Width="205"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         Background="{TemplateBinding Background}" 
@@ -106,7 +109,7 @@
                                 </ToggleButton.Template>
                             </ToggleButton>
 
-                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False" 
+                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False"
                                       Content="{TemplateBinding SelectionBoxItem}"
                                       ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                       ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
@@ -150,10 +153,8 @@
                            Foreground="Black"
                            Background="Transparent"
                            TextAlignment="Center"
-                           Width="360"
-                           Canvas.Left="220"
-                           Canvas.Top="970" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-
+                           Width="800"
+                           Canvas.Top="970" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <TextBlock x:Name="mail"
                         Text="waynebruce@wayneenterprise.com"
                         FontSize="22"
@@ -161,9 +162,8 @@
                         Foreground="Black"
                         Background="Transparent"
                         TextAlignment="Center"
-                        Width="594"
-                        Canvas.Left="103"
-                        Canvas.Top="994" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        Width="800"
+                       Canvas.Top="994" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
                 <TextBlock Text="Nom :"
                            TextAlignment="Right"
@@ -171,12 +171,36 @@
                            Style="{StaticResource LabelText}"
                            Canvas.Left="420"
                            Canvas.Top="175" HorizontalAlignment="Center" Width="159" Height="33" VerticalAlignment="Top"/>
-                <TextBox x:Name="FirstNameInput"
-                         Style="{StaticResource InputText}"
-                         Background="Transparent"
-                         Canvas.Left="579"
-                         Canvas.Top="175"
-                         Width="205" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+                <!-- Nom: Patient search box with popup -->
+                <Grid Canvas.Left="579" Canvas.Top="175" Width="205">
+                    <TextBox x:Name="FirstNameInput"
+                             Style="{StaticResource InputText}"
+                             Background="Transparent"
+                             Width="205"
+                             TextChanged="PatientSearchBox_TextChanged"
+                             PreviewKeyDown="PatientSearchBox_PreviewKeyDown"/>
+                    <Popup x:Name="PatientPopup"
+                           PlacementTarget="{Binding ElementName=FirstNameInput}"
+                           Placement="Bottom"
+                           StaysOpen="False"
+                           AllowsTransparency="True">
+                        <Border Background="White"
+                                BorderBrush="Gray"
+                                BorderThickness="1"
+                                Padding="4">
+                            <ListBox x:Name="PatientResultsList"
+                                     Width="205"
+                                     MaxHeight="220"
+                                     FontSize="14"
+                                     Background="White"
+                                     BorderThickness="0"
+                                     Foreground="Black"
+                                     DisplayMemberPath="FullName"
+                                     MouseLeftButtonUp="PatientResultsList_MouseLeftButtonUp"/>
+                        </Border>
+                    </Popup>
+                </Grid>
 
                 <TextBlock Text="Prenom :"
                            TextAlignment="Right"
@@ -218,12 +242,11 @@
                           Canvas.Top="274"
                           Width="205"
                           Height="37"
-                          HorizontalContentAlignment="Center"
-                          VerticalContentAlignment="Center"
-                          FontSize="20"
-                          SelectedIndex="0" HorizontalAlignment="Center" VerticalAlignment="Top">
-                    <ComboBoxItem Content="Male" Background="White"/>
-                    <ComboBoxItem Content="Female" Background="White"/>
+                          FontSize="200"
+                          SelectedIndex="0"
+                          IsEnabled="False">
+                    <ComboBoxItem Content="Male" FontSize="188"/>
+                    <ComboBoxItem Content="Female"  FontSize="188"/>
                 </ComboBox>
 
                 <TextBlock Text="Date :"
@@ -249,16 +272,16 @@
                                   CanContentScroll="False">
 
                         <StackPanel>
-                            <Grid Margin="0,0,0,10">
+                            <Grid Margin="0,0,0,10" Background="#7FFFFFFF">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="355*"/>
+                                    <ColumnDefinition Width="360*"/>
                                     <!-- Remove btn (35 width + 8 margin) -->
                                     <!-- Medicament -->
-                                    <ColumnDefinition Width="170*"/>
+                                    <ColumnDefinition Width="160*"/>
                                     <!-- Dosage -->
                                     <ColumnDefinition Width="70*"/>
                                     <!-- N° boites -->
-                                    <ColumnDefinition Width="140*"/>
+                                    <ColumnDefinition Width="150*"/>
                                     <!-- Poscologie -->
                                     <ColumnDefinition Width="25"/>
                                 </Grid.ColumnDefinitions>
@@ -310,7 +333,7 @@
 
                 <!-- Doctor name: Dr + first + last -->
                 <TextBlock x:Name="DoctorNameText"
-                           Text="bruce wayne"
+                           Text="bruce waynI"
                            FontFamily="Constantia"
                            FontSize="28"
                            FontWeight="DemiBold"
@@ -341,9 +364,8 @@
                         Foreground="Black"
                         Background="Transparent"
                         TextAlignment="Center"
-                        Width="540"
-                        Canvas.Left="130"
-                        Canvas.Top="1040" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        Width="800"
+                        Canvas.Top="1040" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <TextBlock Text="Patient :"
                         FontWeight="Bold"
                         Style="{StaticResource LabelText}"
@@ -356,7 +378,7 @@
                         FontWeight="Bold"
                         Foreground="Black"
                         Background="Transparent"
-                        Width="195"
+                       Width="195"
                         Height="29"
                         TextAlignment="Left"
                         Canvas.Top="172" Canvas.Left="10" HorizontalAlignment="Center" VerticalAlignment="Top"/>

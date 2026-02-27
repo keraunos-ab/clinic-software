@@ -6,10 +6,16 @@
     <!-- Actions -->
     <sys:String x:Key="BtnHistory">History</sys:String>
     <sys:String x:Key="BtnEdit">Edit</sys:String>
+    <sys:String x:Key="BtnSave">Save</sys:String>
+    <sys:String x:Key="BtnDlt">Delete</sys:String>
 
     <!-- Labels -->
     <sys:String x:Key="LabelPhone">Phone</sys:String>
     <sys:String x:Key="LabelEmail">Email</sys:String>
+    <sys:String x:Key="LabelDob">Date of Birth</sys:String>
+    <sys:String x:Key="LabelGender">Gender</sys:String>
+    <sys:String x:Key="LabelWeight">Weight</sys:String>
+    <sys:String x:Key="LabelBloodType">Blood Type</sys:String>
     <sys:String x:Key="LabelNote">Note</sys:String>
 
 </ResourceDictionary>

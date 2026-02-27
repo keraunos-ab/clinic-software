@@ -5,8 +5,8 @@
 
     <sys:String x:Key="AddSessionTitle">صفحة إضافة جلسة</sys:String>
     <sys:String x:Key="AddSessionHeader">إضافة جلسة جديدة</sys:String>
-    
-    <sys:String x:Key="LabelPatientFirstName">الاسم الأول للمريض</sys:String>
+
+    <sys:String x:Key="LabelPatientFirstName">اختيار مريض</sys:String>
     <sys:String x:Key="LabelPatientLastName">اسم عائلة المريض</sys:String>
     <sys:String x:Key="LabelDate">التاريخ</sys:String>
     <sys:String x:Key="LabelTime">الوقت</sys:String>

@@ -54,6 +54,218 @@
             </Setter>
         </Style>
 
+        <Style x:Key="CustomCalendarItemStyle" TargetType="CalendarItem">
+            <Setter Property="Background" Value="{DynamicResource CardBgBrush}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CalendarItem">
+                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{DynamicResource CardStrokeBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="16" ShadowDepth="4" Opacity="0.2" Color="Black" />
+                            </Border.Effect>
+                            <Grid x:Name="PART_Root">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" Margin="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button x:Name="PART_PreviousButton" Grid.Column="0" Content="◀" Background="Transparent" BorderThickness="0"/>
+                                    <Button x:Name="PART_HeaderButton" Grid.Column="1" Background="Transparent" BorderThickness="0" FontWeight="Bold"/>
+                                    <Button x:Name="PART_NextButton" Grid.Column="2" Content="▶" Background="Transparent" BorderThickness="0"/>
+                                </Grid>
+
+                                <Grid x:Name="PART_MonthView"
+                                      Grid.Row="1"
+                                      Margin="6,0,6,6"
+                                      Visibility="Visible">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                </Grid>
+
+                                <Grid x:Name="PART_YearView"
+                                      Grid.Row="1"
+                                      Margin="6,0,6,6"
+                                      Visibility="Hidden">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CustomCalendarStyle" TargetType="Calendar">
+            <Setter Property="Background" Value="{DynamicResource CardBgBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        
+        <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Foreground" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="Background" Value="{DynamicResource CardContainerBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="14,0,14,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Border x:Name="Bd"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="10" />
+
+                            <ToggleButton x:Name="ToggleButton"
+                                          Focusable="False"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="Transparent">
+                                            <Path x:Name="Arrow"
+                                                  Fill="{DynamicResource HintBrush}"
+                                                  HorizontalAlignment="Right"
+                                                  VerticalAlignment="Center"
+                                                  Margin="0,0,14,0"
+                                                  Data="M0,0 L4,4 L8,0 Z" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource Text0Brush}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+
+                            <ContentPresenter Name="ContentSite"
+                                              IsHitTestVisible="False"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left" />
+
+                            <Popup Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid Name="DropDown"
+                                      SnapsToDevicePixels="True"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder"
+                                            Background="{DynamicResource CardBgBrush}"
+                                            BorderThickness="1"
+                                            BorderBrush="{DynamicResource CardStrokeBrush}"
+                                            CornerRadius="8" />
+                                    <ScrollViewer Margin="4" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True"
+                                                    KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDropDownOpen" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="{DynamicResource Blue0}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource CardStrokeBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ComboBoxItemStyle" TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="14,8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="ItemBd"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="6">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="ItemBd" Property="Background" Value="{DynamicResource HoverOverlayBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBd" Property="Background" Value="{DynamicResource HoverOverlayBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RadioButtonStyle" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0,0,16,0" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+
         <Style x:Key="PrimaryButtonStyle" TargetType="Button">
             <Setter Property="Height" Value="40" />
             <Setter Property="FontSize" Value="14" />
@@ -97,11 +309,226 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
+        <Style x:Key="InputBorderStyle" TargetType="Border">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Background" Value="{DynamicResource CardContainerBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderBrush">
+                        <Setter.Value>
+                            <SolidColorBrush Color="{DynamicResource Blue0}" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeBrush}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.6" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ThemedCalendarItemStyle" TargetType="CalendarItem">
+            <Setter Property="Background" Value="{DynamicResource CardBgBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CalendarItem">
+                        <Border Background="{DynamicResource CardBgBrush}"
+                                BorderBrush="{DynamicResource CardStrokeBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="16"
+                                                  ShadowDepth="4"
+                                                  Opacity="0.2"
+                                                  Color="Black" />
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <!-- Month/Year header -->
+                                <Grid Grid.Row="0" Margin="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button x:Name="PART_PreviousButton"
+                                            Grid.Column="0"
+                                            Content="◀"
+                                            FontSize="10"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Foreground="{DynamicResource Text1Brush}"
+                                            Cursor="Hand"
+                                            Padding="8,4" />
+                                    <Button x:Name="PART_HeaderButton"
+                                            Grid.Column="1"
+                                            FontWeight="SemiBold"
+                                            FontSize="13"
+                                            HorizontalAlignment="Center"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Foreground="{DynamicResource Text0Brush}"
+                                            Cursor="Hand" />
+                                    <Button x:Name="PART_NextButton"
+                                            Grid.Column="2"
+                                            Content="▶"
+                                            FontSize="10"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Foreground="{DynamicResource Text1Brush}"
+                                            Cursor="Hand"
+                                            Padding="8,4" />
+                                </Grid>
+
+                                <!-- Day / Month / Year grid -->
+                                <Grid x:Name="PART_MonthView"
+                                      Grid.Row="1"
+                                      Margin="6,0,6,6"
+                                      Visibility="Visible">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                </Grid>
+
+                                <Grid x:Name="PART_YearView"
+                                      Grid.Row="1"
+                                      Margin="6,0,6,6"
+                                      Visibility="Hidden">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Calendar">
+            <Setter Property="Background" Value="{DynamicResource CardBgBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text0Brush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CalendarItemStyle" Value="{StaticResource ThemedCalendarItemStyle}" />
+        </Style>
+        
+        <!-- Scroll bar styles copied from PatientsPage to provide a modern slim thumb appearance -->
+        <Style x:Key="ScrollBarThumbStyle" TargetType="Thumb">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="IsTabStop" Value="false"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border x:Name="rectangle"
+                            Background="{DynamicResource ScrollBarThumbBrush}"
+                            Opacity="0.3" 
+                            CornerRadius="4"
+                            Margin="2,0,2,0"
+                            SnapsToDevicePixels="True" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="rectangle" Property="Opacity" Value="0.6" />
+                            </Trigger>
+                            <Trigger Property="IsDragging" Value="true">
+                                <Setter TargetName="rectangle" Property="Opacity" Value="0.8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernScrollBar" TargetType="ScrollBar">
+            <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
+            <Setter Property="Width" Value="8"/>
+            <Setter Property="Margin" Value="2,0,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid x:Name="Bg" SnapsToDevicePixels="true" Background="Transparent">
+                            <Track x:Name="PART_Track" IsDirectionReversed="true" IsEnabled="{TemplateBinding IsEnabled}">
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource ScrollBarThumbStyle}" />
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernScrollViewerStyle" TargetType="ScrollViewer">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollViewer">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <ScrollContentPresenter Grid.Column="0" Grid.Row="0" Margin="{TemplateBinding Padding}" />
+
+                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                   Grid.Column="1"
+                                   Value="{TemplateBinding VerticalOffset}"
+                                   Maximum="{TemplateBinding ScrollableHeight}"
+                                   ViewportSize="{TemplateBinding ViewportHeight}"
+                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                   Style="{StaticResource ModernScrollBar}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
-    <ScrollViewer>
+    <ScrollViewer VerticalScrollBarVisibility="Visible" Style="{StaticResource ModernScrollViewerStyle}">
         <Grid Margin="20">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -123,6 +550,7 @@
                        FontWeight="Bold"
                        Margin="0"/>
 
+            <!-- First Name / Last Name -->
             <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,10">
                 <TextBlock Text="{DynamicResource LabelFirstName}" Style="{StaticResource LabelStyle}" />
                 <TextBox x:Name="PatientFirstName"
@@ -137,21 +565,96 @@
                          ToolTip="{DynamicResource ToolTipLastName}"/>
             </StackPanel>
 
-            <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,10">
+            <!-- Date of Birth / Gender -->
+            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,10,10">
+                <TextBlock Text="{DynamicResource LabelDateOfBirth}" Style="{StaticResource LabelStyle}" />
+                <Border Style="{StaticResource InputBorderStyle}">
+                    <DatePicker x:Name="DateOfBirth"
+                                SelectedDateFormat="Short"
+                                VerticalContentAlignment="Center"
+                                Foreground="{DynamicResource Text0Brush}"
+                                BorderThickness="0"
+                                Background="Transparent"
+                                CalendarStyle="{StaticResource CustomCalendarStyle}"
+                                ToolTip="{DynamicResource ToolTipDateOfBirth}">
+                        <DatePicker.Resources>
+                            <Style TargetType="{x:Type DatePickerTextBox}">
+                                <Setter Property="Foreground" Value="{DynamicResource Text0Brush}"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type DatePickerTextBox}">
+                                            <Grid Background="{TemplateBinding Background}">
+                                                <ScrollViewer x:Name="PART_ContentHost"
+                                                              Margin="14,0,0,0"
+                                                              VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DatePicker.Resources>
+                    </DatePicker>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,0,0,10">
+                <TextBlock Text="{DynamicResource LabelGender}" Style="{StaticResource LabelStyle}" />
+                <ComboBox x:Name="Gender"
+                          Style="{StaticResource ComboBoxStyle}"
+                          ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                          SelectedIndex="0">
+                    <ComboBoxItem Content="Male" />
+                    <ComboBoxItem Content="Female" />
+                </ComboBox>
+            </StackPanel>
+
+            <!-- Weight / Blood Type -->
+            <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,10,10">
+                <TextBlock Text="{DynamicResource LabelWeight}" Style="{StaticResource LabelStyle}" />
+                <TextBox x:Name="Weight"
+                         Style="{StaticResource InputBoxStyle}"
+                         ToolTip="{DynamicResource ToolTipWeight}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Grid.Column="1" Margin="10,0,0,10">
+                <TextBlock Text="{DynamicResource LabelBloodType}" Style="{StaticResource LabelStyle}" />
+                <StackPanel Margin="0,6,0,0">
+                    <WrapPanel Margin="0,0,0,6">
+                        <RadioButton x:Name="BloodAPos" Content="A+" GroupName="BloodType" Style="{StaticResource RadioButtonStyle}"/>
+                        <RadioButton x:Name="BloodBPos" Content="B+" GroupName="BloodType" Style="{StaticResource RadioButtonStyle}"/>
+                        <RadioButton x:Name="BloodABPos" Content="AB+" GroupName="BloodType" Style="{StaticResource RadioButtonStyle}"/>
+                        <RadioButton x:Name="BloodOPos" Content="O+" GroupName="BloodType" Style="{StaticResource RadioButtonStyle}"/>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <RadioButton x:Name="BloodANeg" Content="A-" GroupName="BloodType" Style="{StaticResource RadioButtonStyle}"/>
+                        <RadioButton x:Name="BloodBNeg" Content="B-" GroupName="BloodType" Style="{StaticResource RadioButtonStyle}"/>
+                        <RadioButton x:Name="BloodABNeg" Content="AB-" GroupName="BloodType" Style="{StaticResource RadioButtonStyle}"/>
+                        <RadioButton x:Name="BloodONeg" Content="O-" GroupName="BloodType" Style="{StaticResource RadioButtonStyle}"/>
+                    </WrapPanel>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Phone -->
+            <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Margin="0,0,0,10">
                 <TextBlock Text="{DynamicResource LabelPhone}" Style="{StaticResource LabelStyle}" />
                 <TextBox x:Name="Phone"
                          Style="{StaticResource InputBoxStyle}"
                          ToolTip="{DynamicResource ToolTipPhone}"/>
             </StackPanel>
 
-            <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,0,0,10">
+            <!-- Email -->
+            <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Margin="0,0,0,10">
                 <TextBlock Text="{DynamicResource LabelEmail}" Style="{StaticResource LabelStyle}" />
                 <TextBox x:Name="Email"
                          Style="{StaticResource InputBoxStyle}"
                          ToolTip="{DynamicResource ToolTipEmail}"/>
             </StackPanel>
 
-            <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Margin="0,0,0,10">
+            <!-- Note -->
+            <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Margin="0,0,0,10">
                 <TextBlock Text="{DynamicResource LabelNote}" Style="{StaticResource LabelStyle}" />
                 <TextBox x:Name="Note"
                          Style="{StaticResource InputBoxStyle}"
@@ -162,7 +665,8 @@
                          ToolTip="{DynamicResource ToolTipNote}"/>
             </StackPanel>
 
-            <Button Grid.Row="5" Grid.ColumnSpan="2"
+            <!-- Save Button -->
+            <Button Grid.Row="8" Grid.ColumnSpan="2"
                     Content="{DynamicResource BtnSave}"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Click="SavePatient_Click"/>

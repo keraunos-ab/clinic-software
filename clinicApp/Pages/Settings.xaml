@@ -11,7 +11,54 @@
       Loaded="Page_Loaded">
 
     <Page.Resources>
-        <!-- Common styles -->
+        <Style x:Key="ScrollBarThumbStyle" TargetType="Thumb">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="IsTabStop" Value="false"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border x:Name="rectangle"
+                            Background="{DynamicResource ScrollBarThumbBrush}"
+                            Opacity="0.3" 
+                            CornerRadius="4"
+                            Margin="2,0,2,0"
+                            SnapsToDevicePixels="True" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="rectangle" Property="Opacity" Value="0.6" />
+                            </Trigger>
+                            <Trigger Property="IsDragging" Value="true">
+                                <Setter TargetName="rectangle" Property="Opacity" Value="0.8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ScrollBar">
+            <Setter Property="Width" Value="8"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid x:Name="Bg" SnapsToDevicePixels="True">
+                            <Track x:Name="PART_Track" IsDirectionReversed="true" IsEnabled="{TemplateBinding IsEnabled}">
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource ScrollBarThumbStyle}" />
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="PART_Track" Property="Opacity" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
         <Style x:Key="LabelStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="{DynamicResource Text1Brush}" />
             <Setter Property="FontSize" Value="13" />
@@ -104,21 +151,15 @@
         </Style>
     </Page.Resources>
 
-    <Grid x:Name="RootGrid" Background="{DynamicResource WindowBackgroundBrush}" Margin="28">
-        <Border Width="900"
-                MaxWidth="900"
-                Padding="0"
+    <Grid x:Name="RootGrid" Background="{DynamicResource PageBackgroundBrush}" Margin="28">
+        <Border Width="1000"
+                Padding="10"
                 CornerRadius="18"
-                Background="Transparent"
-                BorderBrush="{DynamicResource CardStrokeBrush}"
                 BorderThickness="1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="35" ShadowDepth="0" Opacity="0.45" Color="#FF000000" />
-            </Border.Effect>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ScrollViewer VerticalScrollBarVisibility="Visible">
                 <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                     <!-- Header -->
                     <StackPanel Orientation="Vertical" Margin="0,0,0,18">
@@ -135,13 +176,9 @@
                     </StackPanel>
 
                     <!-- Fieldset: User credentials -->
-                    <Border Margin="0,0,0,18"
+                    <Border Margin="0"
                             Width="Auto"
-                            Padding="22"
-                            CornerRadius="14"
-                            Background="Transparent"
-                            BorderBrush="{DynamicResource CardStrokeBrush}"
-                            BorderThickness="0">
+                            Padding="22">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -222,6 +259,7 @@
                                         <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                             <Button x:Name="LogoBrowseButton"
                                                     Content="{DynamicResource BtnBrowseLogo}"
+                                                    Foreground="{DynamicResource Text0Brush}"
                                                     Height="44"
                                                     Width="200"
                                                     HorizontalAlignment="Left"

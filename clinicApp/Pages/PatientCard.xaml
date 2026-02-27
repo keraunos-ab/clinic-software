@@ -7,7 +7,7 @@
              Background="Transparent"
              FontFamily="Segoe UI"
              Margin="10"
-             Width="380">
+             Width="450">
 
     <UserControl.Resources>
         <Style x:Key="CardStyle" TargetType="Border">
@@ -71,16 +71,20 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="12" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="12" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!-- Header: name + history button -->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel>
+                <StackPanel Grid.ColumnSpan="3">
                     <TextBlock Foreground="{DynamicResource Text0Brush}"
                                FontSize="16"
                                FontWeight="SemiBold" Width="Auto"
@@ -91,26 +95,49 @@
 
                 </StackPanel>
 
-                <Button Grid.Column="1"
+                <Button x:Name="HistoryButton"
+                        Grid.Column="3"
+                        Width="Auto"
+                        MinWidth="60"
+                        Padding="10,5"
+                        HorizontalAlignment="Center"
+                        Margin="5"
                         Content="{DynamicResource BtnHistory}"
                         Style="{StaticResource InlineButtonStyle}"
                         Click="HistoryButton_Click" />
-                
+
                 <Button x:Name="saveEditButton"
+                        Width="Auto"
+                        MinWidth="50"
+                        Padding="10,5"
+                        HorizontalAlignment="Center"
+                        Margin="5"
                         Content="{DynamicResource BtnEdit}"
                         Style="{StaticResource InlineButtonStyle}"
-                        Click="saveEditButton_Click" Margin="212,0,10,0" />
+                        Click="saveEditButton_Click" Grid.Column="1"/>
+
+                <Button x:Name="DeleteButton"
+                        Padding="10,5"
+                        Width="Auto"
+                        MinWidth="60"
+                        HorizontalAlignment="Center"
+                        Margin="5"
+                        Content="{DynamicResource BtnDlt}"
+                        Style="{StaticResource InlineButtonStyle}"
+                        Background="#18E81123"
+                        BorderBrush="#33E81123"
+                        Click="DeleteButton_Click" Grid.Column="2" />
             </Grid>
 
             <!-- Contact chips -->
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="137*" />
+                    <ColumnDefinition Width="269*" />
+                    <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
 
-                <Border Width="110" Grid.Column="0" HorizontalAlignment="Left" Style="{StaticResource ChipStyle}">
+                <Border Width="127" Grid.Column="0" HorizontalAlignment="Left" Style="{StaticResource ChipStyle}">
                     <StackPanel>
                         <TextBlock Text="{DynamicResource LabelPhone}"
                                    Foreground="{DynamicResource HintBrush}"
@@ -120,6 +147,7 @@
                                  Foreground="{DynamicResource Text1Brush}"
                                  BorderThickness="0"
                                  Background="Transparent"
+                                 Width="110"
                                  FontSize="13"
                                  Margin="0,4,0,0"
                                  IsReadOnly="True"
@@ -127,7 +155,7 @@
                     </StackPanel>
                 </Border>
 
-                <Border Width="228" HorizontalAlignment="Left" Grid.Column="1" Style="{StaticResource ChipStyle}" Grid.ColumnSpan="2">
+                <Border Width="270" HorizontalAlignment="Center" Grid.Column="1" Style="{StaticResource ChipStyle}">
                     <StackPanel>
                         <TextBlock Text="{DynamicResource LabelEmail}"
                                    Foreground="{DynamicResource HintBrush}"
@@ -145,13 +173,79 @@
                 </Border>
             </Grid>
 
+            <!-- Patient details chips -->
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="61*" />
+                    <ColumnDefinition Width="43*" />
+                    <ColumnDefinition Width="42*" />
+                    <ColumnDefinition Width="60*" />
+                </Grid.ColumnDefinitions>
+
+                <Border HorizontalAlignment="Center" Style="{StaticResource ChipStyle}" Width="122">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource LabelDob}"
+                                   Foreground="{DynamicResource HintBrush}"
+                                   FontSize="11" />
+                        <TextBlock Text="{Binding DateOfBirth, RelativeSource={RelativeSource AncestorType=UserControl}, StringFormat=d}"
+                                   Foreground="{DynamicResource Text1Brush}"
+                                   FontSize="13"
+                                   Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" HorizontalAlignment="Center" Style="{StaticResource ChipStyle}" Width="72" Margin="0,0,0,1">
+                    <Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-0.018"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Border.RenderTransform>
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource LabelGender}"
+                                   Foreground="{DynamicResource HintBrush}"
+                                   FontSize="11" />
+                        <TextBlock Text="{Binding Gender, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                   Foreground="{DynamicResource Text1Brush}"
+                                   FontSize="13"
+                                   Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" HorizontalAlignment="Center" Style="{StaticResource ChipStyle}" Width="82" Margin="0,-1,0,1">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource LabelWeight}"
+                                   Foreground="{DynamicResource HintBrush}"
+                                   FontSize="11" />
+                        <TextBlock Text="{Binding Weight, RelativeSource={RelativeSource AncestorType=UserControl}, StringFormat={}{0:0.#} kg, TargetNullValue=-}"
+                                   Foreground="{DynamicResource Text1Brush}"
+                                   FontSize="13"
+                                   Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="3" HorizontalAlignment="Center" Style="{StaticResource ChipStyle}" Width="108" Margin="0,1,0,1">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource LabelBloodType}"
+                                   Foreground="{DynamicResource HintBrush}"
+                                   FontSize="11" />
+                        <TextBlock Text="{Binding BloodType, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                   Foreground="{DynamicResource Text1Brush}"
+                                   FontSize="13"
+                                   Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
             <!-- Note -->
-            <Border Grid.Row="4"
+            <Border Grid.Row="6"
                     CornerRadius="14"
                     Background="{DynamicResource TopBarChipBrush}"
                     BorderBrush="{DynamicResource ChromeBorderBrush}"
                     BorderThickness="1"
-                    Padding="12">
+                    Padding="12" Margin="0,0,8,0">
                 <StackPanel>
                     <TextBlock Text="{DynamicResource LabelNote}"
                                Foreground="{DynamicResource HintBrush}"

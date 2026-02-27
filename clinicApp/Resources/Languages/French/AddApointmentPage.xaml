@@ -7,7 +7,7 @@
     <sys:String x:Key="AddAppointmentTitle">Ajouter un nouveau rendez-vous</sys:String>
 
     <sys:String x:Key="LabelSelectPatient">Nom du patient</sys:String>
-    <sys:String x:Key="LabelPatientLastName">Prenom du patient</sys:String>
+    <sys:String x:Key="LabelPatientLastName">Prénom du patient</sys:String>
     <sys:String x:Key="LabelDate">Date</sys:String>
     <sys:String x:Key="LabelTime">Heure</sys:String>
     <sys:String x:Key="LabelNote">Note</sys:String>

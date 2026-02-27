@@ -52,6 +52,10 @@ namespace clinicApp.data
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     first_name TEXT NOT NULL,
                     last_name TEXT NOT NULL,
+                    date_of_birth TEXT,
+                    gender TEXT,
+                    weight REAL,
+                    blood_type TEXT,
                     phone TEXT,
                     email TEXT,
                     note TEXT,
@@ -78,6 +82,12 @@ namespace clinicApp.data
                     description TEXT
                 );";
             cmd.ExecuteNonQuery();
+
+            // Migrate legacy numeric gender values to strings
+            cmd.CommandText = "UPDATE Patients SET gender = 'Male' WHERE gender = '0' OR gender = 0;";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = "UPDATE Patients SET gender = 'Female' WHERE gender = '1' OR gender = 1;";
+            cmd.ExecuteNonQuery();
         }
 
         public List<Patient> GetAllPatients()
@@ -87,7 +97,7 @@ namespace clinicApp.data
             using var conn = new SQLiteConnection(_clinicConnectionString);
             conn.Open();
 
-            using var cmd = new SQLiteCommand("SELECT * FROM Patients", conn);
+            using var cmd = new SQLiteCommand("SELECT * FROM Patients ORDER BY last_name COLLATE NOCASE, first_name COLLATE NOCASE", conn);
             using var reader = cmd.ExecuteReader();
 
             while (reader.Read())
@@ -97,6 +107,10 @@ namespace clinicApp.data
                     Id = Convert.ToInt32(reader["id"]),
                     FirstName = reader["first_name"].ToString() ?? "",
                     LastName = reader["last_name"].ToString() ?? "",
+                    DateOfBirth = DateTime.Parse(reader["date_of_birth"].ToString()!),
+                    Gender = reader["gender"].ToString() ?? "male",
+                    weight = reader["weight"] is DBNull ? null : Convert.ToDouble(reader["weight"]),
+                    BloodType = reader["blood_type"].ToString() ?? "",
                     Phone = reader["phone"]?.ToString(),
                     Email = reader["email"]?.ToString(),
                     Note = reader["note"]?.ToString()
@@ -131,7 +145,7 @@ namespace clinicApp.data
             }
         }
 
-        public void AddPatient(string firstName, string lastName, string phone, string email, string? note = null)
+        public void AddPatient(string firstName, string lastName, string phone, string email, string gender, string? note = null, DateTime? dateOfBirth = null, double? weight = null, string? bloodType = null)
         {
             string checkQuery = "SELECT COUNT(*) FROM Patients WHERE first_name = @FirstName AND last_name = @LastName";
             using (var conn = new SQLiteConnection(_clinicConnectionString))
@@ -149,8 +163,8 @@ namespace clinicApp.data
             }
 
             string insertQuery = @"
-        INSERT INTO Patients (first_name, last_name, phone, email, note)
-        VALUES (@FirstName, @LastName, @Phone, @Email, @Note)";
+        INSERT INTO Patients (first_name, last_name, phone, email, note, date_of_birth, gender, weight, blood_type)
+        VALUES (@FirstName, @LastName, @Phone, @Email, @Note, @DateOfBirth, @Gender, @Weight, @BloodType)";
             using (var conn = new SQLiteConnection(_clinicConnectionString))
             using (var cmd = new SQLiteCommand(insertQuery, conn))
             {
@@ -159,6 +173,10 @@ namespace clinicApp.data
                 cmd.Parameters.AddWithValue("@Phone", string.IsNullOrEmpty(phone) ? DBNull.Value : phone);
                 cmd.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(email) ? DBNull.Value : email);
                 cmd.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(note) ? DBNull.Value : note);
+                cmd.Parameters.AddWithValue("@DateOfBirth", dateOfBirth.HasValue ? dateOfBirth.Value.ToString("yyyy-MM-dd") : DBNull.Value);
+                cmd.Parameters.AddWithValue("@Gender", string.IsNullOrEmpty(gender) ? DBNull.Value : gender);
+                cmd.Parameters.AddWithValue("@Weight", weight.HasValue ? weight.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@BloodType", string.IsNullOrEmpty(bloodType) ? DBNull.Value : bloodType);
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
@@ -175,13 +193,17 @@ namespace clinicApp.data
             cmd.ExecuteNonQuery();
         }
 
-        public void UpdatePatientByID(int patientId, string firstName, string lastName, string phone, string email, string? note = null)
+        public void UpdatePatientByID(int patientId, string firstName, string lastName, string phone, string email, string gender, string? note = null, DateTime? dateOfBirth = null, double? weight = null, string? bloodType = null)
         {
             string query = @"
                 UPDATE Patients
                 SET first_name = @FirstName,
                     last_name = @LastName,
                     phone = @Phone,
+                    gender = @Gender,
+                    weight = @Weight,
+                    blood_type = @BloodType,
+                    date_of_birth = @DateOfBirth,
                     email = @Email,
                     note = @Note
                 WHERE id = @PatientId";
@@ -191,6 +213,10 @@ namespace clinicApp.data
             cmd.Parameters.AddWithValue("@FirstName", firstName);
             cmd.Parameters.AddWithValue("@LastName", lastName);
             cmd.Parameters.AddWithValue("@Phone", string.IsNullOrEmpty(phone) ? DBNull.Value : phone);
+            cmd.Parameters.AddWithValue("@Gender", string.IsNullOrEmpty(gender) ? DBNull.Value : gender);
+            cmd.Parameters.AddWithValue("@Weight", weight.HasValue ? weight.Value : DBNull.Value);
+            cmd.Parameters.AddWithValue("@BloodType", string.IsNullOrEmpty(bloodType) ? DBNull.Value : bloodType);
+            cmd.Parameters.AddWithValue("@DateOfBirth", dateOfBirth.HasValue ? dateOfBirth.Value.ToString("yyyy-MM-dd") : DBNull.Value);
             cmd.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(email) ? DBNull.Value : email);
             cmd.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(note) ? DBNull.Value : note);
             conn.Open();
@@ -300,7 +326,7 @@ namespace clinicApp.data
 
         public DataTable GetAppointmentsByPatient(int PatientId)
         {
-            string query = "SELECT * FROM Appointments WHERE Patient_i d = @PatientId";
+            string query = "SELECT * FROM Appointments WHERE patient_id = @PatientId";
             using var conn = new SQLiteConnection(_clinicConnectionString);
             using var cmd = new SQLiteCommand(query, conn);
             cmd.Parameters.AddWithValue("@PatientId", PatientId);
@@ -345,7 +371,7 @@ namespace clinicApp.data
             cmd.ExecuteNonQuery();
         }
 
-        public Patient GetPatientByID(int patientId)
+        public Patient? GetPatientByID(int patientId)
         {
             string query = "SELECT * FROM Patients WHERE id = @PatientId";
             using var conn = new SQLiteConnection(_clinicConnectionString);
@@ -358,8 +384,12 @@ namespace clinicApp.data
                 return new Patient
                 {
                     Id = Convert.ToInt32(reader["id"]),
-                    FirstName = reader["first_name"]?.ToString() ?? "",
-                    LastName = reader["last_name"]?.ToString() ?? "",
+                    FirstName = reader["first_name"].ToString() ?? "",
+                    LastName = reader["last_name"].ToString() ?? "",
+                    DateOfBirth = DateTime.Parse(reader["date_of_birth"].ToString()!),
+                    Gender = reader["gender"].ToString() ?? "male",
+                    weight = reader["weight"] is DBNull ? null : Convert.ToDouble(reader["weight"]),
+                    BloodType = reader["blood_type"].ToString() ?? "",
                     Phone = reader["phone"]?.ToString(),
                     Email = reader["email"]?.ToString(),
                     Note = reader["note"]?.ToString()
@@ -370,6 +400,42 @@ namespace clinicApp.data
                 Console.WriteLine("Patient not found.");
                 return null;
             }
+        }
+
+        public void deletePatient(string firstName, string lastName)
+        {
+            using var conn = new SQLiteConnection(_clinicConnectionString);
+            conn.Open();
+
+            string checkQuery = "SELECT id FROM Patients WHERE first_name = @FirstName AND last_name = @LastName";
+            using var checkCmd = new SQLiteCommand(checkQuery, conn);
+            checkCmd.Parameters.AddWithValue("@FirstName", firstName);
+            checkCmd.Parameters.AddWithValue("@LastName", lastName);
+
+            var result = checkCmd.ExecuteScalar();
+            if (result == null)
+            {
+                Console.WriteLine("Patient not found.");
+                return;
+            }
+
+            int patientId = Convert.ToInt32(result);
+
+            string deleteAppointments = "DELETE FROM Appointments WHERE patient_id = @PatientId";
+            using var cmd1 = new SQLiteCommand(deleteAppointments, conn);
+            cmd1.Parameters.AddWithValue("@PatientId", patientId);
+            cmd1.ExecuteNonQuery();
+
+            string deleteVisits = "DELETE FROM Visits WHERE patient_id = @PatientId";
+            using var cmd2 = new SQLiteCommand(deleteVisits, conn);
+            cmd2.Parameters.AddWithValue("@PatientId", patientId);
+            cmd2.ExecuteNonQuery();
+
+            // Finally, delete the patient
+            string deletePatient = "DELETE FROM Patients WHERE id = @PatientId";
+            using var cmd3 = new SQLiteCommand(deletePatient, conn);
+            cmd3.Parameters.AddWithValue("@PatientId", patientId);
+            cmd3.ExecuteNonQuery();
         }
         public void AddSession(int patientId, DateTime date, TimeSpan time, string? description = null)
         {
@@ -550,12 +616,12 @@ namespace clinicApp.data
                 return patients;
 
             const string query = @"
-        SELECT id, first_name, last_name, phone, email, note
-        FROM Patients
-        WHERE first_name LIKE @p || '%'
-           OR last_name  LIKE @p || '%'
-        ORDER BY last_name, first_name
-        LIMIT @limit;";
+                SELECT id, first_name, last_name, date_of_birth, gender, weight, blood_type, phone, email, note
+                FROM Patients
+                WHERE first_name LIKE @p || '%'
+                   OR last_name  LIKE @p || '%'
+                ORDER BY last_name, first_name
+                LIMIT @limit;";
 
             using var conn = new SQLiteConnection(_clinicConnectionString);
             using var cmd = new SQLiteCommand(query, conn);
@@ -570,8 +636,12 @@ namespace clinicApp.data
                 patients.Add(new Patient
                 {
                     Id = Convert.ToInt32(reader["id"]),
-                    FirstName = reader["first_name"]?.ToString() ?? "",
-                    LastName = reader["last_name"]?.ToString() ?? "",
+                    FirstName = reader["first_name"].ToString() ?? "",
+                    LastName = reader["last_name"].ToString() ?? "",
+                    DateOfBirth = DateTime.Parse(reader["date_of_birth"].ToString()!),
+                    Gender = reader["gender"].ToString() ?? "male",
+                    weight = reader["weight"] is DBNull ? null : Convert.ToDouble(reader["weight"]),
+                    BloodType = reader["blood_type"].ToString() ?? "",
                     Phone = reader["phone"]?.ToString(),
                     Email = reader["email"]?.ToString(),
                     Note = reader["note"]?.ToString()
@@ -600,10 +670,7 @@ namespace clinicApp.data
                 var existingStart = date.Date + existingTime.ToTimeSpan();
                 var existingEnd = existingStart.AddMinutes(AppointmentDurationMinutes);
 
-                // Check for overlap: new appointment starts during existing, OR existing starts during new
-                bool overlaps = (proposedStart < existingEnd && proposedEnd > existingStart);
-
-                if (overlaps)
+                if (proposedStart < existingEnd && proposedEnd > existingStart)
                 {
                     conflictingAppointment = new Apointment
                     {

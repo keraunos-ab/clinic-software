@@ -1,5 +1,6 @@
 ﻿using clinicApp.data;
 using clinicApp.Models;
+using clinicApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -120,6 +121,9 @@ namespace clinicApp
 
             PatientPopup.IsOpen = false;
             PatientResultsList.ItemsSource = null;
+
+            // Refresh the current page
+            PageRefreshService.RefreshCurrentPage();
         }
     }
 }

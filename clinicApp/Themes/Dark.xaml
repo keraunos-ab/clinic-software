@@ -1,4 +1,4 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- Main palette -->
@@ -19,7 +19,7 @@
     <SolidColorBrush x:Key="CardBgBrush" Color="{DynamicResource CardBg}" />
     <SolidColorBrush x:Key="CardStrokeBrush" Color="{DynamicResource CardStroke}" />
 
-    <!-- Common chrome brushes used by MainWindow -->
+    <!-- Common chrome brushes -->
     <SolidColorBrush x:Key="ChromeBorderBrush" Color="#1AFFFFFF" />
     <SolidColorBrush x:Key="CardContainerBrush" Color="#0F111827" />
     <SolidColorBrush x:Key="TopBarChipBrush" Color="#0FFFFFFF" />
@@ -43,69 +43,17 @@
                          RadiusX="1.1"
                          RadiusY="0.95">
         <GradientStop Color="{DynamicResource Bg1}" Offset="0" />
-        <GradientStop Color="{DynamicResource Bg0}" Offset="0.55" />
-        <GradientStop Color="#FF070A0F" Offset="1" />
+        <GradientStop Color="{DynamicResource Bg0}" Offset="1" />
     </RadialGradientBrush>
 
     <!-- ScrollBar thumb -->
-    <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#2AFFFFFF" />
-    <SolidColorBrush x:Key="ScrollBarThumbHoverBrush" Color="#3AFFFFFF" />
-    <SolidColorBrush x:Key="ScrollBarThumbDraggingBrush" Color="#4AFFFFFF" />
+    <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#FFFFFFFF" />
 
     <LinearGradientBrush x:Key="HomePageCardBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Color="#10141C26" Offset="0" />
         <GradientStop Color="#0B0F1622" Offset="1" />
     </LinearGradientBrush>
     <SolidColorBrush x:Key="HomePageCardBorderBrush" Color="#1FFFFFFF" />
-
-    <!-- Global ScrollBar style -->
-    <Style TargetType="{x:Type ScrollBar}">
-        <Setter Property="Width" Value="10" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ScrollBar}">
-                    <Grid SnapsToDevicePixels="True" Background="Transparent">
-                        <Track x:Name="PART_Track" IsDirectionReversed="True">
-                            <Track.DecreaseRepeatButton>
-                                <RepeatButton Command="ScrollBar.LineUpCommand"
-                                              Opacity="0"
-                                              Focusable="False" />
-                            </Track.DecreaseRepeatButton>
-                            <Track.IncreaseRepeatButton>
-                                <RepeatButton Command="ScrollBar.LineDownCommand"
-                                              Opacity="0"
-                                              Focusable="False" />
-                            </Track.IncreaseRepeatButton>
-
-                            <Track.Thumb>
-                                <Thumb MinHeight="30">
-                                    <Thumb.Template>
-                                        <ControlTemplate TargetType="{x:Type Thumb}">
-                                            <Border x:Name="Bd"
-                                                    CornerRadius="6"
-                                                    Background="{DynamicResource ScrollBarThumbBrush}" />
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ScrollBarThumbHoverBrush}" />
-                                                </Trigger>
-                                                <Trigger Property="IsDragging" Value="True">
-                                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ScrollBarThumbDraggingBrush}" />
-                                                </Trigger>
-                                                <Trigger Property="IsEnabled" Value="False">
-                                                    <Setter TargetName="Bd" Property="Opacity" Value="0.6" />
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Thumb.Template>
-                                </Thumb>
-                            </Track.Thumb>
-                        </Track>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
 
     <!-- Title bar buttons -->
     <Style x:Key="TitleBarButton" TargetType="Button">
