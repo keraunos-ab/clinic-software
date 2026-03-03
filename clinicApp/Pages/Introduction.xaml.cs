@@ -1,11 +1,12 @@
-﻿using System;
+﻿using clinicApp.Services;
+using Microsoft.Win32;
+using System;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Win32;
 
 namespace clinicApp.Pages
 {
@@ -21,6 +22,18 @@ namespace clinicApp.Pages
         public Introduction()
         {
             InitializeComponent();
+        }
+
+        private void OnLanguageChanged(object? sender, string language)
+        {
+            FlowDirection = LanguageManager.Instance.GetFlowDirection();
+        }
+
+        private void LanguageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LanguageSelector?.SelectedIndex == null || LanguageSelector.SelectedIndex < 0) return;
+
+            LanguageManager.Instance.SetLanguageByIndex(LanguageSelector.SelectedIndex);
         }
 
         private void BrowseLogoButton_Click(object sender, RoutedEventArgs e)

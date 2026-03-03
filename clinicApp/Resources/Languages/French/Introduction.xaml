@@ -5,23 +5,19 @@
 
     <sys:String x:Key="IntroTitle">Introduction</sys:String>
     <sys:String x:Key="IntroWelcome">Bienvenue ! Veuillez vous présenter.</sys:String>
-    <sys:String x:Key="IntroSubtitle">Les informations que vous entrez ci-dessous sont uniquement utilisées pour personnaliser votre logiciel de clinique. (vous pouvez les modifier plus tard)</sys:String>
+    <sys:String x:Key="IntroSubtitle">Les informations que vous entrez ci-dessous sont uniquement utilisées pour personnaliser votre logiciel de clinique.&#x0a;(vous pouvez les modifier plus tard)</sys:String>
 
     <sys:String x:Key="LabelFirstName">Prénom</sys:String>
     <sys:String x:Key="LabelLastName">Nom</sys:String>
     <sys:String x:Key="LabelPhone">Numéro de téléphone</sys:String>
-    <sys:String x:Key="LabelEmail">Email (facultatif)</sys:String>
-    <sys:String x:Key="LabelOrdre">N° ordre (facultatif)</sys:String>
+    <sys:String x:Key="LabelEmail">Email (optionnel)</sys:String>
+    <sys:String x:Key="LabelOrdre">N° ordre (optionnel)</sys:String>
     <sys:String x:Key="LabelSpecialty">Spécialité du médecin</sys:String>
     <sys:String x:Key="LabelClinicName">Nom de la clinique</sys:String>
     <sys:String x:Key="LabelClinicAddress">Adresse de la clinique</sys:String>
-    <sys:String x:Key="LabelLogo">Logo / Image (facultatif)</sys:String>
+    <sys:String x:Key="LabelLogo">Logo / Image (optionnel)</sys:String>
 
     <sys:String x:Key="BtnBrowse">Parcourir...</sys:String>
     <sys:String x:Key="BtnContinue">Continuer</sys:String>
-
-    <sys:String x:Key="WinMin">—</sys:String>
-    <sys:String x:Key="WinMax">□</sys:String>
-    <sys:String x:Key="WinClose">X</sys:String>
 
 </ResourceDictionary>

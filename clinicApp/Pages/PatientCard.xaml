@@ -7,7 +7,7 @@
              Background="Transparent"
              FontFamily="Segoe UI"
              Margin="10"
-             Width="450">
+             Width="450" Height="332">
 
     <UserControl.Resources>
         <Style x:Key="CardStyle" TargetType="Border">
@@ -39,6 +39,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="Bd"
+                                Padding="5,0"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
@@ -64,7 +65,7 @@
     </UserControl.Resources>
 
     <Border Style="{StaticResource CardStyle}">
-        <Grid>
+        <Grid Margin="-9,-9,-9,-9">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="12" />
@@ -86,12 +87,12 @@
 
                 <StackPanel Grid.ColumnSpan="3">
                     <TextBlock Foreground="{DynamicResource Text0Brush}"
-                               FontSize="16"
-                               FontWeight="SemiBold" Width="Auto"
-                               >
-                        <Run Text="{Binding FirstName, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                        <Run Text="{Binding LastName, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                    </TextBlock>
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               TextWrapping="Wrap"
+                               FontSize="18"
+                               FontWeight="SemiBold" Width="231" Height="45"
+                               ><Run Text="{Binding FirstName, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" /><Run Text="&#x0a;"/><Run Text="{Binding LastName, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" /></TextBlock>
 
                 </StackPanel>
 
@@ -155,7 +156,7 @@
                     </StackPanel>
                 </Border>
 
-                <Border Width="270" HorizontalAlignment="Center" Grid.Column="1" Style="{StaticResource ChipStyle}">
+                <Border Width="281" HorizontalAlignment="Center" Grid.Column="1" Style="{StaticResource ChipStyle}">
                     <StackPanel>
                         <TextBlock Text="{DynamicResource LabelEmail}"
                                    Foreground="{DynamicResource HintBrush}"
@@ -182,7 +183,7 @@
                     <ColumnDefinition Width="60*" />
                 </Grid.ColumnDefinitions>
 
-                <Border HorizontalAlignment="Center" Style="{StaticResource ChipStyle}" Width="122">
+                <Border HorizontalAlignment="Center" Style="{StaticResource ChipStyle}" Width="128">
                     <StackPanel>
                         <TextBlock Text="{DynamicResource LabelDob}"
                                    Foreground="{DynamicResource HintBrush}"

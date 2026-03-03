@@ -223,11 +223,9 @@
                     <ControlTemplate TargetType="TextBox">
                         <Border CornerRadius="10"
                                 Padding="{TemplateBinding Padding}"
-                                Background="{DynamicResource CardContainerBrush}"
+                                Background="{DynamicResource TopBarChipBrush}"
+                                BorderBrush="{DynamicResource ChromeBorderBrush}"
                                 BorderThickness="2">
-                            <Border.BorderBrush>
-                                <SolidColorBrush Color="{DynamicResource Blue0}" />
-                            </Border.BorderBrush>
                             <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Top" />
                         </Border>
                     </ControlTemplate>
@@ -298,7 +296,7 @@
                         <TextBlock x:Name="EtatCliniqueText"
                                    Text="Diabetique"
                                    FontSize="14" FontWeight="SemiBold"
-                                   Foreground="White" />
+                                   Foreground="White"/>
                     </Border>
                 </StackPanel>
 
@@ -366,7 +364,9 @@
                                Margin="0,0,0,8" />
                     <TextBox x:Name="ResultatBilanText"
                              Text="jsp franchement cha yji hna"
-                             Style="{StaticResource ReadOnlyChipField}" />
+                             Foreground="{DynamicResource Text0Brush}"
+                             Background="{DynamicResource TopBarChipBrush}"
+                             BorderBrush="{DynamicResource ChromeBorderBrush}"/>
                 </StackPanel>
 
                 <!-- ── Description diagnostique ── -->

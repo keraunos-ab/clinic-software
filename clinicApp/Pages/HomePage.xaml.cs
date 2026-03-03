@@ -47,7 +47,10 @@ namespace clinicApp
             string sessionFormat = TryFindResource("SessionCount") as string ?? "You did {0} session(s) today.";
 
             // Update welcome text
-            WelcomeDr.Text = $"{welcomeBack}\n{drPrefix} {firstName} {lastInitial}";
+            if(LanguageManager.Instance.CurrentLanguage == "English")
+                WelcomeDr.Text = $"{welcomeBack}\n{drPrefix} {lastInitial}. {firstName}";
+            else
+                WelcomeDr.Text = $"{welcomeBack}\n{drPrefix} {firstName}";
 
             // Update counters
             int appointmentCount = _db.GetTodaysAppointmentsCount();
