@@ -316,6 +316,12 @@
                                         Style="{DynamicResource NavButtonStyle}"
                                         Click="PrescriptionButton_Click" />
 
+                                <Button x:Name="NavConsultationButton"
+                                        Content="{DynamicResource NavConsultations}"
+                                        Tag="📋"
+                                        Style="{DynamicResource NavButtonStyle}"
+                                        Click="ConsultationButton_Click" />
+
                                 <Button x:Name="NavSettingsButton"
                                         Content="{DynamicResource NavSettings}"
                                         Tag="⚙"

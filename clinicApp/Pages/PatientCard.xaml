@@ -105,6 +105,8 @@
                         Margin="5"
                         Content="{DynamicResource BtnHistory}"
                         Style="{StaticResource InlineButtonStyle}"
+                        Background="#281199E8"
+                        BorderBrush="#631199E8"
                         Click="HistoryButton_Click" />
 
                 <Button x:Name="saveEditButton"
@@ -115,6 +117,8 @@
                         Margin="5"
                         Content="{DynamicResource BtnEdit}"
                         Style="{StaticResource InlineButtonStyle}"
+                        Background="#3843E811"
+                        BorderBrush="#8343E811"
                         Click="saveEditButton_Click" Grid.Column="1"/>
 
                 <Button x:Name="DeleteButton"

@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Data.SQLite;
-using System.IO;
 using System.Windows;
+using clinicApp.data;
 using clinicApp.Pages;
 using clinicApp.Services;
+using Npgsql;
 
 namespace clinicApp
 {
     public partial class App : Application
     {
-        private const string CredentialsDbFileName = "UserCredentials.db";
         private const string CredentialsTableName = "UserCredentials";
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -51,22 +50,17 @@ namespace clinicApp
         {
             try
             {
-                var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, CredentialsDbFileName);
-                if (!File.Exists(dbPath))
-                    return true;
-
-                using var conn = new SQLiteConnection($"Data Source={dbPath};Version=3;");
+                using var conn = new NpgsqlConnection(DataBaseManager.DefaultConnectionString);
                 conn.Open();
 
-                using var cmd = new SQLiteCommand(
-                    "SELECT name FROM sqlite_master WHERE type='table' AND name=@t LIMIT 1;",
+                using var cmd = new NpgsqlCommand(
+                    "SELECT 1 FROM information_schema.tables WHERE table_name = 'usercredentials' LIMIT 1",
                     conn);
-                cmd.Parameters.AddWithValue("@t", CredentialsTableName);
 
                 if (cmd.ExecuteScalar() is null)
                     return true;
 
-                using var countCmd = new SQLiteCommand($"SELECT COUNT(*) FROM {CredentialsTableName};", conn);
+                using var countCmd = new NpgsqlCommand($"SELECT COUNT(*) FROM {CredentialsTableName}", conn);
                 var count = Convert.ToInt64(countCmd.ExecuteScalar());
 
                 return count == 0;

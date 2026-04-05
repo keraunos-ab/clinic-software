@@ -11,8 +11,8 @@
       Background="Transparent">
 
     <Page.Resources>
-        <!-- ── Motif tab button (inactive) ── -->
-        <Style x:Key="MotifTabButton" TargetType="Button">
+        <!-- ── Consultation tab button (inactive) ── -->
+        <Style x:Key="ConsultationTabButton" TargetType="Button">
             <Setter Property="MinWidth" Value="110" />
             <Setter Property="Height" Value="36" />
             <Setter Property="FontSize" Value="14" />
@@ -47,8 +47,8 @@
             </Setter>
         </Style>
 
-        <!-- ── Motif tab button (active / selected) ── -->
-        <Style x:Key="MotifTabButtonActive" TargetType="Button" BasedOn="{StaticResource MotifTabButton}">
+        <!-- ── Consultation tab button (active / selected) ── -->
+        <Style x:Key="ConsultationTabButtonActive" TargetType="Button" BasedOn="{StaticResource ConsultationTabButton}">
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Background">
                 <Setter.Value>
@@ -247,17 +247,11 @@
                 BorderThickness="0,0,0,1"
                 Padding="16,12">
             <StackPanel x:Name="TabBar" Orientation="Horizontal" HorizontalAlignment="Left">
-                <Button x:Name="TabMotifA" Content="Motiv A"
-                        Style="{StaticResource MotifTabButtonActive}"
-                        Click="MotifTab_Click" Tag="0" />
-                <Button x:Name="TabMotifB" Content="Motiv B"
-                        Style="{StaticResource MotifTabButton}"
-                        Click="MotifTab_Click" Tag="1" />
-                <Button x:Name="AddMotifBtn" Content="+"
-                        Style="{StaticResource MotifTabButton}"
+                <Button x:Name="AddConsultationBtn" Content="+"
+                        Style="{StaticResource ConsultationTabButton}"
                         FontSize="24" FontWeight="Bold"
                         MinWidth="44" Width="44"
-                        Click="AddMotifBtn_Click" />
+                        Click="AddConsultationBtn_Click" />
             </StackPanel>
         </Border>
 
@@ -275,110 +269,109 @@
                         <TextBlock Text="←" FontSize="22" FontWeight="Bold"
                                    Foreground="{DynamicResource Text0Brush}" />
                     </Button>
-                    <Button Style="{StaticResource MotifTabButtonActive}"
+                    <Button Style="{StaticResource ConsultationTabButtonActive}"
                             DockPanel.Dock="Right"
-                            Content="History"
-                            Click="HistoryButton_Click" Width="Auto"/>
+                            Content="{DynamicResource BtnHistory2}"
+                            Click="ConsultationHistoryButton_Click" Width="Auto"/>
+                    <Button Style="{StaticResource ConsultationTabButtonActive}"
+                            DockPanel.Dock="Right"
+                            Content="{DynamicResource BtnFullHistory}"
+                            Click="FullHistoryButton_Click" Width="Auto" Margin="0,0,8,0"/>
                     <TextBlock x:Name="PatientNameHeader"
-                               Text="Patient firstname lastname 's medical record"
+                               Text=""
                                FontSize="20" FontWeight="Bold"
                                Foreground="{DynamicResource Text0Brush}"
                                VerticalAlignment="Center"
                                Margin="10,0,0,0" />
                 </DockPanel>
 
-                <!-- ── Etat Clinique ── -->
+                <!-- ── Motiv ── -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
-                    <TextBlock Text="Etat Clinique :"
+                    <TextBlock Text="{DynamicResource LabelMotiv}"
                                Style="{StaticResource FieldLabel}"
                                Margin="0,0,14,0" />
                     <Border Style="{StaticResource ChipBorder}">
-                        <TextBlock x:Name="EtatCliniqueText"
-                                   Text="Diabetique"
+                        <TextBlock x:Name="MotivText"
+                                   Text=""
                                    FontSize="14" FontWeight="SemiBold"
                                    Foreground="White"/>
                     </Border>
                 </StackPanel>
 
-                <!-- ── Medications (collapsible) ── -->
-                <Expander IsExpanded="False" Header="Medications :" Style="{StaticResource SectionExpander}" Margin="0,0,0,20">
-                    <StackPanel>
-                        <BulletDecorator Margin="28,3,0,3">
-                            <BulletDecorator.Bullet>
-                                <Ellipse Width="6" Height="6" Fill="{DynamicResource HintBrush}" VerticalAlignment="Center" />
-                            </BulletDecorator.Bullet>
-                            <TextBlock x:Name="Med1" Text="medication A" Style="{StaticResource ExpanderItemText}" />
-                        </BulletDecorator>
-                        <BulletDecorator Margin="28,3,0,3">
-                            <BulletDecorator.Bullet>
-                                <Ellipse Width="6" Height="6" Fill="{DynamicResource HintBrush}" VerticalAlignment="Center" />
-                            </BulletDecorator.Bullet>
-                            <TextBlock x:Name="Med2" Text="medication B" Style="{StaticResource ExpanderItemText}" />
-                        </BulletDecorator>
-                        <BulletDecorator Margin="28,3,0,3">
-                            <BulletDecorator.Bullet>
-                                <Ellipse Width="6" Height="6" Fill="{DynamicResource HintBrush}" VerticalAlignment="Center" />
-                            </BulletDecorator.Bullet>
-                            <TextBlock x:Name="Med3" Text="medication C" Style="{StaticResource ExpanderItemText}" />
-                        </BulletDecorator>
-                        <BulletDecorator Margin="28,3,0,3">
-                            <BulletDecorator.Bullet>
-                                <Ellipse Width="6" Height="6" Fill="{DynamicResource HintBrush}" VerticalAlignment="Center" />
-                            </BulletDecorator.Bullet>
-                            <TextBlock x:Name="Med4" Text="medication D" Style="{StaticResource ExpanderItemText}" />
-                        </BulletDecorator>
-                    </StackPanel>
-                </Expander>
-
-                <!-- ── Antecedents (collapsible) ── -->
-                <Expander IsExpanded="False" Header="Antecedents :" Style="{StaticResource SectionExpander}" Margin="0,0,0,24">
-                    <StackPanel>
-                        <BulletDecorator Margin="28,3,0,3">
-                            <BulletDecorator.Bullet>
-                                <Ellipse Width="6" Height="6" Fill="{DynamicResource HintBrush}" VerticalAlignment="Center" />
-                            </BulletDecorator.Bullet>
-                            <TextBlock x:Name="Ant1" Text="Random surgery on dd/mm/yyyy"
-                                       Style="{StaticResource ExpanderItemText}" />
-                        </BulletDecorator>
-                        <BulletDecorator Margin="28,3,0,3">
-                            <BulletDecorator.Bullet>
-                                <Ellipse Width="6" Height="6" Fill="{DynamicResource HintBrush}" VerticalAlignment="Center" />
-                            </BulletDecorator.Bullet>
-                            <TextBlock x:Name="Ant2" Text="Blank accident on dd/mm/yyyy caused x y z injuries/illnesses"
-                                       Style="{StaticResource ExpanderItemText}" />
-                        </BulletDecorator>
-                        <BulletDecorator Margin="28,3,0,3">
-                            <BulletDecorator.Bullet>
-                                <Ellipse Width="6" Height="6" Fill="{DynamicResource HintBrush}" VerticalAlignment="Center" />
-                            </BulletDecorator.Bullet>
-                            <TextBlock x:Name="Ant3" Text="jsp cha ynejem ykon antecedent lssl"
-                                       Style="{StaticResource ExpanderItemText}" />
-                        </BulletDecorator>
-                    </StackPanel>
-                </Expander>
-
-                <!-- ── Resultat bilan ── -->
+                <!-- ── Bilan ── -->
                 <StackPanel Margin="0,0,0,24">
-                    <TextBlock Text="Resultat bilan :"
+                    <TextBlock Text="{DynamicResource LabelBilan}"
                                Style="{StaticResource FieldLabel}"
                                Margin="0,0,0,8" />
-                    <TextBox x:Name="ResultatBilanText"
-                             Text="jsp franchement cha yji hna"
-                             Foreground="{DynamicResource Text0Brush}"
-                             Background="{DynamicResource TopBarChipBrush}"
-                             BorderBrush="{DynamicResource ChromeBorderBrush}"/>
+                    <Border x:Name="BilanImageBorder"
+                            CornerRadius="10"
+                            BorderBrush="{DynamicResource ChromeBorderBrush}"
+                            BorderThickness="2"
+                            Background="{DynamicResource CardContainerBrush}"
+                            Padding="10"
+                            MaxHeight="300">
+                        <Image x:Name="BilanImage"
+                               Stretch="Uniform"
+                               HorizontalAlignment="Left"
+                               Cursor="Hand"
+                               MouseLeftButtonDown="BilanImage_MouseLeftButtonDown" />
+                    </Border>
                 </StackPanel>
 
-                <!-- ── Description diagnostique ── -->
+                <!-- ── Antecedents (collapsible) ── -->
+                <Expander IsExpanded="False" Header="{DynamicResource LabelAntecedents}" Style="{StaticResource SectionExpander}" Margin="0,0,0,20">
+                    <StackPanel x:Name="AntecedentsPanel" />
+                </Expander>
+
+                <!-- ── Medications (collapsible) ── -->
+                <Expander IsExpanded="False" Header="{DynamicResource LabelMedications}" Style="{StaticResource SectionExpander}" Margin="0,0,0,24">
+                    <StackPanel x:Name="MedicationsPanel" />
+                </Expander>
+
+                <!-- ── HDM (Histoire de la Maladie) ── -->
                 <StackPanel Margin="0,0,0,24">
-                    <TextBlock Text="Description diagnostique"
+                    <TextBlock Text="{DynamicResource LabelHDM}"
+                               Style="{StaticResource FieldLabel}"
+                               Margin="0,0,0,8" />
+                    <TextBox x:Name="HDMText"
+                             Text=""
+                             IsReadOnly="True"
+                             Foreground="{DynamicResource Text0Brush}"
+                             Background="{DynamicResource TopBarChipBrush}"
+                             BorderBrush="{DynamicResource ChromeBorderBrush}"
+                             BorderThickness="2"
+                             Padding="14,10"
+                             VerticalContentAlignment="Center"
+                             Height="40"/>
+                </StackPanel>
+
+                <!-- ── Etat Clinique ── -->
+                <StackPanel Margin="0,0,0,24">
+                    <TextBlock Text="{DynamicResource LabelEtatClinique}"
                                Style="{StaticResource FieldLabel}"
                                Foreground="{DynamicResource Text0Brush}"
                                Margin="0,0,0,8" />
-                    <TextBox x:Name="DescriptionDiagText"
+                    <TextBox x:Name="EtatCliniqueText"
                              Style="{StaticResource DiagnosticTextArea}"
                              Foreground="{DynamicResource Text0Brush}"
-                             Text="voila hbibna 3ndh kda mena melhih khasah techrolah caviar w chwiya crevette chwiya calamar, katrolah l7am." />
+                             Text="" />
+                </StackPanel>
+
+                <!-- ── CAT (Conduite à Tenir) ── -->
+                <StackPanel Margin="0,0,0,24">
+                    <TextBlock Text="{DynamicResource LabelCAT}"
+                               Style="{StaticResource FieldLabel}"
+                               Margin="0,0,0,8" />
+                    <TextBox x:Name="CATText"
+                             Text=""
+                             IsReadOnly="True"
+                             Foreground="{DynamicResource Text0Brush}"
+                             Background="{DynamicResource TopBarChipBrush}"
+                             BorderBrush="{DynamicResource ChromeBorderBrush}"
+                             BorderThickness="2"
+                             Padding="14,10"
+                             VerticalContentAlignment="Center"
+                             Height="40"/>
                 </StackPanel>
 
             </StackPanel>

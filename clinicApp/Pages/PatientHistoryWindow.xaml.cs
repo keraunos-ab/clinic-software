@@ -7,21 +7,23 @@ namespace clinicApp
 {
     public partial class PatientHistoryWindow : Window
     {
-        public PatientHistoryWindow(string firstName, string lastName, List<Session> sessions)
+        public PatientHistoryWindow(string firstName, string lastName, List<Checkup> checkups, string? title = null)
         {
             InitializeComponent();
 
-            // Show patient's full name
             PatientNameTextBlock.Text = $"{firstName} {lastName}";
 
-            // Sort sessions descending by date/time
-            var sortedSessions = sessions
+            if (title != null)
+                HeaderTitleText.Text = title;
+
+            // Sort checkups descending by date/time
+            var sortedCheckups = checkups
                 .OrderByDescending(s => s.Date)
                 .ThenByDescending(s => s.Time)
                 .ToList();
 
-            // Bind sessions to ItemsControl
-            SessionsList.ItemsSource = sortedSessions;
+            // Bind checkups to ItemsControl
+            CheckupsList.ItemsSource = sortedCheckups;
         }
     }
 }

@@ -1,0 +1,17 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="BtnHistory2">Consultation History</sys:String>
+    <sys:String x:Key="BtnFullHistory">Full History</sys:String>
+
+    <sys:String x:Key="LabelMotiv">Reason</sys:String>
+    <sys:String x:Key="LabelBilan">Medical Report</sys:String>
+    <sys:String x:Key="LabelAntecedents">Medical History</sys:String>
+    <sys:String x:Key="LabelMedications">Medications</sys:String>
+    <sys:String x:Key="LabelHDM">History of Illness</sys:String>
+    <sys:String x:Key="LabelEtatClinique">Clinical State</sys:String>
+    <sys:String x:Key="LabelCAT">Plan of Action</sys:String>
+
+</ResourceDictionary>

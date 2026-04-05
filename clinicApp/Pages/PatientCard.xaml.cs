@@ -137,13 +137,19 @@ namespace clinicApp
                 return;
             }
 
-            Phone = PhoneTextBox.Text;
-            Email = EmailTextBox.Text;
-            Note = NoteTextBox.Text;
-
             if (DataContext is Patient patient)
             {
-                patient.Phone = string.IsNullOrWhiteSpace(PhoneTextBox.Text) ? null : PhoneTextBox.Text;
+                if (string.IsNullOrWhiteSpace(PhoneTextBox.Text))
+                {
+                    MessageBox.Show("Phone number is required.", "Missing Info", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                Phone = PhoneTextBox.Text;
+                Email = EmailTextBox.Text;
+                Note = NoteTextBox.Text;
+
+                patient.Phone = PhoneTextBox.Text;
                 patient.Email = string.IsNullOrWhiteSpace(EmailTextBox.Text) ? null : EmailTextBox.Text;
                 patient.Note = string.IsNullOrWhiteSpace(NoteTextBox.Text) ? null : NoteTextBox.Text;
 
@@ -152,11 +158,11 @@ namespace clinicApp
                     patient.Id,
                     patient.FirstName,
                     patient.LastName,
-                    patient.Phone ?? string.Empty,
+                    patient.Phone,
                     patient.Email ?? string.Empty,
                     patient.Gender,
-                    patient.Note,
                     patient.DateOfBirth,
+                    patient.Note,
                     patient.weight,
                     patient.BloodType
                 );

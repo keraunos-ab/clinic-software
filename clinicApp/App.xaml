@@ -12,21 +12,25 @@
                 <ui:ControlsDictionary />
                 
                 <!-- Default language (English) - will be replaced at runtime -->
-                <ResourceDictionary Source="Resources/Languages/English/MainWindow.xaml" />
-                <ResourceDictionary Source="Resources/Languages/English/HomePage.xaml" />
-                <ResourceDictionary Source="Resources/Languages/English/PatientsPage.xaml" />
-                <ResourceDictionary Source="Resources/Languages/English/AppointmentsPage.xaml" />
-                <ResourceDictionary Source="Resources/Languages/English/Settings.xaml" />
-                <ResourceDictionary Source="Resources/Languages/English/Introduction.xaml" />
-                <ResourceDictionary Source="Resources/Languages/English/PrescriptionPage.xaml" />
-                <ResourceDictionary Source="Resources/Languages/English/IntroductionWindow.xaml" />
-                <ResourceDictionary Source="Resources/Languages/English/PatientHistoryWindow.xaml" />
-                <ResourceDictionary Source="Resources/Languages/English/QuickActionWindow.xaml" />
-                <ResourceDictionary Source="Resources/Languages/English/PatientCard.xaml" />
-                <ResourceDictionary Source="Resources/Languages/English/AddPatientPage.xaml" />
-                <ResourceDictionary Source="Resources/Languages/English/AddApointmentPage.xaml" />
-                <ResourceDictionary Source="Resources/Languages/English/AddSessionPage.xaml" />
-                <ResourceDictionary Source="Resources/Languages/English/PasswordEntry.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/MainWindow.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/HomePage.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/PatientsPage.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/AppointmentsPage.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/Settings.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/Introduction.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/PrescriptionPage.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/IntroductionWindow.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/PatientHistoryWindow.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/QuickActionWindow.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/PatientCard.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/AddPatientPage.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/AddApointmentPage.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/AddSessionPage.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/PasswordEntry.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/MedicalFolder.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/AddMotiv.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/ConsultationPage.xaml" />
+                <ResourceDictionary Source="Resources/Languages/French/AddMedicalFolder.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

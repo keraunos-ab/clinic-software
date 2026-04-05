@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SQLite;
+using Npgsql;
 using System.IO;
 using IOPath = System.IO.Path;
 using System.Linq;
@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
+using clinicApp.data;
 using clinicApp.Services;
 
 namespace clinicApp.Pages
@@ -16,7 +17,6 @@ namespace clinicApp.Pages
     /// </summary>
     public partial class Settings : Page
     {
-        private const string CredentialsDbFileName = "UserCredentials.db";
         private const string CredentialsTableName = "UserCredentials";
         private static readonly string[] AllowedLogoExtensions = [".svg", ".png", ".jpg", ".jpeg"];
 
@@ -97,28 +97,24 @@ namespace clinicApp.Pages
         {
             try
             {
-                var dbPath = IOPath.Combine(AppDomain.CurrentDomain.BaseDirectory, CredentialsDbFileName);
-                if (!File.Exists(dbPath))
-                    return;
-
-                using var conn = new SQLiteConnection($"Data Source={dbPath};Version=3;");
+                using var conn = new NpgsqlConnection(DataBaseManager.DefaultConnectionString);
                 conn.Open();
 
-                using var cmd = new SQLiteCommand($"SELECT first_name, last_name, phone, email, ordre, specialty, clinic_name, clinic_address, logo_path FROM {CredentialsTableName} WHERE id = 1 LIMIT 1;", conn);
+                using var cmd = new NpgsqlCommand($"SELECT first_name, last_name, phone, email, ordre, specialty, clinic_name, clinic_address, logo_path FROM {CredentialsTableName} WHERE id = 1 LIMIT 1", conn);
                 using var reader = cmd.ExecuteReader();
                 if (!reader.Read())
                     return;
 
-                FirstNameTextBox.Text = reader["first_name"]?.ToString();
-                LastNameTextBox.Text = reader["last_name"]?.ToString();
-                PhoneTextBox.Text = reader["phone"]?.ToString();
-                EmailTextBox.Text = reader["email"]?.ToString();
-                OrdreTextBox.Text = reader["ordre"]?.ToString();
-                SpecialtyTextBox.Text = reader["specialty"]?.ToString();
-                ClinicNameTextBox.Text = reader["clinic_name"]?.ToString();
-                ClinicAddressTextBox.Text = reader["clinic_address"]?.ToString();
+                FirstNameTextBox.Text = reader["first_name"] is DBNull ? "" : CryptoHelper.SafeDecrypt(reader["first_name"].ToString());
+                LastNameTextBox.Text = reader["last_name"] is DBNull ? "" : CryptoHelper.SafeDecrypt(reader["last_name"].ToString());
+                PhoneTextBox.Text = reader["phone"] is DBNull ? "" : CryptoHelper.SafeDecrypt(reader["phone"].ToString());
+                EmailTextBox.Text = reader["email"] is DBNull ? "" : CryptoHelper.SafeDecrypt(reader["email"].ToString());
+                OrdreTextBox.Text = reader["ordre"] is DBNull ? "" : CryptoHelper.SafeDecrypt(reader["ordre"].ToString());
+                SpecialtyTextBox.Text = reader["specialty"] is DBNull ? "" : CryptoHelper.SafeDecrypt(reader["specialty"].ToString());
+                ClinicNameTextBox.Text = reader["clinic_name"] is DBNull ? "" : CryptoHelper.SafeDecrypt(reader["clinic_name"].ToString());
+                ClinicAddressTextBox.Text = reader["clinic_address"] is DBNull ? "" : CryptoHelper.SafeDecrypt(reader["clinic_address"].ToString());
 
-                _currentLogoPath = reader["logo_path"]?.ToString();
+                _currentLogoPath = reader["logo_path"] is DBNull ? null : CryptoHelper.SafeDecryptOrNull(reader["logo_path"].ToString());
                 if (!string.IsNullOrEmpty(_currentLogoPath) && File.Exists(_currentLogoPath))
                 {
                     LogoFileNameText.Text = IOPath.GetFileName(_currentLogoPath);
@@ -172,15 +168,11 @@ namespace clinicApp.Pages
                     File.Copy(_selectedLogoPath, storedLogoPath, overwrite: true);
                 }
 
-                var dbPath = IOPath.Combine(AppDomain.CurrentDomain.BaseDirectory, CredentialsDbFileName);
-                var cs = $"Data Source={dbPath};Version=3;";
-
-                using var conn = new SQLiteConnection(cs);
+                using var conn = new NpgsqlConnection(DataBaseManager.DefaultConnectionString);
                 conn.Open();
 
-                using var cmd = new SQLiteCommand(conn);
-
-                cmd.CommandText = $@"
+                // Ensure table exists
+                using (var createCmd = new NpgsqlCommand($@"
 CREATE TABLE IF NOT EXISTS {CredentialsTableName} (
     id INTEGER PRIMARY KEY CHECK (id = 1),
     first_name TEXT,
@@ -191,32 +183,14 @@ CREATE TABLE IF NOT EXISTS {CredentialsTableName} (
     specialty TEXT,
     clinic_name TEXT,
     clinic_address TEXT,
-    logo_path TEXT
-);";
-                cmd.ExecuteNonQuery();
-
-                // Add logo_path column if it doesn't exist (for existing databases)
-                cmd.CommandText = $"PRAGMA table_info({CredentialsTableName});";
-                var hasLogoColumn = false;
-                using (var pragmaReader = cmd.ExecuteReader())
+    logo_path TEXT,
+    password_hash TEXT
+);", conn))
                 {
-                    while (pragmaReader.Read())
-                    {
-                        if (pragmaReader["name"]?.ToString() == "logo_path")
-                        {
-                            hasLogoColumn = true;
-                            break;
-                        }
-                    }
+                    createCmd.ExecuteNonQuery();
                 }
 
-                if (!hasLogoColumn)
-                {
-                    cmd.CommandText = $"ALTER TABLE {CredentialsTableName} ADD COLUMN logo_path TEXT;";
-                    cmd.ExecuteNonQuery();
-                }
-
-                cmd.CommandText = $@"
+                using var upsertCmd = new NpgsqlCommand($@"
 INSERT INTO {CredentialsTableName}
 (id, first_name, last_name, phone, email, ordre, specialty, clinic_name, clinic_address, logo_path)
 VALUES
@@ -230,18 +204,18 @@ ON CONFLICT(id) DO UPDATE SET
     specialty = excluded.specialty,
     clinic_name = excluded.clinic_name,
     clinic_address = excluded.clinic_address,
-    logo_path = excluded.logo_path;";
-                cmd.Parameters.AddWithValue("@first_name", (object?)firstName ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@last_name", (object?)lastName ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@phone", string.IsNullOrWhiteSpace(phone) ? DBNull.Value : phone);
-                cmd.Parameters.AddWithValue("@email", string.IsNullOrWhiteSpace(email) ? DBNull.Value : email);
-                cmd.Parameters.AddWithValue("@ordre", string.IsNullOrWhiteSpace(ordre) ? DBNull.Value : ordre);
-                cmd.Parameters.AddWithValue("@specialty", string.IsNullOrWhiteSpace(specialty) ? DBNull.Value : specialty);
-                cmd.Parameters.AddWithValue("@clinic_name", string.IsNullOrWhiteSpace(clinicName) ? DBNull.Value : clinicName);
-                cmd.Parameters.AddWithValue("@clinic_address", string.IsNullOrWhiteSpace(clinicAddress) ? DBNull.Value : clinicAddress);
-                cmd.Parameters.AddWithValue("@logo_path", string.IsNullOrWhiteSpace(storedLogoPath) ? DBNull.Value : storedLogoPath);
+    logo_path = excluded.logo_path;", conn);
+                upsertCmd.Parameters.AddWithValue("@first_name", (object?)CryptoHelper.EncryptOrNull(firstName) ?? DBNull.Value);
+                upsertCmd.Parameters.AddWithValue("@last_name", (object?)CryptoHelper.EncryptOrNull(lastName) ?? DBNull.Value);
+                upsertCmd.Parameters.AddWithValue("@phone", string.IsNullOrWhiteSpace(phone) ? DBNull.Value : (object)CryptoHelper.Encrypt(phone));
+                upsertCmd.Parameters.AddWithValue("@email", string.IsNullOrWhiteSpace(email) ? DBNull.Value : (object)CryptoHelper.Encrypt(email));
+                upsertCmd.Parameters.AddWithValue("@ordre", string.IsNullOrWhiteSpace(ordre) ? DBNull.Value : (object)CryptoHelper.Encrypt(ordre));
+                upsertCmd.Parameters.AddWithValue("@specialty", string.IsNullOrWhiteSpace(specialty) ? DBNull.Value : (object)CryptoHelper.Encrypt(specialty));
+                upsertCmd.Parameters.AddWithValue("@clinic_name", string.IsNullOrWhiteSpace(clinicName) ? DBNull.Value : (object)CryptoHelper.Encrypt(clinicName));
+                upsertCmd.Parameters.AddWithValue("@clinic_address", string.IsNullOrWhiteSpace(clinicAddress) ? DBNull.Value : (object)CryptoHelper.Encrypt(clinicAddress));
+                upsertCmd.Parameters.AddWithValue("@logo_path", string.IsNullOrWhiteSpace(storedLogoPath) ? DBNull.Value : (object)CryptoHelper.Encrypt(storedLogoPath));
 
-                cmd.ExecuteNonQuery();
+                upsertCmd.ExecuteNonQuery();
 
                 _currentLogoPath = storedLogoPath;
                 _selectedLogoPath = null;
@@ -385,14 +359,10 @@ ON CONFLICT(id) DO UPDATE SET
         {
             try
             {
-                var dbPath = IOPath.Combine(AppDomain.CurrentDomain.BaseDirectory, CredentialsDbFileName);
-                if (!File.Exists(dbPath))
-                    return null;
-
-                using var conn = new SQLiteConnection($"Data Source={dbPath};Version=3;");
+                using var conn = new NpgsqlConnection(DataBaseManager.DefaultConnectionString);
                 conn.Open();
 
-                using var cmd = new SQLiteCommand($"SELECT password_hash FROM {CredentialsTableName} WHERE id = 1 LIMIT 1;", conn);
+                using var cmd = new NpgsqlCommand($"SELECT password_hash FROM {CredentialsTableName} WHERE id = 1 LIMIT 1", conn);
                 var result = cmd.ExecuteScalar();
                 return result?.ToString();
             }
@@ -406,16 +376,11 @@ ON CONFLICT(id) DO UPDATE SET
         {
             try
             {
-                var dbPath = IOPath.Combine(AppDomain.CurrentDomain.BaseDirectory, CredentialsDbFileName);
-                var cs = $"Data Source={dbPath};Version=3;";
-
-                using var conn = new SQLiteConnection(cs);
+                using var conn = new NpgsqlConnection(DataBaseManager.DefaultConnectionString);
                 conn.Open();
 
-                using var cmd = new SQLiteCommand(conn);
-
                 // Ensure table exists
-                cmd.CommandText = $@"
+                using (var createCmd = new NpgsqlCommand($@"
 CREATE TABLE IF NOT EXISTS {CredentialsTableName} (
     id INTEGER PRIMARY KEY CHECK (id = 1),
     first_name TEXT,
@@ -428,42 +393,24 @@ CREATE TABLE IF NOT EXISTS {CredentialsTableName} (
     clinic_address TEXT,
     logo_path TEXT,
     password_hash TEXT
-);";
-                cmd.ExecuteNonQuery();
-
-                // Check if password_hash column exists
-                cmd.CommandText = $"PRAGMA table_info({CredentialsTableName});";
-                var hasPasswordColumn = false;
-                using (var pragmaReader = cmd.ExecuteReader())
+);", conn))
                 {
-                    while (pragmaReader.Read())
-                    {
-                        if (pragmaReader["name"]?.ToString() == "password_hash")
-                        {
-                            hasPasswordColumn = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (!hasPasswordColumn)
-                {
-                    cmd.CommandText = $"ALTER TABLE {CredentialsTableName} ADD COLUMN password_hash TEXT;";
-                    cmd.ExecuteNonQuery();
+                    createCmd.ExecuteNonQuery();
                 }
 
                 // Update password
                 var passwordHash = password != null ? PasswordEntry.HashPassword(password) : null;
-                cmd.CommandText = $"UPDATE {CredentialsTableName} SET password_hash = @password_hash WHERE id = 1;";
-                cmd.Parameters.AddWithValue("@password_hash", (object?)passwordHash ?? DBNull.Value);
 
-                var rowsAffected = cmd.ExecuteNonQuery();
+                using var updateCmd = new NpgsqlCommand($"UPDATE {CredentialsTableName} SET password_hash = @password_hash WHERE id = 1", conn);
+                updateCmd.Parameters.AddWithValue("@password_hash", (object?)passwordHash ?? DBNull.Value);
+                var rowsAffected = updateCmd.ExecuteNonQuery();
 
                 // If no rows updated, insert a new row
                 if (rowsAffected == 0)
                 {
-                    cmd.CommandText = $"INSERT INTO {CredentialsTableName} (id, password_hash) VALUES (1, @password_hash);";
-                    cmd.ExecuteNonQuery();
+                    using var insertCmd = new NpgsqlCommand($"INSERT INTO {CredentialsTableName} (id, password_hash) VALUES (1, @ph)", conn);
+                    insertCmd.Parameters.AddWithValue("@ph", (object?)passwordHash ?? DBNull.Value);
+                    insertCmd.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)

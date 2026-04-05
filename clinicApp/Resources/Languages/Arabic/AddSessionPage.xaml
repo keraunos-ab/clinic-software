@@ -11,6 +11,7 @@
     <sys:String x:Key="LabelDate">التاريخ</sys:String>
     <sys:String x:Key="LabelTime">الوقت</sys:String>
     <sys:String x:Key="LabelDescription">الوصف</sys:String>
+    <sys:String x:Key="LabelConsultation">الاستشارة</sys:String>
 
     <sys:String x:Key="ToolTipSearchPatients">اكتب للبحث عن المرضى</sys:String>
     <sys:String x:Key="ToolTipLastNameAutoFill">سيتم ملء اسم العائلة تلقائياً</sys:String>

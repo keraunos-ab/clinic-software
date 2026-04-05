@@ -9,7 +9,7 @@
         public required string Gender { get; set; }
         public double? weight { get; set; }
         public required string BloodType { get; set; }
-        public string? Phone { get; set; }
+        public required string Phone { get; set; }
         public string? Email { get; set; }
         public string? Note { get; set; }
     }

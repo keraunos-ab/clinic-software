@@ -3,7 +3,7 @@ using clinicApp.Pages;
 using clinicApp.Services;
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
+using Npgsql;
 using System.Globalization;
 using System.IO;
 using System.Windows;
@@ -16,7 +16,6 @@ namespace clinicApp
 {
     public partial class MainWindow : Window
     {
-        private const string CredentialsDbFileName = "UserCredentials.db";
         private const string CredentialsTableName = "UserCredentials";
 
         private readonly DispatcherTimer _topBarClockTimer = new() { Interval = TimeSpan.FromSeconds(1) };
@@ -79,23 +78,18 @@ namespace clinicApp
         {
             try
             {
-                var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, CredentialsDbFileName);
-                if (!File.Exists(dbPath))
-                    return true;
-
-                using var conn = new SQLiteConnection($"Data Source={dbPath};Version=3;");
+                using var conn = new NpgsqlConnection(DataBaseManager.DefaultConnectionString);
                 conn.Open();
 
-                using var cmd = new SQLiteCommand(
-                    $"SELECT name FROM sqlite_master WHERE type='table' AND name=@t LIMIT 1;",
+                using var cmd = new NpgsqlCommand(
+                    "SELECT 1 FROM information_schema.tables WHERE table_name = 'usercredentials' LIMIT 1",
                     conn);
-                cmd.Parameters.AddWithValue("@t", CredentialsTableName);
 
                 var tableExists = cmd.ExecuteScalar() is not null;
                 if (!tableExists)
                     return true;
 
-                using var countCmd = new SQLiteCommand($"SELECT COUNT(*) FROM {CredentialsTableName};", conn);
+                using var countCmd = new NpgsqlCommand($"SELECT COUNT(*) FROM {CredentialsTableName}", conn);
                 var count = Convert.ToInt64(countCmd.ExecuteScalar());
 
                 return count == 0;
@@ -203,6 +197,7 @@ namespace clinicApp
             NavPatientsButton.IsDefault = false;
             NavAppointmentsButton.IsDefault = false;
             NavPrescriptionButton.IsDefault = false;
+            NavConsultationButton.IsDefault = false;
             NavSettingsButton.IsDefault = false;
             active.IsDefault = true;
         }
@@ -231,6 +226,12 @@ namespace clinicApp
             MainFrame.Navigate(new PrescriptionPage());
         }
 
+        private void ConsultationButton_Click(object sender, RoutedEventArgs e)
+        {
+            SetActiveNav(NavConsultationButton);
+            MainFrame.Navigate(new ConsultationPage());
+        }
+
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             SetActiveNav(NavSettingsButton);
@@ -251,6 +252,7 @@ namespace clinicApp
             if (currentType == typeof(PatientsPage)) { MainFrame.Navigate(new PatientsPage()); return; }
             if (currentType == typeof(AppointmentsPage)) { MainFrame.Navigate(new AppointmentsPage()); return; }
             if (currentType == typeof(PrescriptionPage)) { MainFrame.Navigate(new PrescriptionPage()); return; }
+            if (currentType == typeof(ConsultationPage)) { MainFrame.Navigate(new ConsultationPage()); return; }
             if (currentType == typeof(Settings)) { MainFrame.Navigate(new Settings()); return; }
         }
 
@@ -262,6 +264,7 @@ namespace clinicApp
                 case PatientsPage: SetActiveNav(NavPatientsButton); break;
                 case AppointmentsPage: SetActiveNav(NavAppointmentsButton); break;
                 case PrescriptionPage: SetActiveNav(NavPrescriptionButton); break;
+                case ConsultationPage: SetActiveNav(NavConsultationButton); break;
                 case Settings: SetActiveNav(NavSettingsButton); break;
             }
         }

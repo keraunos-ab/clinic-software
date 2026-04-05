@@ -1,0 +1,17 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="BtnHistory2">تاريخ الاستشارة</sys:String>
+    <sys:String x:Key="BtnFullHistory">السجل الكامل</sys:String>
+
+    <sys:String x:Key="LabelMotiv">السبب</sys:String>
+    <sys:String x:Key="LabelBilan">الفحص</sys:String>
+    <sys:String x:Key="LabelAntecedents">السوابق المرضية</sys:String>
+    <sys:String x:Key="LabelMedications">الأدوية</sys:String>
+    <sys:String x:Key="LabelHDM">تاريخ المرض</sys:String>
+    <sys:String x:Key="LabelEtatClinique">الحالة السريرية</sys:String>
+    <sys:String x:Key="LabelCAT">خطة العلاج</sys:String>
+
+</ResourceDictionary>

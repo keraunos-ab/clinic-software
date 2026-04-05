@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -13,38 +14,120 @@ using clinicApp.Services;
 
 namespace clinicApp.Pages
 {
-    /// <summary>
-    /// Interaction logic for MedicalFolder.xaml
-    /// </summary>
-    public partial class MedicalFolder : Page
+    public partial class ConsultationPage : Page
     {
         private int _activeConsultationIndex = 0;
+        private int _patientId = 0;
+        private string _firstName = "";
+        private string _lastName = "";
+        internal MainWindow Owner;
         private readonly DataBaseManager _db = new();
         private List<Consultation> _consultations = new();
 
-        private readonly int _patientId;
-        private readonly string _firstName;
-        private readonly string _lastName;
-
-        public MedicalFolder() : this(0, "firstname", "lastname") { }
-
-        public MedicalFolder(int patientId, string firstName, string lastName)
+        public ConsultationPage()
         {
-            _patientId = patientId;
-            _firstName = firstName;
-            _lastName = lastName;
             InitializeComponent();
-
-            UpdatePatientTitle();
-            LoadConsultationsFromDb();
 
             Loaded += (s, e) => LanguageManager.Instance.LanguageChanged += OnLanguageChanged;
             Unloaded += (s, e) => LanguageManager.Instance.LanguageChanged -= OnLanguageChanged;
         }
 
+        // ── Search ──────────────────────────────────────────────────────────
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var query = SearchTextBox.Text?.Trim() ?? string.Empty;
+
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                SearchPopup.IsOpen = false;
+                return;
+            }
+
+            var results = _db.GetPatientsByPrefix(query);
+
+            if (results.Count == 0)
+            {
+                SearchPopup.IsOpen = false;
+                return;
+            }
+
+            SearchResultsList.Tag = results;
+            SearchResultsList.ItemsSource = results.Select(p => $"{p.FirstName} {p.LastName}").ToList();
+            SearchPopup.IsOpen = true;
+        }
+
+        private void SearchResultsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SearchResultsList.SelectedIndex < 0) return;
+
+            var patients = SearchResultsList.Tag as List<Patient>;
+            if (patients == null || SearchResultsList.SelectedIndex >= patients.Count) return;
+
+            var patient = patients[SearchResultsList.SelectedIndex];
+            _patientId = patient.Id;
+            _firstName = patient.FirstName;
+            _lastName = patient.LastName;
+
+            SearchTextBox.Text = $"{patient.FirstName} {patient.LastName}";
+            SearchPopup.IsOpen = false;
+            SearchResultsList.SelectedIndex = -1;
+
+            LoadPatientConsultations();
+        }
+
+        // ── Birthdate Search ─────────────────────────────────────────────────
+
+        private void BirthdateSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var query = BirthdateSearchTextBox.Text?.Trim() ?? string.Empty;
+
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                BirthdateSearchPopup.IsOpen = false;
+                return;
+            }
+
+            // Search for patients with matching birthdate
+            var results = _db.GetPatientsByBirthdate(query);
+
+            if (results.Count == 0)
+            {
+                BirthdateSearchPopup.IsOpen = false;
+                return;
+            }
+
+            BirthdateSearchResultsList.Tag = results;
+            BirthdateSearchResultsList.ItemsSource = results.Select(p => 
+                $"{p.FirstName} {p.LastName} ({p.DateOfBirth:dd/MM/yyyy})").ToList();
+            BirthdateSearchPopup.IsOpen = true;
+        }
+
+        private void BirthdateSearchResultsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (BirthdateSearchResultsList.SelectedIndex < 0) return;
+
+            var patients = BirthdateSearchResultsList.Tag as List<Patient>;
+            if (patients == null || BirthdateSearchResultsList.SelectedIndex >= patients.Count) return;
+
+            var patient = patients[BirthdateSearchResultsList.SelectedIndex];
+            _patientId = patient.Id;
+            _firstName = patient.FirstName;
+            _lastName = patient.LastName;
+
+            BirthdateSearchTextBox.Text = patient.DateOfBirth.ToString("dd/MM/yyyy");
+            BirthdateSearchPopup.IsOpen = false;
+            BirthdateSearchResultsList.SelectedIndex = -1;
+
+            LoadPatientConsultations();
+        }
+
         private void OnLanguageChanged(object? sender, string language)
         {
-            UpdatePatientTitle();
+            if (ConsultationArea.Visibility == Visibility.Visible)
+            {
+                UpdatePatientTitle();
+            }
         }
 
         private void UpdatePatientTitle()
@@ -58,37 +141,15 @@ namespace clinicApp.Pages
             PatientNameHeader.Text = fullTitle;
         }
 
-        private void ConsultationHistoryButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_consultations.Count == 0) return;
-            var consultationId = _consultations[_activeConsultationIndex].Id;
-            var checkups = _db.GetSessionsByConsultation(consultationId);
-            string title = TryFindResource("BtnHistory2") as string ?? "Consultation History";
-            var historyWindow = new PatientHistoryWindow(_firstName, _lastName, checkups, title);
-            historyWindow.Owner = Window.GetWindow(this);
-            historyWindow.ShowDialog();
-        }
-
-        private void FullHistoryButton_Click(object sender, RoutedEventArgs e)
-        {
-            var checkups = _db.GetSessionsByPatient(_patientId);
-            var historyWindow = new PatientHistoryWindow(_firstName, _lastName, checkups);
-            historyWindow.Owner = Window.GetWindow(this);
-            historyWindow.ShowDialog();
-        }
-
-        private void ConsultationTab_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is string tag && int.TryParse(tag, out int index))
-            {
-                LoadConsultation(index);
-            }
-        }
-
-        private void LoadConsultationsFromDb()
+        private void LoadPatientConsultations()
         {
             _consultations = _db.GetConsultationsByPatient(_patientId);
+
+            UpdatePatientTitle();
             UpdateTabs();
+
+            EmptyState.Visibility = Visibility.Collapsed;
+            ConsultationArea.Visibility = Visibility.Visible;
 
             if (_consultations.Count > 0)
                 LoadConsultation(0);
@@ -111,6 +172,14 @@ namespace clinicApp.Pages
                 btn.Click += ConsultationTab_Click;
                 TabBar.Children.Insert(i, btn);
             }
+        }
+
+        // ── Consultation tabs ────────────────────────────────────────────────
+
+        private void ConsultationTab_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is string tag && int.TryParse(tag, out int index))
+                LoadConsultation(index);
         }
 
         private void LoadConsultation(int index)
@@ -183,8 +252,28 @@ namespace clinicApp.Pages
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (NavigationService?.CanGoBack == true)
-                NavigationService.GoBack();
+            ConsultationArea.Visibility = Visibility.Collapsed;
+            EmptyState.Visibility = Visibility.Visible;
+            SearchTextBox.Text = string.Empty;
+        }
+
+        private void ConsultationHistoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_consultations.Count == 0) return;
+            var consultationId = _consultations[_activeConsultationIndex].Id;
+            var checkups = _db.GetSessionsByConsultation(consultationId);
+            string title = TryFindResource("BtnHistory2") as string ?? "Consultation History";
+            var historyWindow = new PatientHistoryWindow(_firstName, _lastName, checkups, title);
+            historyWindow.Owner = Window.GetWindow(this);
+            historyWindow.ShowDialog();
+        }
+
+        private void FullHistoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            var checkups = _db.GetSessionsByPatient(_patientId);
+            var historyWindow = new PatientHistoryWindow(_firstName, _lastName, checkups);
+            historyWindow.Owner = Window.GetWindow(this);
+            historyWindow.ShowDialog();
         }
 
         private void AddConsultationBtn_Click(object sender, RoutedEventArgs e)
@@ -194,7 +283,7 @@ namespace clinicApp.Pages
             addConsultationWindow.ShowDialog();
 
             if (addConsultationWindow.Saved)
-                LoadConsultationsFromDb();
+                LoadPatientConsultations();
         }
 
         private void BilanImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -322,3 +411,4 @@ namespace clinicApp.Pages
         }
     }
 }
+

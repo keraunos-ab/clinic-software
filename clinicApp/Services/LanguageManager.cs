@@ -32,7 +32,11 @@ namespace clinicApp.Services
             "AddPatientPage.xaml",
             "AddApointmentPage.xaml",
             "AddSessionPage.xaml",
-            "PasswordEntry.xaml"
+            "PasswordEntry.xaml",
+            "MedicalFolder.xaml",
+            "AddMotiv.xaml",
+            "ConsultationPage.xaml",
+            "AddMedicalFolder.xaml"
         };
 
         public static readonly Dictionary<string, int> LanguageIndexMap = new()

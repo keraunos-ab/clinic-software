@@ -7,6 +7,9 @@
     <Compile Update="Pages\AddMotiv.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\ConsultationPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\Introduction.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

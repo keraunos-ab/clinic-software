@@ -186,11 +186,79 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="InputComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="ToggleButton"
+                                          Focusable="False"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="Transparent">
+                                            <Path x:Name="Arrow"
+                                                  Fill="{DynamicResource HintBrush}"
+                                                  HorizontalAlignment="Right"
+                                                  VerticalAlignment="Center"
+                                                  Margin="0,0,14,0"
+                                                  Data="M0,0 L4,4 L8,0 Z" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource Text0Brush}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+
+                            <ContentPresenter Name="ContentSite"
+                                              IsHitTestVisible="False"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left" />
+
+                            <Popup Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid Name="DropDown"
+                                      SnapsToDevicePixels="True"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder"
+                                            Background="{DynamicResource CardBgBrush}"
+                                            BorderThickness="1"
+                                            BorderBrush="{DynamicResource ChromeBorderBrush}"
+                                            CornerRadius="10"
+                                            Margin="0,4,0,0" />
+                                    <ScrollViewer Margin="4" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True"
+                                                    KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Visible" Style="{StaticResource ModernScrollViewerStyle}">
         <Grid Margin="20">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -256,6 +324,20 @@
             </StackPanel>
 
             <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,10,10">
+                <TextBlock Text="{DynamicResource LabelConsultation}" Style="{StaticResource LabelStyle}" />
+                <Border Style="{StaticResource InputBorderStyle}">
+                    <ComboBox x:Name="ConsultationComboBox"
+                              Style="{StaticResource InputComboBoxStyle}"
+                              VerticalContentAlignment="Center"
+                              Foreground="{DynamicResource Text0Brush}"
+                              FontSize="14"
+                              Padding="10,0"
+                              DisplayMemberPath="DisplayText"
+                              SelectionChanged="ConsultationComboBox_SelectionChanged"/>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,0,0,10">
                 <TextBlock Text="{DynamicResource LabelDate}" Style="{StaticResource LabelStyle}" />
                 <Border Style="{StaticResource InputBorderStyle}">
                     <DatePicker x:Name="SessionDate"
@@ -286,14 +368,14 @@
                 </Border>
             </StackPanel>
 
-            <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,0,0,10">
+            <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,10,10">
                 <TextBlock Text="{DynamicResource LabelTime}" Style="{StaticResource LabelStyle}" />
                 <TextBox x:Name="SessionTime"
                          Style="{StaticResource InputBoxStyle}"
                          ToolTip="{DynamicResource ToolTipEnterTime}"/>
             </StackPanel>
 
-            <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,0,0,10">
+            <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Margin="0,0,0,10">
                 <TextBlock Text="{DynamicResource LabelDescription}" Style="{StaticResource LabelStyle}" />
                 <TextBox x:Name="Description"
                          Style="{StaticResource InputBoxStyle}"
@@ -304,10 +386,11 @@
                          ToolTip="{DynamicResource ToolTipDescription}"/>
             </StackPanel>
 
-            <Button Grid.Row="5" Grid.ColumnSpan="2"
+            <Button x:Name="SaveButton" Grid.Row="6" Grid.ColumnSpan="2"
                     Content="{DynamicResource BtnSave}"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Height="40"
+                    IsEnabled="False"
                     Click="SaveSession_Click"/>
         </Grid>
     </ScrollViewer>

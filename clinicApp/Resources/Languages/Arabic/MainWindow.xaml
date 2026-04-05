@@ -15,6 +15,7 @@
     <sys:String x:Key="NavPatients">مرضى</sys:String>
     <sys:String x:Key="NavAppointments">المواعيد</sys:String>
     <sys:String x:Key="NavPrescriptions">الوصفات الطبية</sys:String>
+    <sys:String x:Key="NavConsultations">الاستشارات</sys:String>
     <sys:String x:Key="NavSettings">إعدادات</sys:String>
 
     <!-- Tip box -->

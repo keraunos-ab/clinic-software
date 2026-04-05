@@ -1,21 +1,22 @@
-<ResourceDictionary
+﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="AddSessionTitle">AddSessionPage</sys:String>
-    <sys:String x:Key="AddSessionHeader">Add New Session</sys:String>
-    
+    <sys:String x:Key="AddSessionTitle">AddCheckupPage</sys:String>
+    <sys:String x:Key="AddSessionHeader">Add New Checkup</sys:String>
+
     <sys:String x:Key="LabelPatientFirstName">Patient First Name</sys:String>
     <sys:String x:Key="LabelPatientLastName">Patient Last Name</sys:String>
     <sys:String x:Key="LabelDate">Date</sys:String>
     <sys:String x:Key="LabelTime">Time</sys:String>
     <sys:String x:Key="LabelDescription">Description</sys:String>
+    <sys:String x:Key="LabelConsultation">Consultation</sys:String>
 
     <sys:String x:Key="ToolTipSearchPatients">Type to search patients</sys:String>
     <sys:String x:Key="ToolTipLastNameAutoFill">Patient last name will auto-fill</sys:String>
     <sys:String x:Key="ToolTipEnterTime">Enter time (e.g. 14:30)</sys:String>
-    <sys:String x:Key="ToolTipDescription">Optional note about the session</sys:String>
+    <sys:String x:Key="ToolTipDescription">Optional note about the checkup</sys:String>
 
     <sys:String x:Key="BtnSave">Save</sys:String>
 </ResourceDictionary>

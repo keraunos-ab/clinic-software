@@ -513,7 +513,7 @@ Title="AddMotiv" Height="700" Width="1100">
 
                 <Button x:Name="SaveBtn"
                         Grid.Column="2"
-                        Content="Save"
+                        Content="{DynamicResource BtnSave}"
                         Style="{StaticResource SaveButtonStyle}"
                         Margin="0,0,8,0"
                         Click="SaveBtn_Click" />
@@ -537,38 +537,40 @@ Title="AddMotiv" Height="700" Width="1100">
 
                     <!-- ── Motiv ── -->
                     <StackPanel Margin="0,0,0,14">
-                        <TextBlock Text="Motiv"
+                        <TextBlock Text="{DynamicResource LabelMotiv}"
                                    Style="{StaticResource FieldLabel}"
                                    Margin="0,0,0,6" />
                         <TextBox x:Name="Motiv"
                                  Style="{StaticResource InputChipField}" />
                     </StackPanel>
-
-                    <!-- ── Etat Clinique ── -->
+ 
+                    <!-- ── Upload Bilan Picture ── -->
                     <StackPanel Margin="0,0,0,14">
-                        <TextBlock Text="Etat Clinique"
+                        <TextBlock Text="{DynamicResource LabelBilan}"
                                    Style="{StaticResource FieldLabel}"
                                    Margin="0,0,0,6" />
-                        <TextBox x:Name="EtatCliniqueText"
-                                 Style="{StaticResource InputChipField}" />
-                    </StackPanel>
-
-                    <!-- ── Medications ── -->
-                    <StackPanel Margin="0,0,0,14">
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                            <TextBlock Text="Medications"
-                                       Style="{StaticResource FieldLabel}"
-                                       VerticalAlignment="Center" />
-                            <Button x:Name="AddMedBtn" Style="{StaticResource AddEntryButton}"
-                                    Margin="10,0,0,0" Click="AddMedBtn_Click" />
-                        </StackPanel>
-                        <StackPanel x:Name="MedicationsPanel" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="BilanFilePathText"
+                                     Grid.Column="0"
+                                     Style="{StaticResource InputChipField}"
+                                     IsReadOnly="True"
+                                     Margin="0,0,8,0" />
+                            <Button x:Name="ParcourirBtn"
+                                    Grid.Column="1"
+                                    Content="{DynamicResource BtnParcourir}"
+                                    Style="{StaticResource SaveButtonStyle}"
+                                    Click="ParcourirBtn_Click" />
+                        </Grid>
                     </StackPanel>
 
                     <!-- ── Antecedents ── -->
                     <StackPanel Margin="0,0,0,14">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                            <TextBlock Text="Antecedents"
+                            <TextBlock Text="{DynamicResource LabelAntecedents}"
                                        Style="{StaticResource FieldLabel}"
                                        VerticalAlignment="Center" />
                             <Button x:Name="AddAntBtn" Style="{StaticResource AddEntryButton}"
@@ -577,31 +579,43 @@ Title="AddMotiv" Height="700" Width="1100">
                         <StackPanel x:Name="AntecedentsPanel" />
                     </StackPanel>
 
-                    <!-- ── Resultat bilan ── -->
+                    <!-- ── Medications ── -->
                     <StackPanel Margin="0,0,0,14">
-                        <TextBlock Text="Resultat bilan"
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <TextBlock Text="{DynamicResource LabelMedications}"
+                                       Style="{StaticResource FieldLabel}"
+                                       VerticalAlignment="Center" />
+                            <Button x:Name="AddMedBtn" Style="{StaticResource AddEntryButton}"
+                                    Margin="10,0,0,0" Click="AddMedBtn_Click" />
+                        </StackPanel>
+                        <StackPanel x:Name="MedicationsPanel" />
+                    </StackPanel>
+
+                    <!-- ── HDM (Histoire de la Maladie) ── -->
+                    <StackPanel Margin="0,0,0,14">
+                        <TextBlock Text="{DynamicResource LabelHDM}"
                                    Style="{StaticResource FieldLabel}"
                                    Margin="0,0,0,6" />
-                        <TextBox x:Name="ResultatBilanText"
+                        <TextBox x:Name="HDMText"
                                  Style="{StaticResource InputChipField}" />
                     </StackPanel>
 
-                    <!-- ── Description diagnostique ── -->
+                    <!-- ── Etat Clinique ── -->
                     <StackPanel Margin="0,0,0,14">
-                        <TextBlock Text="Description diagnostique"
+                        <TextBlock Text="{DynamicResource LabelEtatClinique}"
                                    Style="{StaticResource FieldLabel}"
                                    Margin="0,0,0,6" />
-                        <TextBox x:Name="DescriptionDiagText"
+                        <TextBox x:Name="EtatCliniqueText"
                                  Style="{StaticResource DiagnosticTextArea}" />
                     </StackPanel>
 
-                    <!-- ── Description de premier session ── -->
+                    <!-- ── CAT (Conduite à Tenir) ── -->
                     <StackPanel Margin="0,0,0,14">
-                        <TextBlock Text="Description de premier session"
+                        <TextBlock Text="{DynamicResource LabelCAT}"
                                    Style="{StaticResource FieldLabel}"
                                    Margin="0,0,0,6" />
-                        <TextBox x:Name="DescriptionSessionText"
-                                 Style="{StaticResource DiagnosticTextArea}" />
+                        <TextBox x:Name="CATText"
+                                 Style="{StaticResource InputChipField}" />
                     </StackPanel>
 
                 </StackPanel>

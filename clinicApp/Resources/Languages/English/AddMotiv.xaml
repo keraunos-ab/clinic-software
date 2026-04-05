@@ -1,0 +1,32 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="AddMotivTitle">Add Motiv</sys:String>
+
+    <!-- Field Labels -->
+    <sys:String x:Key="LabelMotiv">Motiv</sys:String>
+    <sys:String x:Key="LabelBilan">Bilan</sys:String>
+    <sys:String x:Key="LabelAntecedents">Antecedents</sys:String>
+    <sys:String x:Key="LabelMedications">Medications</sys:String>
+    <sys:String x:Key="LabelHDM">HDM</sys:String>
+    <sys:String x:Key="LabelEtatClinique">Clinical State</sys:String>
+    <sys:String x:Key="LabelCAT">CAT</sys:String>
+
+    <!-- Buttons -->
+    <sys:String x:Key="BtnSave">Save</sys:String>
+    <sys:String x:Key="BtnParcourir">Browse</sys:String>
+    <sys:String x:Key="BtnAddEntry">+</sys:String>
+    <sys:String x:Key="BtnRemoveEntry">×</sys:String>
+
+    <!-- Tooltips -->
+    <sys:String x:Key="ToolTipMotiv">Enter the reason for consultation</sys:String>
+    <sys:String x:Key="ToolTipBilan">Upload a picture of the bilan</sys:String>
+    <sys:String x:Key="ToolTipAntecedents">Add patient's medical history</sys:String>
+    <sys:String x:Key="ToolTipMedications">Add current medications</sys:String>
+    <sys:String x:Key="ToolTipHDM">History of the disease</sys:String>
+    <sys:String x:Key="ToolTipEtatClinique">Enter clinical examination findings</sys:String>
+    <sys:String x:Key="ToolTipCAT">Conduite à Tenir - Treatment plan</sys:String>
+
+</ResourceDictionary>

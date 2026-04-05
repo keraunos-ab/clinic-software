@@ -14,6 +14,8 @@ namespace clinicApp
     {
         private readonly DataBaseManager dbManager = new DataBaseManager();
         private List<PatientDisplay> _allPatients = new();
+        private int _selectedPatientId = -1;
+        private List<ConsultationItem> _consultationItems = new();
 
         public AddSessionPage()
         {
@@ -40,6 +42,7 @@ namespace clinicApp
                 PatientPopup.IsOpen = false;
                 PatientResultsList.ItemsSource = null;
                 PatientLastName.Clear();
+                ClearConsultationDropdown();
                 return;
             }
 
@@ -95,10 +98,54 @@ namespace clinicApp
 
             PatientPopup.IsOpen = false;
             PatientSearchBox.Select(PatientSearchBox.Text.Length, 0);
+
+            _selectedPatientId = dbManager.GetPatientIdByName(selected.FirstName, selected.LastName);
+            LoadConsultationsForPatient();
+        }
+
+        private void LoadConsultationsForPatient()
+        {
+            _consultationItems.Clear();
+            ConsultationComboBox.ItemsSource = null;
+            ConsultationComboBox.SelectedIndex = -1;
+            SaveButton.IsEnabled = false;
+
+            if (_selectedPatientId == -1) return;
+
+            var consultations = dbManager.GetConsultationsByPatient(_selectedPatientId);
+            _consultationItems = consultations
+                .Select(c => new ConsultationItem
+                {
+                    Id = c.Id,
+                    DisplayText = $"{c.Date}{(string.IsNullOrEmpty(c.Motiv) ? "" : $" — {c.Motiv}")}"
+                })
+                .ToList();
+
+            ConsultationComboBox.ItemsSource = _consultationItems;
+        }
+
+        private void ClearConsultationDropdown()
+        {
+            _selectedPatientId = -1;
+            _consultationItems.Clear();
+            ConsultationComboBox.ItemsSource = null;
+            ConsultationComboBox.SelectedIndex = -1;
+            SaveButton.IsEnabled = false;
+        }
+
+        private void ConsultationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SaveButton.IsEnabled = ConsultationComboBox.SelectedItem is ConsultationItem;
         }
 
         private void SaveSession_Click(object sender, RoutedEventArgs e)
         {
+            if (ConsultationComboBox.SelectedItem is not ConsultationItem selectedConsultation)
+            {
+                MessageBox.Show("Please select a consultation.", "Missing Info", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             int patientId = dbManager.GetPatientIdByName(PatientSearchBox.Text, PatientLastName.Text);
             if (patientId == -1)
             {
@@ -109,21 +156,28 @@ namespace clinicApp
             DateTime date = SessionDate.SelectedDate ?? DateTime.Now;
             TimeSpan time = TimeSpan.TryParse(SessionTime.Text, out var t) ? t : DateTime.Now.TimeOfDay;
 
-            dbManager.AddSession(patientId, date, time, Description.Text);
+            dbManager.AddSession(patientId, selectedConsultation.Id, date, time, Description.Text);
 
-            MessageBox.Show("Session added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Checkup added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
             PatientSearchBox.Text = "";
             PatientLastName.Clear();
             SessionDate.SelectedDate = null;
             SessionTime.Clear();
             Description.Clear();
+            ClearConsultationDropdown();
 
             PatientPopup.IsOpen = false;
             PatientResultsList.ItemsSource = null;
 
             // Refresh the current page
             PageRefreshService.RefreshCurrentPage();
+        }
+
+        private class ConsultationItem
+        {
+            public int Id { get; set; }
+            public string DisplayText { get; set; } = "";
         }
     }
 }

@@ -1,7 +1,8 @@
-﻿using clinicApp.Services;
+﻿using clinicApp.data;
+using clinicApp.Services;
 using Microsoft.Win32;
+using Npgsql;
 using System;
-using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -12,7 +13,6 @@ namespace clinicApp.Pages
 {
     public partial class Introduction : Page
     {
-        private const string CredentialsDbFileName = "UserCredentials.db";
         private const string CredentialsTableName = "UserCredentials";
 
         private static readonly string[] AllowedLogoExtensions = [".svg", ".png", ".jpg", ".jpeg"];
@@ -156,30 +156,14 @@ namespace clinicApp.Pages
                     File.Copy(_selectedLogoPath, storedLogoPath, overwrite: true);
                 }
 
-                var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, CredentialsDbFileName);
-                var cs = $"Data Source={dbPath};Version=3;";
+                // Initialize database (creates PostgreSQL database and tables)
+                var dbManager = new DataBaseManager();
+                dbManager.InitializeDatabase();
 
-                using var conn = new SQLiteConnection(cs);
+                using var conn = new NpgsqlConnection(DataBaseManager.DefaultConnectionString);
                 conn.Open();
 
-                using var cmd = new SQLiteCommand(conn);
-
-                cmd.CommandText = $@"
-CREATE TABLE IF NOT EXISTS {CredentialsTableName} (
-    id INTEGER PRIMARY KEY CHECK (id = 1),
-    first_name TEXT,
-    last_name TEXT,
-    phone TEXT,
-    email TEXT,
-    ordre TEXT,
-    specialty TEXT,
-    clinic_name TEXT,
-    clinic_address TEXT,
-    logo_path TEXT
-);";
-                cmd.ExecuteNonQuery();
-
-                cmd.CommandText = $@"
+                using var cmd = new NpgsqlCommand($@"
 INSERT INTO {CredentialsTableName}
 (id, first_name, last_name, phone, email, ordre, specialty, clinic_name, clinic_address, logo_path)
 VALUES
@@ -193,16 +177,16 @@ ON CONFLICT(id) DO UPDATE SET
     specialty = excluded.specialty,
     clinic_name = excluded.clinic_name,
     clinic_address = excluded.clinic_address,
-    logo_path = excluded.logo_path;";
-                cmd.Parameters.AddWithValue("@first_name", firstName);
-                cmd.Parameters.AddWithValue("@last_name", lastName);
-                cmd.Parameters.AddWithValue("@phone", phone);
-                cmd.Parameters.AddWithValue("@email", string.IsNullOrWhiteSpace(email) ? DBNull.Value : email);
-                cmd.Parameters.AddWithValue("@ordre", string.IsNullOrWhiteSpace(ordre) ? DBNull.Value : ordre);
-                cmd.Parameters.AddWithValue("@specialty", specialty);
-                cmd.Parameters.AddWithValue("@clinic_name", clinicName);
-                cmd.Parameters.AddWithValue("@clinic_address", clinicAddress);
-                cmd.Parameters.AddWithValue("@logo_path", string.IsNullOrWhiteSpace(storedLogoPath) ? DBNull.Value : storedLogoPath);
+    logo_path = excluded.logo_path;", conn);
+                cmd.Parameters.AddWithValue("@first_name", CryptoHelper.Encrypt(firstName));
+                cmd.Parameters.AddWithValue("@last_name", CryptoHelper.Encrypt(lastName));
+                cmd.Parameters.AddWithValue("@phone", CryptoHelper.Encrypt(phone));
+                cmd.Parameters.AddWithValue("@email", string.IsNullOrWhiteSpace(email) ? DBNull.Value : (object)CryptoHelper.Encrypt(email));
+                cmd.Parameters.AddWithValue("@ordre", string.IsNullOrWhiteSpace(ordre) ? DBNull.Value : (object)CryptoHelper.Encrypt(ordre));
+                cmd.Parameters.AddWithValue("@specialty", CryptoHelper.Encrypt(specialty));
+                cmd.Parameters.AddWithValue("@clinic_name", CryptoHelper.Encrypt(clinicName));
+                cmd.Parameters.AddWithValue("@clinic_address", CryptoHelper.Encrypt(clinicAddress));
+                cmd.Parameters.AddWithValue("@logo_path", string.IsNullOrWhiteSpace(storedLogoPath) ? DBNull.Value : (object)CryptoHelper.Encrypt(storedLogoPath));
 
                 cmd.ExecuteNonQuery();
                 return true;

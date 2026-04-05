@@ -1,0 +1,32 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="AddMotivTitle">إضافة سبب</sys:String>
+
+    <!-- Field Labels -->
+    <sys:String x:Key="LabelMotiv">السبب</sys:String>
+    <sys:String x:Key="LabelBilan">التحليل</sys:String>
+    <sys:String x:Key="LabelAntecedents">السوابق</sys:String>
+    <sys:String x:Key="LabelMedications">الأدوية</sys:String>
+    <sys:String x:Key="LabelHDM">تاريخ المرض</sys:String>
+    <sys:String x:Key="LabelEtatClinique">الحالة السريرية</sys:String>
+    <sys:String x:Key="LabelCAT">خطة العلاج</sys:String>
+
+    <!-- Buttons -->
+    <sys:String x:Key="BtnSave">حفظ</sys:String>
+    <sys:String x:Key="BtnParcourir">تصفح</sys:String>
+    <sys:String x:Key="BtnAddEntry">+</sys:String>
+    <sys:String x:Key="BtnRemoveEntry">×</sys:String>
+
+    <!-- Tooltips -->
+    <sys:String x:Key="ToolTipMotiv">أدخل سبب الاستشارة</sys:String>
+    <sys:String x:Key="ToolTipBilan">تحميل صورة التحليل</sys:String>
+    <sys:String x:Key="ToolTipAntecedents">أضف السوابق الطبية للمريض</sys:String>
+    <sys:String x:Key="ToolTipMedications">أضف الأدوية الحالية</sys:String>
+    <sys:String x:Key="ToolTipHDM">تاريخ المرض</sys:String>
+    <sys:String x:Key="ToolTipEtatClinique">أدخل نتائج الفحص السريري</sys:String>
+    <sys:String x:Key="ToolTipCAT">خطة العلاج</sys:String>
+
+</ResourceDictionary>

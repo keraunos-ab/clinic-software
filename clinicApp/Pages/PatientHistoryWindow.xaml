@@ -16,7 +16,8 @@
 
         <!-- Header -->
         <StackPanel Grid.Row="0" Margin="0,0,0,18">
-            <TextBlock Text="{DynamicResource HeaderTitle}"
+            <TextBlock x:Name="HeaderTitleText"
+                       Text="{DynamicResource HeaderTitle}"
                        FontSize="13"
                        FontWeight="SemiBold"
                        Foreground="{DynamicResource HintBrush}"
@@ -28,11 +29,11 @@
                        TextWrapping="Wrap"/>
         </StackPanel>
 
-        <!-- Sessions List -->
+        <!-- Checkups List -->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <ItemsControl x:Name="SessionsList">
+            <ItemsControl x:Name="CheckupsList">
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type models:Session}">
+                    <DataTemplate DataType="{x:Type models:Checkup}">
                         <Border Background="{DynamicResource CardContainerBrush}"
                                 CornerRadius="14"
                                 BorderBrush="{DynamicResource ChromeBorderBrush}"

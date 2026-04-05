@@ -60,23 +60,30 @@ namespace clinicApp
                 return;
             }
 
-            if (string.IsNullOrEmpty(email) && string.IsNullOrEmpty(phone))
+            if (string.IsNullOrWhiteSpace(phone))
             {
-                MessageBox.Show("Please provide at least a phone number or an email.", "Missing Info", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Phone number is required.", "Missing Info", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!dateOfBirth.HasValue)
+            {
+                MessageBox.Show("Date of birth is required.", "Missing Info", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             try
             {
-                dbManager.AddPatient(first, last, phone, email, gender, note, dateOfBirth, weight, bloodType);
+                dbManager.AddPatient(first, last, phone, email, gender, dateOfBirth.Value, note, weight, bloodType);
                 MessageBox.Show("Patient added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 // Refresh the current page
                 PageRefreshService.RefreshCurrentPage();
 
                 // Close the QuickActionWindow and open AddMotiv
+                int patientId = dbManager.GetPatientIdByName(first, last);
                 var quickActionWindow = Window.GetWindow(this);
-                var addMotivWindow = new Pages.AddMotiv(first, last);
+                var addMotivWindow = new Pages.AddMotiv(patientId, first, last);
                 addMotivWindow.Show();
                 quickActionWindow?.Close();
             }

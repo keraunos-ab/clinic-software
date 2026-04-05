@@ -15,6 +15,7 @@
     <sys:String x:Key="NavPatients">Patients</sys:String>
     <sys:String x:Key="NavAppointments">Rendez-vous</sys:String>
     <sys:String x:Key="NavPrescriptions">Ordonnances</sys:String>
+    <sys:String x:Key="NavConsultations">Consultations</sys:String>
     <sys:String x:Key="NavSettings">Paramètres</sys:String>
 
     <!-- Tip box -->
